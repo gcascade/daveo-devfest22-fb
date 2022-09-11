@@ -11,10 +11,9 @@ const BIRD_SIZE = {
   width: 60,
   height: 45,
 };
-const BIRD_LEFT = 0;
 const GRAVITY = 3;
 const OBSTACLE_HEIGHT = 100;
-const OBSTACLE_WIDTH = 40;
+const OBSTACLE_WIDTH = 60;
 const OBSTACLE_GAP = 200;
 const OBSTACLE_MOVE_SPEED = 15;
 const WINDOW_OFFSET = 20;
@@ -30,6 +29,11 @@ function App() {
   // const jumpHeight = height * 0.2;
   const jumpHeight = 50;
   const gravity = GRAVITY * GAME_SPEED;
+  const birdHorizontalPosition = {
+    center: width / 2,
+    left: width / 2 - BIRD_SIZE.width / 2,
+    right: width / 2 + BIRD_SIZE.width / 2,
+  }
 
   
   const birdStartingHeight = height / 2;
@@ -83,7 +87,7 @@ function App() {
     const hasCollidedWithBottomObstacle = birdPosition <= height && birdPosition >= height - bottomObstacleHeight;
     const hasCollidedWithFloor = birdPosition >= height - BIRD_SIZE.height;
     // peut-être BIRD_LEFT + BIRD_SIZE
-    const obstacleReachedBird = obstacleLeft >= BIRD_LEFT && obstacleLeft <= (BIRD_LEFT + OBSTACLE_WIDTH)
+    const obstacleReachedBird = obstacleLeft <= birdHorizontalPosition.right && obstacleLeft >= birdHorizontalPosition.left;
     const gameOver = hasCollidedWithFloor || (obstacleReachedBird && (hasCollidedWithTopObstacle || hasCollidedWithBottomObstacle));
 
     if (gameOver) {
@@ -94,7 +98,7 @@ function App() {
       }
       setBirdPosition(birdStartingHeight);
     }
-  }, [birdPosition, obstacleLeft, obstacleHeight, bottomObstacleHeight, score, bestScore, height, birdStartingHeight]);
+  }, [birdPosition, obstacleLeft, obstacleHeight, bottomObstacleHeight, height, birdStartingHeight, birdHorizontalPosition.right, birdHorizontalPosition.left, score, bestScore]);
 
   const handleClick = () => {
     let newBirdPosition = birdPosition - jumpHeight;
@@ -128,7 +132,7 @@ function App() {
         <Bird size={BIRD_SIZE} top={birdPosition}/>
         {/* <Ground height={height - GROUND_HEIGHT} width={width}/> */}
       </GameBox>
-      <span>{score}</span>
+      <Score top={WINDOW_OFFSET}>{score}</Score>
       {/* <span>Best: {bestScore}</span>
       <span>Last: {lastScore}</span> */}
     </Div>
@@ -137,11 +141,18 @@ function App() {
 
 export default App;
 
+const Score = styled.span`
+  position: absolute;
+  top: ${(props) => props.top}px;
+  left: 50%;
+`;
+
 const Bird = styled.div`
   position: absolute;
   height: ${(props) => props.size.height}px;
   width: ${(props) => props.size.width}px;
   top: ${(props) => props.top}px;
+  left: 50%;
   background-image: url(${birdImage});
 `;
 
