@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useWindowDimensions from './hooks/windowDimensions';
-import birdImage from './images/flappy-bird.png';
-import background from './images/fb-game-background.png';
+import birdImage from './images/balloon_120x120.png';
+import background from './images/background.png';
 import obstacleImage from './images/obstacle.png';
 import groundImage from './images/ground.png';
 
 // bird file dimension
 const BIRD_SIZE = {
-  width: 60,
-  height: 45,
+  width: 120,
+  height: 120,
 };
 const GRAVITY = 3;
 const OBSTACLE_HEIGHT = 100;
@@ -43,7 +43,6 @@ function App() {
   const [obstacleHeight, setObstacleHeight] = useState(OBSTACLE_HEIGHT);
   const [obstacleLeft, setObstacleLeft] = useState(width - OBSTACLE_WIDTH);
   const [score, setScore] = useState(0);
-  const [lastScore, setLastScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
 
   const bottomObstacleHeight = height - OBSTACLE_GAP - obstacleHeight;
@@ -92,7 +91,6 @@ function App() {
 
     if (gameOver) {
       setGameHasStarted(false);
-      setLastScore(score);
       if (score > bestScore) {
         setBestScore(score);
       }
