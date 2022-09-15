@@ -15,41 +15,41 @@ const GRAVITY = 3;
 const OBSTACLE_HEIGHT = 100;
 const OBSTACLE_WIDTH = 60;
 const OBSTACLE_GAP = 200;
-const OBSTACLE_MOVE_SPEED = 15;
-const WINDOW_OFFSET = 20;
+const OBSTACLE_MOVE_SPEED = 5;
+const WINDOW_MARGIN = 8;
 const GAME_SPEED = 2;
-const INTERVAL_TIME = 24;
-const GROUND_HEIGHT = 150;
+const INTERVAL_TIME = 1;
+const GROUND_HEIGHT = 50;
 
+
+/**
+ *  0 ---------- > width
+ *  |  bird
+ *  |
+ *  v
+ *  height
+ * 
+ */
 function App() {
 
   let { height, width } = useWindowDimensions();
-  height = height - WINDOW_OFFSET;
-  width = width - WINDOW_OFFSET;
-  // const jumpHeight = height * 0.2;
-  const jumpHeight = 50;
+  const windowHeight = height - WINDOW_MARGIN;
+  const windowWidth = width - WINDOW_MARGIN;
+  const jumpHeight = windowHeight * 0.05;
   const gravity = GRAVITY * GAME_SPEED;
-  const birdHorizontalPosition = {
-    center: width / 2,
-    left: width / 2 - BIRD_SIZE.width / 2,
-    right: width / 2 + BIRD_SIZE.width / 2,
-  }
-
   
   const birdStartingHeight = height / 2;
 
-  const [birdPosition, setBirdPosition] = useState(birdStartingHeight);
+  const [birdPosition, setBirdPosition] = useState(windowHeight / 2);
   const [gameHasStarted, setGameHasStarted] = useState(false);
   const [obstacleHeight, setObstacleHeight] = useState(OBSTACLE_HEIGHT);
-  const [obstacleLeft, setObstacleLeft] = useState(width - OBSTACLE_WIDTH);
+  const [obstacleLeft, setObstacleLeft] = useState(windowWidth - OBSTACLE_WIDTH);
   const [score, setScore] = useState(0);
-  const [bestScore, setBestScore] = useState(0);
-
-  const bottomObstacleHeight = height - OBSTACLE_GAP - obstacleHeight;
+  const bottomObstacleHeight = windowHeight - OBSTACLE_GAP - obstacleHeight;
 
   useEffect(() => {
     let timeId;
-    if (gameHasStarted && birdPosition < height - BIRD_SIZE.height) {
+    if (gameHasStarted && birdPosition < windowHeight - BIRD_SIZE.height) {
       timeId = setInterval(() => {
         setBirdPosition(birdPosition => birdPosition + gravity);
       }, INTERVAL_TIME);
@@ -58,7 +58,7 @@ function App() {
     return () => {
       clearInterval(timeId);
     }
-  }, [height, birdPosition, gameHasStarted, gravity]);
+  }, [birdPosition, gameHasStarted]);
 
   useEffect(() => {
     let obstacleId;
@@ -72,31 +72,43 @@ function App() {
       }
     }
     else {
-      setObstacleLeft(width - OBSTACLE_WIDTH);
-      setObstacleHeight(Math.floor(Math.random() * (height - OBSTACLE_GAP)));
+      setObstacleLeft(windowWidth - OBSTACLE_WIDTH - WINDOW_MARGIN);
+      setObstacleHeight(Math.floor(Math.random() * (windowHeight - OBSTACLE_GAP)));
 
       if (gameHasStarted) {
         setScore((score) => score + 1);
       }
     }
-  }, [gameHasStarted, height, obstacleLeft, width]);
+  }, [obstacleLeft, gameHasStarted]);
 
   useEffect(() => {
-    const hasCollidedWithTopObstacle = birdPosition >= 0 && birdPosition < obstacleHeight;
-    const hasCollidedWithBottomObstacle = birdPosition <= height && birdPosition >= height - bottomObstacleHeight;
-    const hasCollidedWithFloor = birdPosition >= height - BIRD_SIZE.height;
+    const birdHorizontalPosition = {
+      center: windowWidth / 2,
+      left: windowWidth / 2 - BIRD_SIZE.width / 2,
+      right: windowWidth / 2 + BIRD_SIZE.width / 2,
+    };
+    const birdTopPosition = birdPosition - BIRD_SIZE.height / 2;
+    const birdBottomPosition = birdPosition + BIRD_SIZE.height / 2;
+    const hasCollidedWithTopObstacle = birdTopPosition < obstacleHeight;
+    const hasCollidedWithBottomObstacle = birdBottomPosition >= windowHeight - bottomObstacleHeight;
+    const hasCollidedWithFloor = birdPosition >= windowHeight - (BIRD_SIZE.height + GROUND_HEIGHT);
+
     // peut-être BIRD_LEFT + BIRD_SIZE
     const obstacleReachedBird = obstacleLeft <= birdHorizontalPosition.right && obstacleLeft >= birdHorizontalPosition.left;
     const gameOver = hasCollidedWithFloor || (obstacleReachedBird && (hasCollidedWithTopObstacle || hasCollidedWithBottomObstacle));
 
     if (gameOver) {
       setGameHasStarted(false);
-      if (score > bestScore) {
-        setBestScore(score);
-      }
+      // console.log('game over');
+      // console.log(`birdTopPosition: ${birdTopPosition} birdBottomPosition: ${birdBottomPosition} birdPosition: ${birdPosition}`);
+      // console.log(`birdHorizontalRight: ${birdHorizontalPosition.right} birdHorizontalCenter: ${birdHorizontalPosition.center} birdHorizontalLeft: ${birdHorizontalPosition.left}`);
+      // console.log(`obstacleLeft: ${obstacleLeft} obstacleHeight: ${obstacleHeight} bottomObstacleHeight: ${bottomObstacleHeight} height: ${height}`);
+      // console.log(`hasCollidedWithTopObstacle: ${hasCollidedWithTopObstacle}`)
+      // console.log(`hasCollidedWithBottomObstacle: ${hasCollidedWithBottomObstacle}`)
+      // console.log(`hasCollidedWithFloor: ${hasCollidedWithFloor}`)
       setBirdPosition(birdStartingHeight);
     }
-  }, [birdPosition, obstacleLeft, obstacleHeight, bottomObstacleHeight, height, birdStartingHeight, birdHorizontalPosition.right, birdHorizontalPosition.left, score, bestScore]);
+  }, [birdPosition, obstacleLeft, obstacleHeight, gameHasStarted, bottomObstacleHeight]);
 
   const handleClick = () => {
     let newBirdPosition = birdPosition - jumpHeight;
@@ -114,25 +126,23 @@ function App() {
 
   return (
     <Div onClick={handleClick}>
-      <GameBox height={height} width={width}>
+      <GameBox height={windowHeight} width={windowWidth}>
         <TopObstacle
           top={0}
           width={OBSTACLE_WIDTH}
           height={obstacleHeight}
-          left={obstacleLeft}
+          left={obstacleLeft - WINDOW_MARGIN}
         />
         <Obstacle
-          top={height - (obstacleHeight + bottomObstacleHeight)}
+          top={windowHeight - (obstacleHeight + bottomObstacleHeight)}
           width={OBSTACLE_WIDTH}
           height={bottomObstacleHeight}
-          left={obstacleLeft}
+          left={obstacleLeft - WINDOW_MARGIN}
         />
-        <Bird size={BIRD_SIZE} top={birdPosition}/>
-        {/* <Ground height={height - GROUND_HEIGHT} width={width}/> */}
+        <Bird size={BIRD_SIZE} top={birdPosition - BIRD_SIZE.height / 2 - WINDOW_MARGIN / 2} left={50 - (100 * ((BIRD_SIZE.width / 2 + WINDOW_MARGIN)/ windowWidth))}/>
+        <Ground height={GROUND_HEIGHT} width={windowWidth} top={windowHeight + WINDOW_MARGIN / 2}/>
+        <Score top={WINDOW_MARGIN}>{score}</Score>
       </GameBox>
-      <Score top={WINDOW_OFFSET}>{score}</Score>
-      {/* <span>Best: {bestScore}</span>
-      <span>Last: {lastScore}</span> */}
     </Div>
   );
 }
@@ -150,8 +160,9 @@ const Bird = styled.div`
   height: ${(props) => props.size.height}px;
   width: ${(props) => props.size.width}px;
   top: ${(props) => props.top}px;
-  left: 50%;
+  left: ${(props) => props.left}%;
   background-image: url(${birdImage});
+  // background-color: red;
 `;
 
 const Div = styled.div`
@@ -176,6 +187,7 @@ const Obstacle = styled.div`
   position: relative;
   top: ${(props) => props.top}px;
   background-image: url(${obstacleImage});
+  background-color: green;
   // background-repeat: no-repeat;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
@@ -186,6 +198,7 @@ const TopObstacle = styled.div`
   position: relative;
   top: ${(props) => props.top}px;
   background-image: url(${obstacleImage});
+  // background-color: green;
   // background-repeat: no-repeat;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
@@ -195,7 +208,9 @@ const TopObstacle = styled.div`
 
 const Ground = styled.div`
   background-image: url(${groundImage});
+  // background-color: blue;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
-  position: relative;
+  top: ${(props) => props.top - props.height}px;
+  position: absolute;
 `;
