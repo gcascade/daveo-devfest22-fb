@@ -14,11 +14,11 @@ const BIRD_SIZE = {
 const GRAVITY = 3;
 const OBSTACLE_HEIGHT = 100;
 const OBSTACLE_WIDTH = 60;
-const OBSTACLE_GAP = 200;
+const OBSTACLE_GAP = 250;
 const OBSTACLE_MOVE_SPEED = 5;
 const WINDOW_MARGIN = 8;
 const GAME_SPEED = 2;
-const INTERVAL_TIME = 1;
+const INTERVAL_TIME = 24;
 const GROUND_HEIGHT = 50;
 
 
@@ -155,14 +155,16 @@ const Score = styled.span`
   left: 50%;
 `;
 
-const Bird = styled.div`
+const Bird = styled.div.attrs((props) => ({
+  style: {
+    top: props.top,
+    left: props.left + '%',
+    height: props.size.height,
+    width: props.size.width,
+    },
+    }))`
   position: absolute;
-  height: ${(props) => props.size.height}px;
-  width: ${(props) => props.size.width}px;
-  top: ${(props) => props.top}px;
-  left: ${(props) => props.left}%;
   background-image: url(${birdImage});
-  // background-color: red;
 `;
 
 const Div = styled.div`
@@ -176,41 +178,49 @@ const Div = styled.div`
   }
 `;
 
-const GameBox = styled.div`
-  height: ${(props) => props.height}px;
-  width: ${(props) => props.width}px;
+const GameBox = styled.div.attrs((props) => ({
+  style: {
+    height: props.height,
+    width: props.width,
+    },
+    }))`
   background-image: url(${background});
   overflow: hidden;
 `;
 
-const Obstacle = styled.div`
+const Obstacle = styled.div.attrs((props) => ({
+  style: {
+    top: props.top,
+    left: props.left,
+    height: props.height,
+    width: props.width,
+    },
+    }))`
   position: relative;
-  top: ${(props) => props.top}px;
   background-image: url(${obstacleImage});
   background-color: green;
-  // background-repeat: no-repeat;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
-  left: ${(props) => props.left}px;
 `;
 
-const TopObstacle = styled.div`
+const TopObstacle = styled.div.attrs((props) => ({
+  style: {
+    top: props.top,
+    left: props.left,
+    height: props.height,
+    width: props.width,
+    },
+    }))`
   position: relative;
-  top: ${(props) => props.top}px;
   background-image: url(${obstacleImage});
-  // background-color: green;
-  // background-repeat: no-repeat;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
-  left: ${(props) => props.left}px;  
   transform: rotate(180deg);
 `;
 
-const Ground = styled.div`
+const Ground = styled.div.attrs((props) => ({
+  style: {
+    top: props.top,
+    height: props.height,
+    width: props.width,
+    },
+    }))`
   background-image: url(${groundImage});
-  // background-color: blue;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
-  top: ${(props) => props.top - props.height}px;
   position: absolute;
 `;
