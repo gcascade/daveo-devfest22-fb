@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import useWindowDimensions from './hooks/windowDimensions';
 import birdImage from './images/balloon_120x120.png';
 import background from './images/background.png';
@@ -215,9 +215,10 @@ const Ground = styled.div.attrs((props) => ({
   style: {
     top: props.top,
     height: props.height,
-    width: props.width,
   },
 }))`
   background-image: url(${groundImage});
   position: absolute;
+  z-index: +1;
+  width: 100%;
 `;

@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {
-  Stage, Sprite, Text, Container,
+  Stage, Sprite, Text, Container, useTick,
 } from '@inlet/react-pixi';
 
 import React from 'react';
@@ -11,6 +11,7 @@ import daveoImage from './images/daveo.png';
 
 const width = 1920;
 const height = 1080;
+const gravity = 1;
 
 const textStyle = new PIXI.TextStyle({
   align: 'center',
@@ -23,10 +24,32 @@ const textStyle = new PIXI.TextStyle({
   wordWrapWidth: 350,
 });
 
+function onKeyDown(e) {
+  if (e.keyCode === 32) {
+    console.log('space');
+  }
+}
+
+function Bird() {
+  document.addEventListener('keydown', onKeyDown);
+  const [x, setX] = React.useState(width / 2);
+  const [y, setY] = React.useState(height / 2);
+
+  useTick((delta) => {
+    if (y < height) {
+      setY(y + gravity);
+    } else {
+      setY(height / 2);
+    }
+  });
+
+  return (
+    <Sprite image={birdImage} x={x} y={y} />
+  );
+}
+
 function Game() {
   const score = 0;
-  const birdX = width / 2;
-  const birdY = height / 2;
   const topObstacleX = width - 100;
   const topObstacleY = 300;
   const bottomObstacleX = width - 300;
@@ -48,7 +71,7 @@ function Game() {
         <Sprite image={daveoImage} scale={0.1} x={100} y={200} />
       </Container>
       <Container>
-        <Sprite image={birdImage} x={birdX} y={birdY} />
+        <Bird />
       </Container>
       <Container>
         <Sprite image={obstacleImage} x={topObstacleX} y={topObstacleY} angle={180} />
