@@ -3,7 +3,6 @@ import styled, { keyframes } from 'styled-components';
 import useWindowDimensions from './hooks/windowDimensions';
 import birdImage from './images/balloon_120x120.png';
 import background from './images/background.png';
-import obstacleImage from './images/obstacle.png';
 import groundImage from './images/ground.png';
 
 // bird file dimension
