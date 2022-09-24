@@ -17,17 +17,20 @@ export default function Bird() {
   const y = useSelector((state) => state.bird.y);
   const gravity = useSelector((state) => state.game.gravity);
   const height = useSelector((state) => state.game.height);
+  const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const dispatch = useDispatch();
 
   useTick(() => {
-    if (y < height - 120) {
-      dispatch(move({ y: gravity }));
-    } else {
-      dispatch(setY(0));
+    if (gameHasStarted) {
+      if (y < height) {
+        dispatch(move({ y: gravity }));
+      } else {
+        dispatch(setY(0));
+      }
     }
   });
 
   return (
-    <Sprite image={birdImage} x={x} y={y} />
+    <Sprite image={birdImage} x={x} y={y} anchor={0.5} />
   );
 }

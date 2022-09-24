@@ -4,9 +4,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   gravity: 1,
   score: 0,
-  gameHasStarted: false,
+  hasStarted: false,
   height: 1080,
   width: 1920,
+  obstacleSpeed: 1,
 };
 
 export const gameSlice = createSlice({
@@ -16,15 +17,19 @@ export const gameSlice = createSlice({
     reset: (state) => {
       state.gravity = initialState.gravity;
       state.score = initialState.score;
+      state.hasStarted = initialState.hasStarted;
+      state.height = initialState.height;
+      state.width = initialState.width;
+      state.obstacleSpeed = initialState.obstacleSpeed;
     },
     incrementScore(state) {
       state.score += 1;
     },
     startGame(state) {
-      state.gameHasStarted = true;
+      state.hasStarted = true;
     },
     endGame(state) {
-      state.gameHasStarted = false;
+      state.hasStarted = false;
     },
   },
 });

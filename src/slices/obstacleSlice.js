@@ -1,17 +1,18 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import { v4 as randomUuid } from 'uuid';
 
 const initialState = {
   obstacles: [],
 };
 
-export const gameSlice = createSlice({
-  name: 'game',
+export const obstacleSlice = createSlice({
+  name: 'obstacle',
   initialState,
   reducers: {
     addObstacle: (state, action) => {
       const obstacle = {
-        id: action.payload.id ?? 0,
+        id: action.payload.id ?? randomUuid(),
         x: action.payload.x ?? 0,
         y: action.payload.y ?? 0,
         angle: action.payload.angle ?? 0,
@@ -27,12 +28,16 @@ export const gameSlice = createSlice({
         obstacle.x += action.payload.x ?? 0;
         obstacle.y += action.payload.y ?? 0;
       }
+      state.obstacles = [...state.obstacles.filter(
+        (obs) => obs.id !== action.payload,
+        obstacle,
+      )];
     },
   },
 });
 
 export const {
   addObstacle, removeObstacle, moveObstacle,
-} = gameSlice.actions;
+} = obstacleSlice.actions;
 
-export default gameSlice.reducer;
+export default obstacleSlice.reducer;

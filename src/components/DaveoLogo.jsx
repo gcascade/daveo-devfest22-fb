@@ -4,6 +4,6 @@ import daveoImage from '../images/daveo.png';
 
 export default function DaveoLogo() {
   return (
-    <Sprite image={daveoImage} scale={0.1} x={100} y={200} />
+    <Sprite image={daveoImage} scale={0.1} x={100} y={200} anchor={0.5} />
   );
 }
