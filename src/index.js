@@ -1,14 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider, ReactReduxContext } from 'react-redux';
+import ContextBridge from './ContextBridge';
 import './index.css';
 import Game from './newApp';
 import reportWebVitals from './reportWebVitals';
+import store from './store';
 
 ReactDOM.render(
   // eslint-disable-next-line react/jsx-filename-extension
-  <React.StrictMode>
-    <Game />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <ContextBridge
+      Context={ReactReduxContext}
+      render={(children) => (
+        <Game>{children}</Game>
+      )}
+    />
+  </Provider>,
   document.getElementById('root'),
 );
 
