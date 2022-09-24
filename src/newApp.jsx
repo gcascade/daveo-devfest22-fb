@@ -53,17 +53,12 @@ function DaveoLogo() {
 
 function Bird() {
   document.addEventListener('keydown', onKeyDown);
-  const [x, setX] = React.useState(width / 2);
-  const [y, setY] = React.useState(height / 2);
+  const x = useSelector((state) => state.birdX);
+  const y = useSelector((state) => state.birdY);
   const dispatch = useDispatch();
 
   useTick((delta) => {
-    if (y < height) {
-      setY(y + gravity);
-    } else {
-      setY(height / 2);
-      dispatch({ type: 'SCORE_UP' });
-    }
+    dispatch({ type: 'APPLY_GRAVITY' });
   });
 
   return (
