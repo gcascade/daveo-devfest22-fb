@@ -27,22 +27,6 @@ function hasCollidedWithBird(
   const obstacleTop = angle !== 180 ? y - obstacleHeight : y;
   const obstacleBottom = angle !== 180 ? y : y + obstacleHeight;
 
-  if (birdLeft < obstacleRight
-    && birdRight > obstacleLeft
-    && birdTop < obstacleBottom
-    && birdBottom > obstacleTop) {
-    console.log('birdLeft', birdLeft);
-    console.log('birdRight', birdRight);
-    console.log('birdTop', birdTop);
-    console.log('birdBottom', birdBottom);
-    console.log('obstacleLeft', obstacleLeft);
-    console.log('obstacleRight', obstacleRight);
-    console.log('obstacleTop', obstacleTop);
-    console.log('obstacleBottom', obstacleBottom);
-    console.log('x', x);
-    console.log('y', y);
-  }
-
   return (
     birdLeft < obstacleRight
       && birdRight > obstacleLeft
@@ -91,7 +75,6 @@ function Obstacle({
     }
   });
 
-  // TODO don't use center but bottom center and modify collision detection
   return (
     <Sprite image={obstacleImage} x={x} y={y} angle={angle} anchor={{ x: 0.5, y: 1 }} />
   );

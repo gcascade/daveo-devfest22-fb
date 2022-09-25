@@ -25,7 +25,6 @@ export default function Bird() {
         const jumpHeight = (-gravity / 2) * delta ** 2 + jumpVelocity * delta;
         dispatch(move({ y: -jumpHeight }));
         dispatch(setJumpVelocity(jumpVelocity - gravity * delta));
-        console.log(jumpHeight);
         if (jumpVelocity <= 0) {
           dispatch(setJumpVelocity(defaultJumpVelocity));
           dispatch(stopJump());
