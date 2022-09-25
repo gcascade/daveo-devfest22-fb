@@ -88,8 +88,21 @@ function StartButtonContainer() {
   );
 }
 
-function Game() {
+function ScoreContainer() {
   const score = useSelector((state) => state.game.score);
+  const width = useSelector((state) => state.game.width);
+  const height = useSelector((state) => state.game.height);
+  return (
+    <Container
+      x={width / 2}
+      y={height / 10}
+    >
+      <Text text={score} style={textStyle} />
+    </Container>
+  );
+}
+
+function Game() {
   const width = useSelector((state) => state.game.width);
   const height = useSelector((state) => state.game.height);
 
@@ -110,12 +123,7 @@ function Game() {
       </Container>
       <ObstacleContainer />
       <StartButtonContainer />
-      <Container
-        x={width / 2}
-        y={height / 10}
-      >
-        <Text text={score} style={textStyle} />
-      </Container>
+      <ScoreContainer />
     </Stage>
   );
 }

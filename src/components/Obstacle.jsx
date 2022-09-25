@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import obstacleImage from '../images/obstacle.png';
 import { removeObstacle, moveObstacle, addObstacle } from '../slices/obstacleSlice';
+import { incrementScore } from '../slices/gameSlice';
 
 function Obstacle({
   id, angle, x, y,
@@ -20,6 +21,7 @@ function Obstacle({
       } else {
         dispatch(removeObstacle(id));
         dispatch(addObstacle({ angle, x: width, y }));
+        dispatch(incrementScore());
       }
     }
   });
