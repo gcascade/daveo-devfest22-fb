@@ -28,11 +28,17 @@ export const birdSlice = createSlice({
     setJumpVelocity(state, action) {
       state.jumpVelocity = action.payload;
     },
+    resetBird(state) {
+      state.x = initialState.x;
+      state.y = initialState.y;
+      state.isJumping = initialState.isJumping;
+      state.jumpVelocity = initialState.jumpVelocity;
+    },
   },
 });
 
 export const {
-  move, setY, jump, stopJump, setJumpVelocity,
+  move, setY, jump, stopJump, setJumpVelocity, resetBird,
 } = birdSlice.actions;
 
 export default birdSlice.reducer;

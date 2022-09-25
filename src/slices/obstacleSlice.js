@@ -33,11 +33,14 @@ export const obstacleSlice = createSlice({
         obstacle,
       )];
     },
+    removeAllObstacles: (state) => {
+      state.obstacles = [];
+    },
   },
 });
 
 export const {
-  addObstacle, removeObstacle, moveObstacle,
+  addObstacle, removeObstacle, moveObstacle, removeAllObstacles,
 } = obstacleSlice.actions;
 
 export default obstacleSlice.reducer;
