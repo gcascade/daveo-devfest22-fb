@@ -29,6 +29,7 @@ export const gameSlice = createSlice({
     },
     startGame(state) {
       state.hasStarted = true;
+      state.score = 0;
     },
     endGame(state) {
       state.hasStarted = false;
