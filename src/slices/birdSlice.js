@@ -4,6 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   x: 0,
   y: 0,
+  isJumping: false,
+  jumpVelocity: 0,
 };
 
 export const birdSlice = createSlice({
@@ -17,12 +19,20 @@ export const birdSlice = createSlice({
     setY(state, action) {
       state.y = action.payload;
     },
-    jump(state, action) {
-      state.y -= action.payload;
+    jump(state) {
+      state.isJumping = true;
+    },
+    stopJump(state) {
+      state.isJumping = false;
+    },
+    setJumpVelocity(state, action) {
+      state.jumpVelocity = action.payload;
     },
   },
 });
 
-export const { move, setY, jump } = birdSlice.actions;
+export const {
+  move, setY, jump, stopJump, setJumpVelocity,
+} = birdSlice.actions;
 
 export default birdSlice.reducer;
