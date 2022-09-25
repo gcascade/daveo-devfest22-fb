@@ -2,7 +2,7 @@ import { Sprite, useTick } from '@inlet/react-pixi';
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import birdImage from '../images/balloon_120x120.png';
+import birdImage from '../images/balloon_94x120.png';
 import {
   move, setY, setJumpVelocity, stopJump,
 } from '../slices/birdSlice';
@@ -30,7 +30,6 @@ export default function Bird() {
           dispatch(setJumpVelocity(defaultJumpVelocity));
           dispatch(stopJump());
         }
-        // dispatch(stopJump());
       } else if (y < height) {
         dispatch(move({ y: gravity }));
       } else {

@@ -9,7 +9,7 @@ const initialState = {
   width: 1920,
   obstacleSpeed: 1,
   birdJumpVelocity: 10,
-  birdWidth: 120,
+  birdWidth: 94,
   birdHeight: 120,
   obstacleWidth: 60,
   obstacleHeight: 300,
