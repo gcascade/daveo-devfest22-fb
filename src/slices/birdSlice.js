@@ -17,9 +17,12 @@ export const birdSlice = createSlice({
     setY(state, action) {
       state.y = action.payload;
     },
+    jump(state, action) {
+      state.y -= action.payload;
+    },
   },
 });
 
-export const { move, setY } = birdSlice.actions;
+export const { move, setY, jump } = birdSlice.actions;
 
 export default birdSlice.reducer;

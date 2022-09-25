@@ -8,6 +8,7 @@ const initialState = {
   height: 1080,
   width: 1920,
   obstacleSpeed: 1,
+  birdJumpHeight: 3,
 };
 
 export const gameSlice = createSlice({
@@ -21,6 +22,7 @@ export const gameSlice = createSlice({
       state.height = initialState.height;
       state.width = initialState.width;
       state.obstacleSpeed = initialState.obstacleSpeed;
+      state.birdJumpHeight = initialState.birdJumpHeight;
     },
     incrementScore(state) {
       state.score += 1;

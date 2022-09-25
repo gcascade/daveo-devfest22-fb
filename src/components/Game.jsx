@@ -13,7 +13,7 @@ import StartButton from './StartButton';
 
 import { addObstacle } from '../slices/obstacleSlice';
 import { reset } from '../slices/gameSlice';
-import { move as moveBird } from '../slices/birdSlice';
+import { move as moveBird, jump } from '../slices/birdSlice';
 
 const textStyle = new PIXI.TextStyle({
   align: 'center',
@@ -56,6 +56,25 @@ function ObstacleContainer() {
   );
 }
 
+function BackgroundContainer() {
+  const dispatch = useDispatch();
+  const gameHasStarted = useSelector((state) => state.game.hasStarted);
+  const birdJumpHeight = useSelector((state) => state.game.birdJumpHeight);
+  return (
+    <Container>
+      <Sprite
+        image={background}
+        interactive
+        pointerdown={() => {
+          if (gameHasStarted) {
+            dispatch(jump(10 * birdJumpHeight));
+          }
+        }}
+      />
+    </Container>
+  );
+}
+
 function StartButtonContainer() {
   const width = useSelector((state) => state.game.width);
   const height = useSelector((state) => state.game.height);
@@ -81,11 +100,7 @@ function Game() {
       height={height}
       options={{ backgroundColor: 0x1099bb }}
     >
-      <Container>
-        <Sprite
-          image={background}
-        />
-      </Container>
+      <BackgroundContainer />
       <Container>
         <DaveoLogo />
       </Container>
