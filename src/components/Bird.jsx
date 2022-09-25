@@ -2,7 +2,7 @@ import { Sprite, useTick } from '@inlet/react-pixi';
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import birdImage from '../images/balloon_94x120.png';
+import birdImage from '../images/balloon_daveo_94x120.png';
 import {
   move, setY, setJumpVelocity, stopJump,
 } from '../slices/birdSlice';

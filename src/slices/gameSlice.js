@@ -11,8 +11,8 @@ const initialState = {
   birdJumpVelocity: 10,
   birdWidth: 94,
   birdHeight: 120,
-  obstacleWidth: 60,
-  obstacleHeight: 300,
+  obstacleWidth: 194,
+  obstacleHeight: 500,
 };
 
 export const gameSlice = createSlice({

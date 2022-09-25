@@ -2,7 +2,7 @@ import React from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import obstacleImage from '../images/obstacle.png';
+import obstacleImage from '../images/obstacle_194x500.png';
 import { removeObstacle, moveObstacle, addObstacle } from '../slices/obstacleSlice';
 import { incrementScore, endGame } from '../slices/gameSlice';
 
@@ -73,6 +73,7 @@ function Obstacle({
     }
   });
 
+  // TODO don't use center but bottom center and modify collision detection
   return (
     <Sprite image={obstacleImage} x={x} y={y} angle={angle} anchor={0.5} />
   );
