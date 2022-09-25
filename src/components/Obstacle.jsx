@@ -2,7 +2,7 @@ import React from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import obstacleImage from '../images/obstacle_194x500.png';
+import obstacleImage from '../images/obstacle_155x400.png';
 import { removeObstacle, moveObstacle, addObstacle } from '../slices/obstacleSlice';
 import { incrementScore, endGame } from '../slices/gameSlice';
 
@@ -15,6 +15,7 @@ function hasCollidedWithBird(
   birdY,
   birdWidth,
   birdHeight,
+  angle,
 ) {
   const birdLeft = birdX - birdWidth / 2;
   const birdRight = birdX + birdWidth / 2;
@@ -23,8 +24,24 @@ function hasCollidedWithBird(
 
   const obstacleLeft = x - obstacleWidth / 2;
   const obstacleRight = x + obstacleWidth / 2;
-  const obstacleTop = y - obstacleHeight / 2;
-  const obstacleBottom = y + obstacleHeight / 2;
+  const obstacleTop = angle !== 180 ? y - obstacleHeight : y;
+  const obstacleBottom = angle !== 180 ? y : y + obstacleHeight;
+
+  if (birdLeft < obstacleRight
+    && birdRight > obstacleLeft
+    && birdTop < obstacleBottom
+    && birdBottom > obstacleTop) {
+    console.log('birdLeft', birdLeft);
+    console.log('birdRight', birdRight);
+    console.log('birdTop', birdTop);
+    console.log('birdBottom', birdBottom);
+    console.log('obstacleLeft', obstacleLeft);
+    console.log('obstacleRight', obstacleRight);
+    console.log('obstacleTop', obstacleTop);
+    console.log('obstacleBottom', obstacleBottom);
+    console.log('x', x);
+    console.log('y', y);
+  }
 
   return (
     birdLeft < obstacleRight
@@ -60,6 +77,7 @@ function Obstacle({
           birdY,
           birdWidth,
           birdHeight,
+          angle,
         )) {
           dispatch(endGame());
         } else {
@@ -75,7 +93,7 @@ function Obstacle({
 
   // TODO don't use center but bottom center and modify collision detection
   return (
-    <Sprite image={obstacleImage} x={x} y={y} angle={angle} anchor={0.5} />
+    <Sprite image={obstacleImage} x={x} y={y} angle={angle} anchor={{ x: 0.5, y: 1 }} />
   );
 }
 
