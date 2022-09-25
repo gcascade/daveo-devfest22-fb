@@ -3,7 +3,7 @@ import { Sprite, useTick } from '@inlet/react-pixi';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import obstacleImage from '../images/obstacle.png';
-import { removeObstacle, moveObstacle } from '../slices/obstacleSlice';
+import { removeObstacle, moveObstacle, addObstacle } from '../slices/obstacleSlice';
 
 function Obstacle({
   id, angle, x, y,
@@ -11,6 +11,7 @@ function Obstacle({
   const dispatch = useDispatch();
   const obstacleSpeed = useSelector((state) => state.game.obstacleSpeed);
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
+  const width = useSelector((state) => state.game.width);
 
   useTick(() => {
     if (gameHasStarted) {
@@ -18,6 +19,7 @@ function Obstacle({
         dispatch(moveObstacle({ id, x: -obstacleSpeed }));
       } else {
         dispatch(removeObstacle(id));
+        dispatch(addObstacle({ angle, x: width, y }));
       }
     }
   });
