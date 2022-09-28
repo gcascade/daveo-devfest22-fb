@@ -4,13 +4,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import birdImage from '../images/balloon_daveo_94x120.png';
 import {
-  move, setY, setJumpVelocity, stopJump,
+  move, setJumpVelocity, stopJump,
 } from '../slices/birdSlice';
 import { endGame } from '../slices/gameSlice';
 
 export default function Bird() {
   const x = useSelector((state) => state.bird.x);
   const y = useSelector((state) => state.bird.y);
+  const birdHeight = useSelector((state) => state.game.birdHeight);
   const isJumping = useSelector((state) => state.bird.isJumping);
   const gravity = useSelector((state) => state.game.gravity);
   const height = useSelector((state) => state.game.height);
@@ -29,10 +30,9 @@ export default function Bird() {
           dispatch(setJumpVelocity(defaultJumpVelocity));
           dispatch(stopJump());
         }
-      } else if (y < height) {
+      } else if (y + birdHeight / 2 < height) {
         dispatch(move({ y: gravity }));
       } else {
-        dispatch(setY(0));
         dispatch(endGame());
       }
     }
