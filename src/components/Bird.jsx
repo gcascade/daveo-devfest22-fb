@@ -18,12 +18,13 @@ export default function Bird() {
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const jumpVelocity = useSelector((state) => state.bird.jumpVelocity);
   const defaultJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
+  const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const dispatch = useDispatch();
 
   useTick((delta) => {
     if (gameHasStarted) {
       if (isJumping) {
-        const jumpHeight = (-gravity / 2) * delta ** 2 + jumpVelocity * delta;
+        const jumpHeight = (-(gravity * gameSpeed) / 2) * delta ** 2 + jumpVelocity * delta;
         dispatch(move({ y: -jumpHeight }));
         dispatch(setJumpVelocity(jumpVelocity - gravity * delta));
         if (jumpVelocity <= 0) {
@@ -31,7 +32,7 @@ export default function Bird() {
           dispatch(stopJump());
         }
       } else if (y + birdHeight / 2 < height) {
-        dispatch(move({ y: gravity }));
+        dispatch(move({ y: gravity * gameSpeed }));
       } else {
         dispatch(endGame());
       }

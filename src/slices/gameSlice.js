@@ -13,6 +13,7 @@ const initialState = {
   birdHeight: 120,
   obstacleWidth: 155,
   obstacleHeight: 400,
+  gameSpeed: 1,
 };
 
 export const gameSlice = createSlice({
@@ -31,6 +32,7 @@ export const gameSlice = createSlice({
       state.birdHeight = initialState.birdHeight;
       state.obstacleWidth = initialState.obstacleWidth;
       state.obstacleHeight = initialState.obstacleHeight;
+      state.gameSpeed = initialState.gameSpeed;
     },
     incrementScore(state) {
       state.score += 1;
@@ -42,11 +44,14 @@ export const gameSlice = createSlice({
     endGame(state) {
       state.hasStarted = false;
     },
+    setGameSpeed(state, action) {
+      state.gameSpeed = action.payload;
+    },
   },
 });
 
 export const {
-  reset, incrementScore, startGame, endGame,
+  reset, incrementScore, startGame, endGame, setGameSpeed,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

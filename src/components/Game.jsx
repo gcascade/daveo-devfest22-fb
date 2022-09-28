@@ -71,8 +71,8 @@ function BackgroundContainer() {
         interactive
         pointerdown={() => {
           if (gameHasStarted) {
-            dispatch(jump());
             dispatch(setJumpVelocity(birdJumpVelocity));
+            dispatch(jump());
           }
         }}
       />

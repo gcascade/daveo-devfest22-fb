@@ -3,7 +3,7 @@ import { Sprite } from '@inlet/react-pixi';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import startImage from '../images/start.png';
-import { startGame, reset } from '../slices/gameSlice';
+import { startGame, reset, setGameSpeed } from '../slices/gameSlice';
 import { addObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { move as moveBird, resetBird } from '../slices/birdSlice';
 
@@ -24,6 +24,7 @@ function Start({ x, y }) {
           dispatch(reset());
           dispatch(resetBird());
           dispatch(removeAllObstacles());
+          dispatch(setGameSpeed(2));
           dispatch(addObstacle({ isTop: true, x: width - 100, y: 0 }));
           dispatch(addObstacle({ isTop: false, x: width - 300, y: height }));
           dispatch(addObstacle({ isTop: true, x: width + 100, y: 0 }));

@@ -48,6 +48,7 @@ function Obstacle({
   const obstacleWidth = useSelector((state) => state.game.obstacleWidth);
   const obstacleHeight = useSelector((state) => state.game.obstacleHeight);
   const width = useSelector((state) => state.game.width);
+  const gameSpeed = useSelector((state) => state.game.gameSpeed);
 
   useTick(() => {
     if (gameHasStarted) {
@@ -65,7 +66,7 @@ function Obstacle({
         )) {
           dispatch(endGame());
         } else {
-          dispatch(moveObstacle({ id, x: -obstacleSpeed }));
+          dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed }));
         }
       } else {
         dispatch(removeObstacle(id));
