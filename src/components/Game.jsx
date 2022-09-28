@@ -10,6 +10,9 @@ import DaveoLogo from './DaveoLogo';
 import Stage from './Stage';
 import Obstacle from './Obstacle';
 import StartButton from './StartButton';
+import Mountain from './Mountain';
+import Cloud from './Cloud';
+import Rock from './Rock';
 
 import { addObstacle } from '../slices/obstacleSlice';
 import { reset } from '../slices/gameSlice';
@@ -116,7 +119,15 @@ function Game() {
     >
       <BackgroundContainer />
       <Container>
-        <DaveoLogo />
+        <Cloud x={width * 0.5} y={height * 0.5} scale={0.4} />
+        <Mountain x={0.9 * width} y={height - 170} scale={0.65} />
+        <Mountain x={width} y={height - 170} scale={0.4} />
+        <Rock x={width} y={height - 170} scale={0.5} />
+      </Container>
+      <Container>
+        <DaveoLogo x={0.1 * width} y={0.2 * height} scale={0.1} />
+        <DaveoLogo x={0.2 * width} y={0.62 * height} scale={0.1} />
+        <DaveoLogo x={0.82 * width} y={0.62 * height} scale={0.1} />
       </Container>
       <Container>
         <Bird />

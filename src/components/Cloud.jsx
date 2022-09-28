@@ -1,15 +1,17 @@
 import React from 'react';
+
 import { Sprite } from '@inlet/react-pixi';
 import PropTypes from 'prop-types';
-import daveoImage from '../images/daveo.png';
 
-export default function DaveoLogo({ x, y, scale }) {
+import cloudImage from '../images/clouds.png';
+
+export default function Cloud({ x, y, scale }) {
   return (
-    <Sprite image={daveoImage} scale={scale} x={x} y={y} anchor={0.5} />
+    <Sprite image={cloudImage} scale={scale} x={x} y={y} anchor={(0.5, 1)} />
   );
 }
 
-DaveoLogo.propTypes = {
+Cloud.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   scale: PropTypes.number.isRequired,
