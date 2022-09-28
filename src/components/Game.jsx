@@ -33,8 +33,8 @@ function setupGame() {
 
   const width = useSelector((state) => state.game.width);
   const height = useSelector((state) => state.game.height);
-  dispatch(addObstacle({ angle: 180, x: width - 100, y: 0 }));
-  dispatch(addObstacle({ angle: 0, x: width - 300, y: height }));
+  dispatch(addObstacle({ isTop: true, x: width - 100, y: 0 }));
+  dispatch(addObstacle({ isTop: false, x: width - 300, y: height }));
   dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
 }
 
@@ -47,7 +47,7 @@ function ObstacleContainer() {
         <Obstacle
           key={obstacle.id}
           id={obstacle.id}
-          angle={obstacle.angle}
+          isTop={obstacle.isTop}
           x={obstacle.x}
           y={obstacle.y}
         />

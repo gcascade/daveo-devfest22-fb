@@ -15,7 +15,7 @@ export const obstacleSlice = createSlice({
         id: action.payload.id ?? randomUuid(),
         x: action.payload.x ?? 0,
         y: action.payload.y ?? 0,
-        angle: action.payload.angle ?? 0,
+        isTop: action.payload.isTop ?? false,
       };
       state.obstacles = [...state.obstacles, obstacle];
     },

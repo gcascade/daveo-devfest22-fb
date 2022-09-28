@@ -24,8 +24,10 @@ function Start({ x, y }) {
           dispatch(reset());
           dispatch(resetBird());
           dispatch(removeAllObstacles());
-          dispatch(addObstacle({ angle: 180, x: width - 100, y: 0 }));
-          dispatch(addObstacle({ angle: 0, x: width - 300, y: height }));
+          dispatch(addObstacle({ isTop: true, x: width - 100, y: 0 }));
+          dispatch(addObstacle({ isTop: false, x: width - 300, y: height }));
+          dispatch(addObstacle({ isTop: true, x: width + 100, y: 0 }));
+          dispatch(addObstacle({ isTop: false, x: width + 100, y: height }));
           dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
           dispatch(startGame());
         }

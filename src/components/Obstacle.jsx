@@ -15,7 +15,7 @@ function hasCollidedWithBird(
   birdY,
   birdWidth,
   birdHeight,
-  angle,
+  isTop,
 ) {
   const birdLeft = birdX - birdWidth / 2;
   const birdRight = birdX + birdWidth / 2;
@@ -24,8 +24,8 @@ function hasCollidedWithBird(
 
   const obstacleLeft = x - obstacleWidth / 2;
   const obstacleRight = x + obstacleWidth / 2;
-  const obstacleTop = angle !== 180 ? y - obstacleHeight : y;
-  const obstacleBottom = angle !== 180 ? y : y + obstacleHeight;
+  const obstacleTop = isTop ? y : y - obstacleHeight;
+  const obstacleBottom = isTop ? y + obstacleHeight : y;
 
   return (
     birdLeft < obstacleRight
@@ -36,7 +36,7 @@ function hasCollidedWithBird(
 }
 
 function Obstacle({
-  id, angle, x, y,
+  id, x, y, isTop,
 }) {
   const dispatch = useDispatch();
   const obstacleSpeed = useSelector((state) => state.game.obstacleSpeed);
@@ -61,7 +61,7 @@ function Obstacle({
           birdY,
           birdWidth,
           birdHeight,
-          angle,
+          isTop,
         )) {
           dispatch(endGame());
         } else {
@@ -69,20 +69,25 @@ function Obstacle({
         }
       } else {
         dispatch(removeObstacle(id));
-        dispatch(addObstacle({ angle, x: width, y }));
+        dispatch(addObstacle({ isTop, x: width, y }));
         dispatch(incrementScore());
       }
     }
   });
-
   return (
-    <Sprite image={obstacleImage} x={x} y={y} angle={angle} anchor={{ x: 0.5, y: 1 }} />
+    <Sprite
+      image={obstacleImage}
+      x={x}
+      y={y}
+      angle={isTop ? 180 : 0}
+      anchor={{ x: 0.5, y: 1 }}
+    />
   );
 }
 
 Obstacle.propTypes = {
   id: PropTypes.string.isRequired,
-  angle: PropTypes.number.isRequired,
+  isTop: PropTypes.bool.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
 };
