@@ -14,6 +14,8 @@ import Mountain from './Mountain';
 import Cloud from './Cloud';
 import Rock from './Rock';
 import Tree from './Tree';
+import Elephant from './Elephant';
+import DevFest from './DevFest';
 
 import { addObstacle } from '../slices/obstacleSlice';
 import { reset } from '../slices/gameSlice';
@@ -87,7 +89,7 @@ function StartButtonContainer() {
 
   return (
     <Container>
-      {!gameHasStarted && <StartButton x={width / 2} y={height / 2} />}
+      {!gameHasStarted && <StartButton x={width / 2} y={height / 2} scale={0.4} />}
     </Container>
   );
 }
@@ -127,11 +129,13 @@ function Game() {
         <Tree x={0.1 * width} y={height - 170} scale={0.15} />
         <Tree x={0.3 * width} y={height} scale={0.25} />
         <Tree x={0.9 * width} y={height * 0.86} scale={0.2} />
+        <Elephant x={0.8 * width} y={height - 170} scale={0.5} />
       </Container>
       <Container>
         <DaveoLogo x={0.1 * width} y={0.2 * height} scale={0.1} />
         <DaveoLogo x={0.2 * width} y={0.62 * height} scale={0.1} />
         <DaveoLogo x={0.82 * width} y={0.62 * height} scale={0.1} />
+        <DevFest x={0.6 * width} y={0.42 * height} scale={0.1} />
       </Container>
       <Container>
         <Bird />

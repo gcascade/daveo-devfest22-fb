@@ -7,7 +7,7 @@ import { startGame, reset, setGameSpeed } from '../slices/gameSlice';
 import { addObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { move as moveBird, resetBird } from '../slices/birdSlice';
 
-function Start({ x, y }) {
+function Start({ x, y, scale }) {
   const dispatch = useDispatch();
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
 
@@ -18,6 +18,7 @@ function Start({ x, y }) {
       image={startImage}
       x={x}
       y={y}
+      scale={scale}
       interactive
       pointerdown={() => {
         if (!gameHasStarted) {
@@ -41,6 +42,7 @@ function Start({ x, y }) {
 Start.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
+  scale: PropTypes.number.isRequired,
 };
 
 export default Start;
