@@ -9,6 +9,9 @@ const store = configureStore({
     game: gameReducer,
     obstacle: obstacleReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });
 
 export default store;
