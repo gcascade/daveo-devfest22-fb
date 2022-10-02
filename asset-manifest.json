@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.31d6cfe0.css",
+    "main.js": "/static/js/main.6e85dd9b.js",
+    "static/media/background.png": "/static/media/background.039b85c568cce56ce5ae.png",
+    "static/media/tree.png": "/static/media/tree.4c7f1fb158396757c68e.png",
+    "static/media/mountain.png": "/static/media/mountain.6d1bab8124044df8c4d3.png",
+    "static/media/clouds.png": "/static/media/clouds.5380850d60182f3b6107.png",
+    "index.html": "/index.html",
+    "main.6e85dd9b.js.map": "/static/js/main.6e85dd9b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.31d6cfe0.css",
+    "static/js/main.6e85dd9b.js"
+  ]
+}
