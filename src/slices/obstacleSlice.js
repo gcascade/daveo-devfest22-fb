@@ -15,7 +15,21 @@ export const obstacleSlice = createSlice({
         id: action.payload.id ?? randomUuid(),
         x: action.payload.x ?? 0,
         y: action.payload.y ?? 0,
+        height: action.payload.height ?? 0,
         isTop: action.payload.isTop ?? false,
+        isDual: action.payload.isDual ?? false,
+        gap: action.payload.gap ?? 0,
+      };
+      state.obstacles = [...state.obstacles, obstacle];
+    },
+    addDualObstacle: (state, action) => {
+      const obstacle = {
+        id: action.payload.id ?? randomUuid(),
+        x: action.payload.x ?? 0,
+        y: 0,
+        height: action.payload.height ?? 0,
+        isDual: true,
+        gap: action.payload.gap ?? 0,
       };
       state.obstacles = [...state.obstacles, obstacle];
     },
@@ -40,7 +54,7 @@ export const obstacleSlice = createSlice({
 });
 
 export const {
-  addObstacle, removeObstacle, moveObstacle, removeAllObstacles,
+  addObstacle, addDualObstacle, removeObstacle, moveObstacle, removeAllObstacles,
 } = obstacleSlice.actions;
 
 export default obstacleSlice.reducer;

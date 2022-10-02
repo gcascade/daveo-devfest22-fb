@@ -2,8 +2,10 @@ import React from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import obstacleImage from '../images/obstacle_155x400.png';
-import { removeObstacle, moveObstacle, addObstacle } from '../slices/obstacleSlice';
+import obstacleImage from '../images/veryLongObstacle.png';
+import {
+  removeObstacle, moveObstacle, addObstacle, addDualObstacle,
+} from '../slices/obstacleSlice';
 import { incrementScore, endGame } from '../slices/gameSlice';
 
 function hasCollidedWithBird(
@@ -24,8 +26,8 @@ function hasCollidedWithBird(
 
   const obstacleLeft = x - obstacleWidth / 2;
   const obstacleRight = x + obstacleWidth / 2;
-  const obstacleTop = isTop ? y : y - obstacleHeight;
   const obstacleBottom = isTop ? y + obstacleHeight : y;
+  const obstacleTop = isTop ? y : y - obstacleHeight;
 
   return (
     birdLeft < obstacleRight
@@ -36,7 +38,7 @@ function hasCollidedWithBird(
 }
 
 function Obstacle({
-  id, x, y, isTop,
+  id, x, y, isTop, height, isDual,
 }) {
   const dispatch = useDispatch();
   const obstacleSpeed = useSelector((state) => state.game.obstacleSpeed);
@@ -46,9 +48,13 @@ function Obstacle({
   const birdWidth = useSelector((state) => state.game.birdWidth);
   const birdHeight = useSelector((state) => state.game.birdHeight);
   const obstacleWidth = useSelector((state) => state.game.obstacleWidth);
-  const obstacleHeight = useSelector((state) => state.game.obstacleHeight);
   const width = useSelector((state) => state.game.width);
+  const gameHeight = useSelector((state) => state.game.height);
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
+  // const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
+  // const obstacleMaxSpacing = useSelector((state) => state.game.obstacleMaxSpacing);
+  const obstacleImageHeight = useSelector((state) => state.game.obstacleImageHeight);
+  const gap = useSelector((state) => state.game.obstacleGap);
 
   useTick(() => {
     if (gameHasStarted) {
@@ -57,7 +63,7 @@ function Obstacle({
           x,
           y,
           obstacleWidth,
-          obstacleHeight,
+          height,
           birdX,
           birdY,
           birdWidth,
@@ -65,12 +71,31 @@ function Obstacle({
           isTop,
         )) {
           dispatch(endGame());
-        } else {
+        } else if ((isDual && isTop) || !isDual) {
           dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed }));
         }
-      } else {
+      } else if ((isDual && isTop) || !isDual) {
         dispatch(removeObstacle(id));
-        dispatch(addObstacle({ isTop, x: width, y }));
+        // const rand = Math.random() * (obstacleMaxSpacing -
+        // obstacleMinSpacing) + obstacleMinSpacing;
+        const rand = 0;
+        const newObstacleX = width + rand;
+        const newHeight = Math.floor(Math.random() * (0.5 * (gameHeight - 200)) + 200);
+
+        const newIsDual = Math.random() >= 0.5;
+        if (newIsDual) {
+          dispatch(addDualObstacle({
+            x: newObstacleX,
+            height: newHeight,
+            gap,
+          }));
+        } else {
+          const newIsTop = Math.random() >= 0.5;
+
+          dispatch(addObstacle({
+            isTop: newIsTop, x: newObstacleX, y: newIsTop ? 0 : gameHeight, height: newHeight,
+          }));
+        }
         dispatch(incrementScore());
       }
     }
@@ -79,9 +104,9 @@ function Obstacle({
     <Sprite
       image={obstacleImage}
       x={x}
-      y={y}
+      y={isTop ? y + height : y + obstacleImageHeight - height}
       angle={isTop ? 180 : 0}
-      anchor={{ x: 0.5, y: 1 }}
+      anchor={{ x: 0.5, y: isTop ? 0 : 1 }}
     />
   );
 }
@@ -91,6 +116,8 @@ Obstacle.propTypes = {
   isTop: PropTypes.bool.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  isDual: PropTypes.bool.isRequired,
 };
 
 export default Obstacle;

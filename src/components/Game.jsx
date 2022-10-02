@@ -9,6 +9,7 @@ import Bird from './Bird';
 import DaveoLogo from './DaveoLogo';
 import Stage from './Stage';
 import Obstacle from './Obstacle';
+import DualObstacle from './DualObstacle';
 import StartButton from './StartButton';
 import Mountain from './Mountain';
 import Cloud from './Cloud';
@@ -17,7 +18,6 @@ import Tree from './Tree';
 import Elephant from './Elephant';
 import DevFest from './DevFest';
 
-import { addObstacle } from '../slices/obstacleSlice';
 import { reset } from '../slices/gameSlice';
 import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
 
@@ -39,9 +39,35 @@ function setupGame() {
 
   const width = useSelector((state) => state.game.width);
   const height = useSelector((state) => state.game.height);
-  dispatch(addObstacle({ isTop: true, x: width - 100, y: 0 }));
-  dispatch(addObstacle({ isTop: false, x: width - 300, y: height }));
   dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
+}
+
+function displayObstacle(obstacle) {
+  if (obstacle?.isDual) {
+    return (
+      <DualObstacle
+        key={obstacle?.id}
+        id={obstacle?.id}
+        gap={obstacle?.gap}
+        x={obstacle?.x}
+        y={obstacle?.y}
+        topId={obstacle?.id}
+        bottomId={obstacle?.id}
+        topHeight={obstacle?.height}
+      />
+    );
+  }
+  return (
+    <Obstacle
+      key={obstacle?.id}
+      id={obstacle?.id}
+      isTop={obstacle?.isTop}
+      x={obstacle?.x}
+      y={obstacle?.y}
+      height={obstacle?.height}
+      isDual={false}
+    />
+  );
 }
 
 function ObstacleContainer() {
@@ -50,13 +76,7 @@ function ObstacleContainer() {
   return (
     <Container>
       {obstacles.map((obstacle) => (
-        <Obstacle
-          key={obstacle.id}
-          id={obstacle.id}
-          isTop={obstacle.isTop}
-          x={obstacle.x}
-          y={obstacle.y}
-        />
+        displayObstacle(obstacle)
       ))}
     </Container>
   );

@@ -11,9 +11,12 @@ const initialState = {
   birdJumpVelocity: 10,
   birdWidth: 94,
   birdHeight: 120,
-  obstacleWidth: 155,
-  obstacleHeight: 400,
+  obstacleWidth: 100,
   gameSpeed: 1,
+  obstacleMinSpacing: 400,
+  obstacleMaxSpacing: 480,
+  obstacleGap: 300,
+  obstacleImageHeight: 810,
 };
 
 export const gameSlice = createSlice({
@@ -31,8 +34,11 @@ export const gameSlice = createSlice({
       state.birdWidth = initialState.birdWidth;
       state.birdHeight = initialState.birdHeight;
       state.obstacleWidth = initialState.obstacleWidth;
-      state.obstacleHeight = initialState.obstacleHeight;
       state.gameSpeed = initialState.gameSpeed;
+      state.obstacleMinSpacing = initialState.obstacleMinSpacing;
+      state.obstacleMaxSpacing = initialState.obstacleMaxSpacing;
+      state.obstacleGap = initialState.obstacleGap;
+      state.obstacleImageHeight = initialState.obstacleImageHeight;
     },
     incrementScore(state) {
       state.score += 1;
