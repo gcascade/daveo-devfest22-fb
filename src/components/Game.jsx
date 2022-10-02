@@ -20,6 +20,7 @@ import DevFest from './DevFest';
 
 import { reset } from '../slices/gameSlice';
 import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
+import Zeppelin from './Zeppelin';
 
 const textStyle = new PIXI.TextStyle({
   align: 'center',
@@ -143,18 +144,18 @@ function Game() {
       <BackgroundContainer />
       <Container>
         <Cloud x={width * 0.5} y={height * 0.5} scale={0.4} />
-        <Mountain x={0.9 * width} y={height - 170} scale={0.65} />
-        <Mountain x={width} y={height - 170} scale={0.4} />
-        <Rock x={width} y={height - 170} scale={0.5} />
+        <Cloud x={width} y={height * 0.45} scale={0.5} />
+        <Mountain x={0.5 * width} y={height - 170} scale={0.5} />
+        <Mountain x={0.25 * width} y={height - 170} scale={0.3} />
+        <Rock x={width} y={height - 170} scale={0.6} />
         <Tree x={0.1 * width} y={height - 170} scale={0.15} />
         <Tree x={0.3 * width} y={height} scale={0.25} />
-        <Tree x={0.9 * width} y={height * 0.86} scale={0.2} />
+        <Tree x={0.8 * width} y={height * 0.86} scale={0.2} />
         <Elephant x={0.8 * width} y={height - 170} scale={0.5} />
+        <Zeppelin x={0.7 * width} y={height * 0.2} scale={0.15} />
       </Container>
       <Container>
         <DaveoLogo x={0.1 * width} y={0.2 * height} scale={0.1} />
-        <DaveoLogo x={0.2 * width} y={0.62 * height} scale={0.1} />
-        <DaveoLogo x={0.82 * width} y={0.62 * height} scale={0.1} />
         <DevFest x={0.6 * width} y={0.42 * height} scale={0.1} />
       </Container>
       <Container>
