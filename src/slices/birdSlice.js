@@ -14,7 +14,7 @@ export const birdSlice = createSlice({
   reducers: {
     move: (state, action) => {
       state.x += action.payload.x ?? 0;
-      state.y += action.payload.y ?? 0;
+      state.y = (Number)(state.y + (action.payload.y ?? 0));
     },
     setY(state, action) {
       state.y = action.payload;
