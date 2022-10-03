@@ -6,7 +6,7 @@ import obstacleImage from '../images/veryLongObstacle.png';
 import {
   removeObstacle, moveObstacle, addObstacle, addDualObstacle,
 } from '../slices/obstacleSlice';
-import { incrementScore, endGame } from '../slices/gameSlice';
+import { incrementScore, endGame, updateSettings } from '../slices/gameSlice';
 
 function hasCollidedWithBird(
   x,
@@ -62,6 +62,9 @@ function Obstacle({
   const obstacleImageHeight = useSelector((state) => state.game.obstacleImageHeight);
   const gap = useSelector((state) => state.game.obstacleGap);
   const [scored, setScored] = useState(false);
+  const score = useSelector((state) => state.game.score);
+  const godMode = useSelector((state) => state.game.godMode);
+  const maxGameSpeed = useSelector((state) => state.game.maxGameSpeed);
 
   useTick(() => {
     if (gameHasStarted) {
@@ -76,7 +79,7 @@ function Obstacle({
           birdWidth,
           birdHeight,
           isTop,
-        )) {
+        ) && !godMode) {
           dispatch(endGame());
         } else if ((isDual && isTop) || !isDual) {
           dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed }));
@@ -84,6 +87,10 @@ function Obstacle({
           if (hasPassedBird(x, birdX, obstacleWidth, birdWidth) && !scored) {
             dispatch(incrementScore());
             setScored(true);
+
+            if (score >= 19 && score % 10 === 9 && gameSpeed < maxGameSpeed) {
+              dispatch(updateSettings({ gameSpeed: gameSpeed + 1 }));
+            }
           }
         }
       } else if ((isDual && isTop) || !isDual) {

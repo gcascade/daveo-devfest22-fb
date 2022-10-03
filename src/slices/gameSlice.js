@@ -17,6 +17,8 @@ const initialState = {
   obstacleMaxSpacing: 480,
   obstacleGap: 300,
   obstacleImageHeight: 810,
+  godMode: false,
+  maxGameSpeed: 5,
 };
 
 export const gameSlice = createSlice({
@@ -39,6 +41,7 @@ export const gameSlice = createSlice({
       state.obstacleMaxSpacing = initialState.obstacleMaxSpacing;
       state.obstacleGap = initialState.obstacleGap;
       state.obstacleImageHeight = initialState.obstacleImageHeight;
+      state.godMode = initialState.godMode;
     },
     incrementScore(state) {
       state.score += 1;
@@ -54,19 +57,19 @@ export const gameSlice = createSlice({
       state.gameSpeed = action.payload;
     },
     updateSettings(state, action) {
-      state.gravity = action.payload.gravity;
-      state.obstacleSpeed = action.payload.obstacleSpeed;
-      state.birdJumpVelocity = action.payload.birdJumpVelocity;
-      state.obstacleMinSpacing = action.payload.obstacleMinSpacing;
-      state.obstacleMaxSpacing = action.payload.obstacleMaxSpacing;
-      state.obstacleGap = action.payload.obstacleGap;
-      state.gameSpeed = action.payload.gameSpeed;
+      state.gravity = action.payload.gravity ?? state.gravity;
+      state.obstacleSpeed = action.payload.obstacleSpeed ?? state.obstacleSpeed;
+      state.birdJumpVelocity = action.payload.birdJumpVelocity ?? state.birdJumpVelocity;
+      state.obstacleMinSpacing = action.payload.obstacleMinSpacing ?? state.obstacleMinSpacing;
+      state.obstacleMaxSpacing = action.payload.obstacleMaxSpacing ?? state.obstacleMaxSpacing;
+      state.obstacleGap = action.payload.obstacleGap ?? state.obstacleGap;
+      state.gameSpeed = action.payload.gameSpeed ?? state.gameSpeed;
     },
   },
 });
 
 export const {
-  reset, incrementScore, startGame, endGame, setGameSpeed,
+  reset, incrementScore, startGame, endGame, setGameSpeed, updateSettings,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

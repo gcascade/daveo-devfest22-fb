@@ -21,11 +21,12 @@ export default function Bird() {
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const dispatch = useDispatch();
   const defaultOffset = birdHeight / 2;
+  const godMode = useSelector((state) => state.game.godMode);
 
   useTick((delta) => {
     if (gameHasStarted) {
       if (isJumping) {
-        const jumpHeight = (-(gravity * gameSpeed) / 2) * delta ** 2 + jumpVelocity * delta;
+        const jumpHeight = (-(gravity) / 2) * delta ** 2 + jumpVelocity * delta;
 
         if (y - jumpHeight >= defaultOffset) {
           dispatch(move({ y: -jumpHeight }));
@@ -40,8 +41,8 @@ export default function Bird() {
           dispatch(stopJump());
         }
       } else if (y + defaultOffset < height) {
-        dispatch(move({ y: gravity * gameSpeed }));
-      } else {
+        dispatch(move({ y: gravity }));
+      } else if (!godMode) {
         dispatch(endGame());
       }
     }

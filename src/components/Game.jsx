@@ -18,6 +18,8 @@ import Tree from './Tree';
 import Elephant from './Elephant';
 import DevFest from './DevFest';
 
+import keyboard from './KeyboardController';
+
 import { reset } from '../slices/gameSlice';
 import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
 import Zeppelin from './Zeppelin';
@@ -32,6 +34,10 @@ const textStyle = new PIXI.TextStyle({
   wordWrap: false,
   wordWrapWidth: 350,
 });
+
+const handleKeyDown = (event) => {
+  console.log('User pressed: ', event.key);
+};
 
 function setupGame() {
   const dispatch = useDispatch();
@@ -87,6 +93,21 @@ function BackgroundContainer() {
   const dispatch = useDispatch();
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const birdJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
+
+  const spaceKey = keyboard(' ');
+  const enterKey = keyboard('Enter');
+
+  enterKey.press = () => {
+    if (gameHasStarted) {
+      dispatch(jump());
+    }
+  };
+
+  spaceKey.press = () => {
+    if (gameHasStarted) {
+      dispatch(jump());
+    }
+  };
   return (
     <Container>
       <Sprite
@@ -140,6 +161,7 @@ function Game() {
       width={width}
       height={height}
       options={{ backgroundColor: 0x1099bb }}
+      onKeyDown={handleKeyDown}
     >
       <BackgroundContainer />
       <Container>
