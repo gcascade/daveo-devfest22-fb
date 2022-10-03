@@ -46,13 +46,13 @@ function Start({ x, y, scale }) {
             isTop: false,
             x: width + 2 * obstacleMaxSpacing,
             y: initialBottomObstacleHeight,
-            height: 0.55 * height,
+            height: 0.5 * height,
           }));
           dispatch(addObstacle({
             isTop: true,
             x: width + 3 * obstacleMaxSpacing,
             y: initialTopObstacleHeight,
-            height: 0.55 * height,
+            height: 0.5 * height,
           }));
           dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
           dispatch(startGame());

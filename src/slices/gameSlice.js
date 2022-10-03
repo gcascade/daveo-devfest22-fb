@@ -53,6 +53,15 @@ export const gameSlice = createSlice({
     setGameSpeed(state, action) {
       state.gameSpeed = action.payload;
     },
+    updateSettings(state, action) {
+      state.gravity = action.payload.gravity;
+      state.obstacleSpeed = action.payload.obstacleSpeed;
+      state.birdJumpVelocity = action.payload.birdJumpVelocity;
+      state.obstacleMinSpacing = action.payload.obstacleMinSpacing;
+      state.obstacleMaxSpacing = action.payload.obstacleMaxSpacing;
+      state.obstacleGap = action.payload.obstacleGap;
+      state.gameSpeed = action.payload.gameSpeed;
+    },
   },
 });
 

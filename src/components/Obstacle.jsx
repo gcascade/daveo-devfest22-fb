@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -37,6 +37,12 @@ function hasCollidedWithBird(
   );
 }
 
+function hasPassedBird(x, birdX, obstacleWidth, birdWidth) {
+  const birdLeft = birdX - birdWidth / 2;
+  const obstacleRight = x + obstacleWidth / 2;
+  return obstacleRight < birdLeft;
+}
+
 function Obstacle({
   id, x, y, isTop, height, isDual,
 }) {
@@ -55,6 +61,7 @@ function Obstacle({
   // const obstacleMaxSpacing = useSelector((state) => state.game.obstacleMaxSpacing);
   const obstacleImageHeight = useSelector((state) => state.game.obstacleImageHeight);
   const gap = useSelector((state) => state.game.obstacleGap);
+  const [scored, setScored] = useState(false);
 
   useTick(() => {
     if (gameHasStarted) {
@@ -73,6 +80,11 @@ function Obstacle({
           dispatch(endGame());
         } else if ((isDual && isTop) || !isDual) {
           dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed }));
+
+          if (hasPassedBird(x, birdX, obstacleWidth, birdWidth) && !scored) {
+            dispatch(incrementScore());
+            setScored(true);
+          }
         }
       } else if ((isDual && isTop) || !isDual) {
         dispatch(removeObstacle(id));
@@ -96,7 +108,6 @@ function Obstacle({
             isTop: newIsTop, x: newObstacleX, y: newIsTop ? 0 : gameHeight, height: newHeight,
           }));
         }
-        dispatch(incrementScore());
       }
     }
   });

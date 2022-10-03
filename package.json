@@ -2,7 +2,7 @@
   "name": "daveo-devfest22-fb",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gcascade.github.io",
+  "homepage": "https://gcascade.github.io/daveo-devfest22-fb",
   "dependencies": {
     "@inlet/react-pixi": "^6.8.0",
     "@reduxjs/toolkit": "^1.8.5",
