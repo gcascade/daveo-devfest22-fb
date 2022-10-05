@@ -66,6 +66,7 @@ function Obstacle({
   const godMode = useSelector((state) => state.game.godMode);
   const maxGameSpeed = useSelector((state) => state.game.maxGameSpeed);
   const paused = useSelector((state) => state.game.paused);
+  const speedIncrease = useSelector((state) => state.game.speedIncrease);
 
   useTick(() => {
     if (!paused && gameHasStarted) {
@@ -90,7 +91,7 @@ function Obstacle({
             setScored(true);
 
             if (score >= 19 && score % 10 === 9 && gameSpeed < maxGameSpeed) {
-              dispatch(updateSettings({ gameSpeed: gameSpeed + 1 }));
+              dispatch(updateSettings({ gameSpeed: gameSpeed + speedIncrease }));
             }
           }
         }

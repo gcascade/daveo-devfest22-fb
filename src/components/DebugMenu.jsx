@@ -13,6 +13,7 @@ export default function DebugMenu() {
   const maxGameSpeed = useSelector((state) => state.game.maxGameSpeed);
   const godMode = useSelector((state) => state.game.godMode);
   const displayDebugMenu = useSelector((state) => state.game.displayDebugMenu);
+  const speedIncrease = useSelector((state) => state.game.speedIncrease);
 
   return (
     <div>
@@ -75,6 +76,13 @@ export default function DebugMenu() {
           onChange={((e) => dispatch(updateSettings({ maxGameSpeed: e.target.value })))}
         />
         <br />
+        <span>Game speed increase</span>
+        <input
+          type="number"
+          value={speedIncrease}
+          onChange={((e) => dispatch(updateSettings({ speedIncrease: e.target.value })))}
+        />
+        <br />
         <div
           style={{
             display: 'flex',
@@ -86,7 +94,8 @@ export default function DebugMenu() {
           <input
             type="checkbox"
             value={godMode}
-            onChange={((e) => dispatch(updateSettings({ godMode: e.target.value })))}
+            checked={godMode}
+            onChange={((e) => dispatch(updateSettings({ godMode: e.target.checked })))}
           />
         </div>
       </div>

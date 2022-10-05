@@ -21,6 +21,7 @@ const initialState = {
   maxGameSpeed: 5,
   displayDebugMenu: false,
   paused: false,
+  speedIncrease: 0.2,
 };
 
 export const gameSlice = createSlice({
@@ -47,6 +48,7 @@ export const gameSlice = createSlice({
       state.maxGameSpeed = initialState.maxGameSpeed;
       state.displayDebugMenu = initialState.displayDebugMenu;
       state.paused = initialState.paused;
+      state.speedIncrease = initialState.speedIncrease;
     },
     incrementScore(state) {
       state.score += 1;
@@ -71,6 +73,7 @@ export const gameSlice = createSlice({
       state.gameSpeed = action.payload.gameSpeed ?? state.gameSpeed;
       state.maxGameSpeed = action.payload.maxGameSpeed ?? state.maxGameSpeed;
       state.godMode = action.payload.godMode ?? state.godMode;
+      state.speedIncrease = action.payload.speedIncrease ?? state.speedIncrease;
     },
     displayDebugMenu(state) {
       state.displayDebugMenu = true;
