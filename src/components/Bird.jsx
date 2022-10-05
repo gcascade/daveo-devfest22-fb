@@ -18,13 +18,13 @@ export default function Bird() {
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const jumpVelocity = useSelector((state) => state.bird.jumpVelocity);
   const defaultJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
-  const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const dispatch = useDispatch();
   const defaultOffset = birdHeight / 2;
   const godMode = useSelector((state) => state.game.godMode);
+  const paused = useSelector((state) => state.game.paused);
 
   useTick((delta) => {
-    if (gameHasStarted) {
+    if (!paused && gameHasStarted) {
       if (isJumping) {
         const jumpHeight = (-(gravity) / 2) * delta ** 2 + jumpVelocity * delta;
 

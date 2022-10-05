@@ -19,6 +19,8 @@ const initialState = {
   obstacleImageHeight: 810,
   godMode: false,
   maxGameSpeed: 5,
+  displayDebugMenu: false,
+  paused: false,
 };
 
 export const gameSlice = createSlice({
@@ -42,6 +44,9 @@ export const gameSlice = createSlice({
       state.obstacleGap = initialState.obstacleGap;
       state.obstacleImageHeight = initialState.obstacleImageHeight;
       state.godMode = initialState.godMode;
+      state.maxGameSpeed = initialState.maxGameSpeed;
+      state.displayDebugMenu = initialState.displayDebugMenu;
+      state.paused = initialState.paused;
     },
     incrementScore(state) {
       state.score += 1;
@@ -64,12 +69,35 @@ export const gameSlice = createSlice({
       state.obstacleMaxSpacing = action.payload.obstacleMaxSpacing ?? state.obstacleMaxSpacing;
       state.obstacleGap = action.payload.obstacleGap ?? state.obstacleGap;
       state.gameSpeed = action.payload.gameSpeed ?? state.gameSpeed;
+      state.maxGameSpeed = action.payload.maxGameSpeed ?? state.maxGameSpeed;
+      state.godMode = action.payload.godMode ?? state.godMode;
+    },
+    displayDebugMenu(state) {
+      state.displayDebugMenu = true;
+    },
+    hideDebugMenu(state) {
+      state.displayDebugMenu = false;
+    },
+    pauseGame(state) {
+      state.paused = true;
+    },
+    resumeGame(state) {
+      state.paused = false;
     },
   },
 });
 
 export const {
-  reset, incrementScore, startGame, endGame, setGameSpeed, updateSettings,
+  reset,
+  incrementScore,
+  startGame,
+  endGame,
+  setGameSpeed,
+  updateSettings,
+  displayDebugMenu,
+  hideDebugMenu,
+  pauseGame,
+  resumeGame,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

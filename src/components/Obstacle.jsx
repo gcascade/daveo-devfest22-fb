@@ -65,9 +65,10 @@ function Obstacle({
   const score = useSelector((state) => state.game.score);
   const godMode = useSelector((state) => state.game.godMode);
   const maxGameSpeed = useSelector((state) => state.game.maxGameSpeed);
+  const paused = useSelector((state) => state.game.paused);
 
   useTick(() => {
-    if (gameHasStarted) {
+    if (!paused && gameHasStarted) {
       if (x >= 0) {
         if (hasCollidedWithBird(
           x,

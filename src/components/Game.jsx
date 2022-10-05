@@ -17,10 +17,13 @@ import Rock from './Rock';
 import Tree from './Tree';
 import Elephant from './Elephant';
 import DevFest from './DevFest';
+import DebugMenu from './DebugMenu';
 
 import keyboard from './KeyboardController';
 
-import { reset } from '../slices/gameSlice';
+import {
+  reset, displayDebugMenu, hideDebugMenu, pauseGame, resumeGame,
+} from '../slices/gameSlice';
 import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
 import Zeppelin from './Zeppelin';
 
@@ -34,10 +37,6 @@ const textStyle = new PIXI.TextStyle({
   wordWrap: false,
   wordWrapWidth: 350,
 });
-
-const handleKeyDown = (event) => {
-  console.log('User pressed: ', event.key);
-};
 
 function setupGame() {
   const dispatch = useDispatch();
@@ -93,28 +92,42 @@ function BackgroundContainer() {
   const dispatch = useDispatch();
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const birdJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
+  const isDebugMenuDisplayed = useSelector((state) => state.game.displayDebugMenu);
+  const paused = useSelector((state) => state.game.paused);
 
   const spaceKey = keyboard(' ');
   const enterKey = keyboard('Enter');
+  const dKey = keyboard('d');
 
   enterKey.press = () => {
-    if (gameHasStarted) {
+    if (!paused && gameHasStarted) {
       dispatch(jump());
     }
   };
 
   spaceKey.press = () => {
-    if (gameHasStarted) {
+    if (!paused && gameHasStarted) {
       dispatch(jump());
     }
   };
+
+  dKey.press = () => {
+    if (isDebugMenuDisplayed) {
+      dispatch(hideDebugMenu());
+      dispatch(resumeGame());
+    } else {
+      dispatch(displayDebugMenu());
+      dispatch(pauseGame());
+    }
+  };
+
   return (
     <Container>
       <Sprite
         image={background}
         interactive
         pointerdown={() => {
-          if (gameHasStarted) {
+          if (!paused && gameHasStarted) {
             dispatch(setJumpVelocity(birdJumpVelocity));
             dispatch(jump());
           }
@@ -157,36 +170,38 @@ function Game() {
   setupGame();
 
   return (
-    <Stage
-      width={width}
-      height={height}
-      options={{ backgroundColor: 0x1099bb }}
-      onKeyDown={handleKeyDown}
-    >
-      <BackgroundContainer />
-      <Container>
-        <Cloud x={width * 0.5} y={height * 0.5} scale={0.4} />
-        <Cloud x={width} y={height * 0.45} scale={0.5} />
-        <Mountain x={0.5 * width} y={height - 170} scale={0.5} />
-        <Mountain x={0.25 * width} y={height - 170} scale={0.3} />
-        <Rock x={width} y={height - 170} scale={0.6} />
-        <Tree x={0.1 * width} y={height - 170} scale={0.15} />
-        <Tree x={0.3 * width} y={height} scale={0.25} />
-        <Tree x={0.8 * width} y={height * 0.86} scale={0.2} />
-        <Elephant x={0.8 * width} y={height - 170} scale={0.5} />
-        <Zeppelin x={0.7 * width} y={height * 0.2} scale={0.15} />
-      </Container>
-      <Container>
-        <DaveoLogo x={0.1 * width} y={0.2 * height} scale={0.1} />
-        <DevFest x={0.6 * width} y={0.42 * height} scale={0.1} />
-      </Container>
-      <Container>
-        <Bird />
-      </Container>
-      <ObstacleContainer />
-      <StartButtonContainer />
-      <ScoreContainer />
-    </Stage>
+    <>
+      <Stage
+        width={width}
+        height={height}
+        options={{ backgroundColor: 0x1099bb }}
+      >
+        <BackgroundContainer />
+        <Container>
+          <Cloud x={width * 0.5} y={height * 0.5} scale={0.4} />
+          <Cloud x={width} y={height * 0.45} scale={0.5} />
+          <Mountain x={0.5 * width} y={height - 170} scale={0.5} />
+          <Mountain x={0.25 * width} y={height - 170} scale={0.3} />
+          <Rock x={width} y={height - 170} scale={0.6} />
+          <Tree x={0.1 * width} y={height - 170} scale={0.15} />
+          <Tree x={0.3 * width} y={height} scale={0.25} />
+          <Tree x={0.8 * width} y={height * 0.86} scale={0.2} />
+          <Elephant x={0.8 * width} y={height - 170} scale={0.5} />
+          <Zeppelin x={0.7 * width} y={height * 0.2} scale={0.15} />
+        </Container>
+        <Container>
+          <DaveoLogo x={0.1 * width} y={0.2 * height} scale={0.1} />
+          <DevFest x={0.6 * width} y={0.42 * height} scale={0.1} />
+        </Container>
+        <Container>
+          <Bird />
+        </Container>
+        <ObstacleContainer />
+        <StartButtonContainer />
+        <ScoreContainer />
+      </Stage>
+      <DebugMenu />
+    </>
   );
 }
 
