@@ -67,6 +67,7 @@ function Obstacle({
   const maxGameSpeed = useSelector((state) => state.game.maxGameSpeed);
   const paused = useSelector((state) => state.game.paused);
   const speedIncrease = useSelector((state) => state.game.speedIncrease);
+  const minHeight = useSelector((state) => state.game.obstacleMinHeight);
 
   useTick(() => {
     if (!paused && gameHasStarted) {
@@ -101,7 +102,7 @@ function Obstacle({
         // obstacleMinSpacing) + obstacleMinSpacing;
         const rand = 0;
         const newObstacleX = width + rand;
-        const newHeight = Math.floor(Math.random() * (0.5 * (gameHeight - 200)) + 200);
+        const newHeight = Math.floor(Math.random() * (0.5 * (gameHeight - minHeight)) + minHeight);
 
         const newIsDual = Math.random() >= 0.5;
         if (newIsDual) {

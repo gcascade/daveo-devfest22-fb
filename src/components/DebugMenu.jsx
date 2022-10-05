@@ -14,6 +14,7 @@ export default function DebugMenu() {
   const godMode = useSelector((state) => state.game.godMode);
   const displayDebugMenu = useSelector((state) => state.game.displayDebugMenu);
   const speedIncrease = useSelector((state) => state.game.speedIncrease);
+  const obstacleMinHeight = useSelector((state) => state.game.obstacleMinHeight);
 
   return (
     <div>
@@ -34,13 +35,6 @@ export default function DebugMenu() {
           {' '}
           {displayDebugMenu}
         </h1>
-        <span>Obstacle Speed</span>
-        <input
-          type="number"
-          value={obstacleSpeed}
-          onChange={((e) => dispatch(updateSettings({ obstacleSpeed: e.target.value })))}
-        />
-        <br />
         <span>Gravity</span>
         <input
           type="number"
@@ -55,11 +49,25 @@ export default function DebugMenu() {
           onChange={((e) => dispatch(updateSettings({ birdJumpVelocity: e.target.value })))}
         />
         <br />
+        <span>Obstacle Speed</span>
+        <input
+          type="number"
+          value={obstacleSpeed}
+          onChange={((e) => dispatch(updateSettings({ obstacleSpeed: e.target.value })))}
+        />
+        <br />
         <span>Obstacle Gap</span>
         <input
           type="number"
           value={obstacleGap}
           onChange={((e) => dispatch(updateSettings({ obstacleGap: e.target.value })))}
+        />
+        <br />
+        <span>Obstacle Min Height</span>
+        <input
+          type="number"
+          value={obstacleMinHeight}
+          onChange={((e) => dispatch(updateSettings({ obstacleMinHeight: e.target.value })))}
         />
         <br />
         <span>Game speed (current)</span>
