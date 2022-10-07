@@ -30,27 +30,27 @@ export const gameSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.gravity = initialState.gravity;
+      // state.gravity = initialState.gravity;
       state.score = initialState.score;
       state.hasStarted = initialState.hasStarted;
-      state.height = initialState.height;
-      state.width = initialState.width;
-      state.obstacleSpeed = initialState.obstacleSpeed;
-      state.birdJumpVelocity = initialState.birdJumpVelocity;
-      state.birdWidth = initialState.birdWidth;
-      state.birdHeight = initialState.birdHeight;
-      state.obstacleWidth = initialState.obstacleWidth;
+      // state.height = initialState.height;
+      // state.width = initialState.width;
+      // state.obstacleSpeed = initialState.obstacleSpeed;
+      // state.birdJumpVelocity = initialState.birdJumpVelocity;
+      // state.birdWidth = initialState.birdWidth;
+      // state.birdHeight = initialState.birdHeight;
+      // state.obstacleWidth = initialState.obstacleWidth;
       state.gameSpeed = initialState.gameSpeed;
-      state.obstacleMinSpacing = initialState.obstacleMinSpacing;
-      state.obstacleMaxSpacing = initialState.obstacleMaxSpacing;
-      state.obstacleGap = initialState.obstacleGap;
-      state.obstacleImageHeight = initialState.obstacleImageHeight;
-      state.godMode = initialState.godMode;
-      state.maxGameSpeed = initialState.maxGameSpeed;
+      // state.obstacleMinSpacing = initialState.obstacleMinSpacing;
+      // state.obstacleMaxSpacing = initialState.obstacleMaxSpacing;
+      // state.obstacleGap = initialState.obstacleGap;
+      // state.obstacleImageHeight = initialState.obstacleImageHeight;
+      // state.godMode = initialState.godMode;
+      // state.maxGameSpeed = initialState.maxGameSpeed;
       state.displayDebugMenu = initialState.displayDebugMenu;
       state.paused = initialState.paused;
-      state.speedIncrease = initialState.speedIncrease;
-      state.obstacleMinHeight = initialState.obstacleMinHeight;
+      // state.speedIncrease = initialState.speedIncrease;
+      // state.obstacleMinHeight = initialState.obstacleMinHeight;
     },
     incrementScore(state) {
       state.score += 1;

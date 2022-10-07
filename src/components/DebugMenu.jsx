@@ -39,56 +39,56 @@ export default function DebugMenu() {
         <input
           type="number"
           value={gravity}
-          onChange={((e) => dispatch(updateSettings({ gravity: e.target.value })))}
+          onChange={((e) => dispatch(updateSettings({ gravity: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <span>Bird Jump Velocity</span>
         <input
           type="number"
           value={birdJumpVelocity}
-          onChange={((e) => dispatch(updateSettings({ birdJumpVelocity: e.target.value })))}
+          onChange={((e) => dispatch(updateSettings({ birdJumpVelocity: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <span>Obstacle Speed</span>
         <input
           type="number"
           value={obstacleSpeed}
-          onChange={((e) => dispatch(updateSettings({ obstacleSpeed: e.target.value })))}
+          onChange={((e) => dispatch(updateSettings({ obstacleSpeed: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <span>Obstacle Gap</span>
         <input
           type="number"
           value={obstacleGap}
-          onChange={((e) => dispatch(updateSettings({ obstacleGap: e.target.value })))}
+          onChange={((e) => dispatch(updateSettings({ obstacleGap: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <span>Obstacle Min Height</span>
         <input
           type="number"
           value={obstacleMinHeight}
-          onChange={((e) => dispatch(updateSettings({ obstacleMinHeight: e.target.value })))}
+          onChange={((e) => dispatch(updateSettings({ obstacleMinHeight: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <span>Game speed (current)</span>
         <input
           type="number"
           value={gameSpeed}
-          onChange={((e) => dispatch(updateSettings({ gameSpeed: e.target.value })))}
+          onChange={((e) => dispatch(updateSettings({ gameSpeed: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <span>Game speed (max)</span>
         <input
           type="number"
           value={maxGameSpeed}
-          onChange={((e) => dispatch(updateSettings({ maxGameSpeed: e.target.value })))}
+          onChange={((e) => dispatch(updateSettings({ maxGameSpeed: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <span>Game speed increase</span>
         <input
           type="number"
           value={speedIncrease}
-          onChange={((e) => dispatch(updateSettings({ speedIncrease: e.target.value })))}
+          onChange={((e) => dispatch(updateSettings({ speedIncrease: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <div
