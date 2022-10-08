@@ -15,6 +15,7 @@ export default function DebugMenu() {
   const displayDebugMenu = useSelector((state) => state.game.displayDebugMenu);
   const speedIncrease = useSelector((state) => state.game.speedIncrease);
   const obstacleMinHeight = useSelector((state) => state.game.obstacleMinHeight);
+  const seaWorld = useSelector((state) => state.game.isSeaWorld);
 
   return (
     <div>
@@ -90,6 +91,22 @@ export default function DebugMenu() {
           value={speedIncrease}
           onChange={((e) => dispatch(updateSettings({ speedIncrease: parseFloat(e.target.value.replace(',', '.')) })))}
         />
+        <br />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'right',
+          }}
+        >
+          <span>Sea world</span>
+          <input
+            type="checkbox"
+            value={seaWorld}
+            checked={seaWorld}
+            onChange={((e) => dispatch(updateSettings({ isSeaWorld: e.target.checked })))}
+          />
+        </div>
         <br />
         <div
           style={{

@@ -3,6 +3,7 @@ import { Sprite, useTick } from '@inlet/react-pixi';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import birdImage from '../images/balloon_daveo_94x120.png';
+import nautilusImage from '../images/nautilus_150x37.png';
 import {
   move, setJumpVelocity, stopJump, setY,
 } from '../slices/birdSlice';
@@ -22,6 +23,9 @@ export default function Bird() {
   const defaultOffset = birdHeight / 2;
   const godMode = useSelector((state) => state.game.godMode);
   const paused = useSelector((state) => state.game.paused);
+  const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
+
+  const image = isSeaWorld ? nautilusImage : birdImage;
 
   useTick((delta) => {
     if (!paused && gameHasStarted) {
@@ -49,6 +53,6 @@ export default function Bird() {
   });
 
   return (
-    <Sprite image={birdImage} x={x} y={y} anchor={0.5} />
+    <Sprite image={image} x={x} y={y} anchor={0.5} />
   );
 }

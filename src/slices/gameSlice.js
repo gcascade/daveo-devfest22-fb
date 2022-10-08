@@ -23,6 +23,11 @@ const initialState = {
   paused: false,
   speedIncrease: 0.2,
   obstacleMinHeight: 200,
+  isSeaWorld: false,
+  balloonWidth: 94,
+  balloonHeight: 120,
+  nautilusWidth: 150,
+  nautilusHeight: 37,
 };
 
 export const gameSlice = createSlice({
@@ -77,6 +82,15 @@ export const gameSlice = createSlice({
       state.godMode = action.payload.godMode ?? state.godMode;
       state.speedIncrease = action.payload.speedIncrease ?? state.speedIncrease;
       state.obstacleMinHeight = action.payload.obstacleMinHeight ?? state.obstacleMinHeight;
+      state.isSeaWorld = action.payload.isSeaWorld ?? state.isSeaWorld;
+
+      if (state.isSeaWorld) {
+        state.birdWidth = state.nautilusWidth;
+        state.birdHeight = state.nautilusHeight;
+      } else {
+        state.birdWidth = initialState.balloonWidth;
+        state.birdHeight = initialState.balloonHeight;
+      }
     },
     displayDebugMenu(state) {
       state.displayDebugMenu = true;

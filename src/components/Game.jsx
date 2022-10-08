@@ -3,21 +3,19 @@ import { Sprite, Text, Container } from '@inlet/react-pixi';
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import background from '../images/background.png';
+import seaBackground from '../images/seaBackground.png';
 
 import Bird from './Bird';
-import DaveoLogo from './DaveoLogo';
 import Stage from './Stage';
 import Obstacle from './Obstacle';
 import DualObstacle from './DualObstacle';
 import StartButton from './StartButton';
-import Mountain from './Mountain';
-import Cloud from './Cloud';
-import Rock from './Rock';
-import Tree from './Tree';
-import Elephant from './Elephant';
-import DevFest from './DevFest';
 import DebugMenu from './DebugMenu';
+
+import AirWorld from './AirWorld';
+import SeaWorld from './SeaWorld';
 
 import keyboard from './KeyboardController';
 
@@ -25,7 +23,6 @@ import {
   reset, displayDebugMenu, hideDebugMenu, pauseGame, resumeGame,
 } from '../slices/gameSlice';
 import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
-import Zeppelin from './Zeppelin';
 
 const textStyle = new PIXI.TextStyle({
   align: 'center',
@@ -88,16 +85,19 @@ function ObstacleContainer() {
   );
 }
 
+const spaceKey = keyboard(' ');
+const enterKey = keyboard('Enter');
+const dKey = keyboard('d');
+
 function BackgroundContainer() {
   const dispatch = useDispatch();
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const birdJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
   const isDebugMenuDisplayed = useSelector((state) => state.game.displayDebugMenu);
   const paused = useSelector((state) => state.game.paused);
+  const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
 
-  const spaceKey = keyboard(' ');
-  const enterKey = keyboard('Enter');
-  const dKey = keyboard('d');
+  const backgroundImage = isSeaWorld ? seaBackground : background;
 
   enterKey.press = () => {
     if (!paused && gameHasStarted) {
@@ -124,7 +124,7 @@ function BackgroundContainer() {
   return (
     <Container>
       <Sprite
-        image={background}
+        image={backgroundImage}
         interactive
         pointerdown={() => {
           if (!paused && gameHasStarted) {
@@ -177,22 +177,14 @@ function Game() {
         options={{ backgroundColor: 0x1099bb }}
       >
         <BackgroundContainer />
-        <Container>
-          <Cloud x={width * 0.5} y={height * 0.5} scale={0.4} />
-          <Cloud x={width} y={height * 0.45} scale={0.5} />
-          <Mountain x={0.5 * width} y={height - 170} scale={0.5} />
-          <Mountain x={0.25 * width} y={height - 170} scale={0.3} />
-          <Rock x={width} y={height - 170} scale={0.6} />
-          <Tree x={0.1 * width} y={height - 170} scale={0.15} />
-          <Tree x={0.3 * width} y={height} scale={0.25} />
-          <Tree x={0.8 * width} y={height * 0.86} scale={0.2} />
-          <Elephant x={0.8 * width} y={height - 170} scale={0.5} />
-          <Zeppelin x={0.7 * width} y={height * 0.2} scale={0.15} />
-        </Container>
-        <Container>
-          <DaveoLogo x={0.1 * width} y={0.2 * height} scale={0.1} />
-          <DevFest x={0.6 * width} y={0.42 * height} scale={0.1} />
-        </Container>
+        <AirWorld
+          width={width}
+          height={height}
+        />
+        <SeaWorld
+          width={width}
+          height={height}
+        />
         <Container>
           <Bird />
         </Container>
