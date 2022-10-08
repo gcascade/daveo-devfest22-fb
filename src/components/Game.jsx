@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
-import { Sprite, Text, Container } from '@inlet/react-pixi';
+import {
+  Sprite, Text, Container, useTick,
+} from '@inlet/react-pixi';
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,7 +22,7 @@ import SeaWorld from './SeaWorld';
 import keyboard from './KeyboardController';
 
 import {
-  reset, displayDebugMenu, hideDebugMenu, pauseGame, resumeGame,
+  reset, displayDebugMenu, hideDebugMenu, pauseGame, resumeGame, updateSettings,
 } from '../slices/gameSlice';
 import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
 
@@ -96,6 +98,11 @@ function BackgroundContainer() {
   const isDebugMenuDisplayed = useSelector((state) => state.game.displayDebugMenu);
   const paused = useSelector((state) => state.game.paused);
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
+  const changingLevel = useSelector((state) => state.game.changingLevel);
+  const changeLevelEnabled = useSelector((state) => state.game.changeLevelEnabled);
+
+  const [noise, setNoise] = React.useState(0);
+  const [updatedLevel, setUpdatedLevel] = React.useState(false);
 
   const backgroundImage = isSeaWorld ? seaBackground : background;
 
@@ -121,9 +128,32 @@ function BackgroundContainer() {
     }
   };
 
+  const noiseIncrement = 0.005;
+
+  useTick(() => {
+    if (changeLevelEnabled && paused && changingLevel) {
+      if (!updatedLevel && noise <= 1) {
+        setNoise(noise + noiseIncrement);
+      } else if (!updatedLevel && noise > 1) {
+        dispatch(updateSettings({ isSeaWorld: true }));
+        setUpdatedLevel(true);
+      } else if (updatedLevel && noise >= 0) {
+        setNoise(noise - noiseIncrement);
+      } else {
+        setNoise(0);
+        setUpdatedLevel(false);
+        dispatch(updateSettings({ changingLevel: false }));
+        dispatch(resumeGame());
+      }
+    }
+  });
+
+  const noiseFilter = new PIXI.filters.NoiseFilter(noise);
+
   return (
     <Container>
       <Sprite
+        filters={[noiseFilter]}
         image={backgroundImage}
         interactive
         pointerdown={() => {

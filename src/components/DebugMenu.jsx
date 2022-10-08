@@ -16,6 +16,8 @@ export default function DebugMenu() {
   const speedIncrease = useSelector((state) => state.game.speedIncrease);
   const obstacleMinHeight = useSelector((state) => state.game.obstacleMinHeight);
   const seaWorld = useSelector((state) => state.game.isSeaWorld);
+  const scoreNeededForNextLevel = useSelector((state) => state.game.scoreNeededForNextLevel);
+  const changeLevelEnabled = useSelector((state) => state.game.changeLevelEnabled);
 
   return (
     <div>
@@ -91,6 +93,29 @@ export default function DebugMenu() {
           value={speedIncrease}
           onChange={((e) => dispatch(updateSettings({ speedIncrease: parseFloat(e.target.value.replace(',', '.')) })))}
         />
+        <br />
+        <span>Score needed for next level</span>
+        <input
+          type="number"
+          value={scoreNeededForNextLevel}
+          onChange={((e) => dispatch(updateSettings({ scoreNeededForNextLevel: parseFloat(e.target.value.replace(',', '.')) })))}
+        />
+        <br />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'right',
+          }}
+        >
+          <span>Change level during game ?</span>
+          <input
+            type="checkbox"
+            value={changeLevelEnabled}
+            checked={changeLevelEnabled}
+            onChange={((e) => dispatch(updateSettings({ changeLevelEnabled: e.target.checked })))}
+          />
+        </div>
         <br />
         <div
           style={{

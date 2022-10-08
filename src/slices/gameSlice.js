@@ -28,6 +28,9 @@ const initialState = {
   balloonHeight: 120,
   nautilusWidth: 150,
   nautilusHeight: 37,
+  changingLevel: false,
+  changeLevelEnabled: true,
+  scoreNeededForNextLevel: 100,
 };
 
 export const gameSlice = createSlice({
@@ -56,9 +59,15 @@ export const gameSlice = createSlice({
       state.paused = initialState.paused;
       // state.speedIncrease = initialState.speedIncrease;
       // state.obstacleMinHeight = initialState.obstacleMinHeight;
+      state.isSeaWorld = initialState.isSeaWorld;
     },
     incrementScore(state) {
       state.score += 1;
+
+      if (state.changeLevelEnabled && state.score === state.scoreNeededForNextLevel) {
+        state.changingLevel = true;
+        state.paused = true;
+      }
     },
     startGame(state) {
       state.hasStarted = true;
@@ -83,6 +92,10 @@ export const gameSlice = createSlice({
       state.speedIncrease = action.payload.speedIncrease ?? state.speedIncrease;
       state.obstacleMinHeight = action.payload.obstacleMinHeight ?? state.obstacleMinHeight;
       state.isSeaWorld = action.payload.isSeaWorld ?? state.isSeaWorld;
+      state.changingLevel = action.payload.changingLevel ?? state.changingLevel;
+      state.changeLevelEnabled = action.payload.changeLevelEnabled ?? state.changeLevelEnabled;
+      state.scoreNeededForNextLevel = action.payload.scoreNeededForNextLevel
+      ?? state.scoreNeededForNextLevel;
 
       if (state.isSeaWorld) {
         state.birdWidth = state.nautilusWidth;

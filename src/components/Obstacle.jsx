@@ -6,7 +6,9 @@ import obstacleImage from '../images/veryLongObstacle.png';
 import {
   removeObstacle, moveObstacle, addObstacle, addDualObstacle,
 } from '../slices/obstacleSlice';
-import { incrementScore, endGame, updateSettings } from '../slices/gameSlice';
+import {
+  incrementScore, endGame, updateSettings,
+} from '../slices/gameSlice';
 
 function hasCollidedWithBird(
   x,

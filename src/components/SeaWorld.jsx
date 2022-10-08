@@ -18,7 +18,7 @@ export default function SeaWorld({ width, height }) {
     <Container>
       {isSeaWorld && (
         <>
-          <Ground x={width} y={height} scale={1} />
+          <Ground x={width} y={height} scale={1} color={2} />
           <Fish x={0.295 * width} y={0.49 * height} scale={0.09} color={1} />
           <Fish x={0.293 * width} y={0.52 * height} scale={0.11} color={1} />
           <Fish x={0.32 * width} y={0.5 * height} scale={0.1} color={1} />
