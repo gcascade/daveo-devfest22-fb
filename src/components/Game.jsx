@@ -5,6 +5,7 @@ import {
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import background from '../images/background.png';
 import seaBackground from '../images/seaBackground.png';
@@ -28,6 +29,7 @@ import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
 
 const textStyle = new PIXI.TextStyle({
   align: 'center',
+  fontSize: 36,
   fontWeight: 'bold',
   fill: ['#FFFFFF'],
   stroke: '#eef1f5',
@@ -167,9 +169,7 @@ function BackgroundContainer() {
   );
 }
 
-function StartButtonContainer() {
-  const width = useSelector((state) => state.game.width);
-  const height = useSelector((state) => state.game.height);
+function StartButtonContainer({ width, height }) {
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
 
   return (
@@ -179,16 +179,14 @@ function StartButtonContainer() {
   );
 }
 
-function ScoreContainer() {
+function ScoreContainer({ width, height }) {
   const score = useSelector((state) => state.game.score);
-  const width = useSelector((state) => state.game.width);
-  const height = useSelector((state) => state.game.height);
   return (
     <Container
       x={width / 2}
       y={height / 10}
     >
-      <Text text={score} style={textStyle} />
+      <Text text={score} style={textStyle} anchor={0.5} />
     </Container>
   );
 }
@@ -219,8 +217,8 @@ function Game() {
           <Bird />
         </Container>
         <ObstacleContainer />
-        <StartButtonContainer />
-        <ScoreContainer />
+        <StartButtonContainer width={width} height={height} />
+        <ScoreContainer width={width} height={height} />
       </Stage>
       <DebugMenu />
     </>
@@ -228,3 +226,13 @@ function Game() {
 }
 
 export default Game;
+
+ScoreContainer.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
+
+StartButtonContainer.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
