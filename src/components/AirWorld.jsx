@@ -21,14 +21,14 @@ export default function AirWorld({ width, height }) {
         <>
           <Cloud x={width * 0.5} y={height * 0.5} scale={0.4} />
           <Cloud x={1 * width} y={height * 0.45} scale={0.5} />
-          <Mountain x={0.5 * width} y={height - 170} scale={0.5} />
-          <Mountain x={0.25 * width} y={height - 170} scale={0.3} />
-          <Rock x={1 * width} y={height - 170} scale={0.6} />
-          <Tree x={0.1 * width} y={height - 170} scale={0.15} />
+          <Mountain x={0.5 * width} y={0.85 * height} scale={0.5} />
+          <Mountain x={0.25 * width} y={0.85 * height} scale={0.3} />
+          <Rock x={1 * width} y={0.85 * height} scale={0.6} />
+          <Tree x={0.1 * width} y={0.85 * height} scale={0.15} />
           <Tree x={0.3 * width} y={1 * height} scale={0.25} />
           <Tree x={0.8 * width} y={1 * height * 0.86} scale={0.2} />
-          <Elephant x={0.8 * width} y={height - 170} scale={0.5} />
-          <Zeppelin x={0.7 * width} y={height * 0.2} scale={0.15} />
+          <Elephant x={0.8 * width} y={0.85 * height} scale={0.5} />
+          <Zeppelin x={0.7 * width} y={0.2 * height} scale={0.15} />
           <Container>
             <DaveoLogo x={0.1 * width} y={0.2 * height} scale={0.1} color={1} />
             <DevFest x={0.6 * width} y={0.42 * height} scale={0.1} color={1} />
