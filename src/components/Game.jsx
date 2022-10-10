@@ -27,6 +27,10 @@ import {
 } from '../slices/gameSlice';
 import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
 
+const {
+  REACT_APP_ENABLE_CHEATS,
+} = process.env;
+
 const textStyle = new PIXI.TextStyle({
   align: 'center',
   fontSize: 36,
@@ -121,12 +125,14 @@ function BackgroundContainer() {
   };
 
   dKey.press = () => {
-    if (isDebugMenuDisplayed) {
-      dispatch(hideDebugMenu());
-      dispatch(resumeGame());
-    } else {
-      dispatch(displayDebugMenu());
-      dispatch(pauseGame());
+    if (REACT_APP_ENABLE_CHEATS === 'true') {
+      if (isDebugMenuDisplayed) {
+        dispatch(hideDebugMenu());
+        dispatch(resumeGame());
+      } else {
+        dispatch(displayDebugMenu());
+        dispatch(pauseGame());
+      }
     }
   };
 
@@ -220,7 +226,7 @@ function Game() {
         <StartButtonContainer width={width} height={height} />
         <ScoreContainer width={width} height={height} />
       </Stage>
-      <DebugMenu />
+      <DebugMenu enabled={REACT_APP_ENABLE_CHEATS === 'true'} />
     </>
   );
 }

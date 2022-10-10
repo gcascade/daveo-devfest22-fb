@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
+const { REACT_APP_SAVE_SCORE, REACT_APP_SCORE_PATH } = process.env;
+
 const initialState = {
   gravity: 1,
   score: 0,
@@ -75,6 +77,23 @@ export const gameSlice = createSlice({
     },
     endGame(state) {
       state.hasStarted = false;
+
+      if (REACT_APP_SAVE_SCORE === 'true') {
+        const scores = JSON.parse(localStorage.getItem('scores') || '[]');
+        scores.push(state.score);
+        localStorage.setItem('scores', JSON.stringify(scores));
+
+        // save file to server
+        if (REACT_APP_SCORE_PATH && REACT_APP_SCORE_PATH !== '') {
+          fetch(REACT_APP_SCORE_PATH, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ score: state.score }),
+          });
+        }
+      }
     },
     setGameSpeed(state, action) {
       state.gameSpeed = action.payload;
