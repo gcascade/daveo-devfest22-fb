@@ -9,7 +9,8 @@ import {
 import {
   incrementScore, endGame, updateSettings,
 } from '../slices/gameSlice';
-import { balloonSprite } from '../constants';
+import { balloonSprite, nautilusSprite } from '../constants';
+import { pointHitRectangle } from '../utils/collisionUtils';
 
 /** check body
   * isTop => anchorY = 0 !isTop => anchorY = 1
@@ -38,10 +39,14 @@ function checkCollisionWithObstacleBody(
     y: isTop ? obstacleY + bodySize : obstacleY,
   };
 
-  return birdX >= bodyFirstPoint.x
-    && birdX <= bodyLastPoint.x
-    && birdY >= bodyFirstPoint.y
-    && birdY <= bodyLastPoint.y;
+  const point = { x: birdX, y: birdY };
+  const rectangle = {
+    xMin: bodyFirstPoint.x,
+    xMax: bodyLastPoint.x,
+    yMin: bodyFirstPoint.y,
+    yMax: bodyLastPoint.y,
+  };
+  return pointHitRectangle(point, rectangle);
 }
 
 /**
@@ -72,10 +77,14 @@ function checkCollisionWithObstacleHead(
     y: isTop ? obstacleHeight : gameHeight - obstacleHeight + headSize,
   };
 
-  return birdX >= headFirstPoint.x
-    && birdX <= headLastPoint.x
-    && birdY >= headFirstPoint.y
-    && birdY <= headLastPoint.y;
+  const point = { x: birdX, y: birdY };
+  const rectangle = {
+    xMin: headFirstPoint.x,
+    xMax: headLastPoint.x,
+    yMin: headFirstPoint.y,
+    yMax: headLastPoint.y,
+  };
+  return pointHitRectangle(point, rectangle);
 }
 
 function checkCollisionWithObstacle(
@@ -120,16 +129,19 @@ function customCollision(
   birdY,
   isTop,
   gameHeight,
+  isSeaWorld,
 ) {
   // check head : head has a height of 55px
   const headSize = 55;
   const bodySize = obstacleHeight - headSize;
 
+  const sprite = isSeaWorld ? nautilusSprite : balloonSprite;
+
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < balloonSprite.collisionData.coords.length; i++) {
-    const birdPoint = balloonSprite.collisionData.coords[i];
-    const birdPointX = birdX + birdPoint.x - balloonSprite.collisionData.center.x;
-    const birdPointY = birdY + birdPoint.y - balloonSprite.collisionData.center.y;
+  for (let i = 0; i < sprite.collisionData.coords.length; i++) {
+    const birdPoint = sprite.collisionData.coords[i];
+    const birdPointX = birdX + birdPoint.x - sprite.collisionData.center.x;
+    const birdPointY = birdY + birdPoint.y - sprite.collisionData.center.y;
 
     if (checkCollisionWithObstacle(
       birdPointX,
@@ -163,26 +175,36 @@ function hasCollidedWithBird(
   gameHeight,
   isSeaWorld,
 ) {
-  if (isSeaWorld) {
-    const birdLeft = birdX - birdWidth / 2;
-    const birdRight = birdX + birdWidth / 2;
-    const birdTop = birdY - birdHeight / 2;
-    const birdBottom = birdY + birdHeight / 2;
+  // if (isSeaWorld) {
+  //   const birdLeft = birdX - birdWidth / 2;
+  //   const birdRight = birdX + birdWidth / 2;
+  //   const birdTop = birdY - birdHeight / 2;
+  //   const birdBottom = birdY + birdHeight / 2;
 
-    const obstacleLeft = x - obstacleWidth / 2;
-    const obstacleRight = x + obstacleWidth / 2;
-    const obstacleBottom = isTop ? y + obstacleHeight : y;
-    const obstacleTop = isTop ? y : y - obstacleHeight;
+  //   const obstacleLeft = x - obstacleWidth / 2;
+  //   const obstacleRight = x + obstacleWidth / 2;
+  //   const obstacleBottom = isTop ? y + obstacleHeight : y;
+  //   const obstacleTop = isTop ? y : y - obstacleHeight;
 
-    return (
-      birdLeft < obstacleRight
-        && birdRight > obstacleLeft
-        && birdTop < obstacleBottom
-        && birdBottom > obstacleTop
-    );
-  }
+  //   return (
+  //     birdLeft < obstacleRight
+  //       && birdRight > obstacleLeft
+  //       && birdTop < obstacleBottom
+  //       && birdBottom > obstacleTop
+  //   );
+  // }
 
-  return customCollision(x, y, obstacleWidth, obstacleHeight, birdX, birdY, isTop, gameHeight);
+  return customCollision(
+    x,
+    y,
+    obstacleWidth,
+    obstacleHeight,
+    birdX,
+    birdY,
+    isTop,
+    gameHeight,
+    isSeaWorld,
+  );
 }
 
 function hasPassedBird(x, birdX, obstacleWidth, birdWidth) {
