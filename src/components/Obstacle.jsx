@@ -169,31 +169,10 @@ function hasCollidedWithBird(
   obstacleHeight,
   birdX,
   birdY,
-  birdWidth,
-  birdHeight,
   isTop,
   gameHeight,
   isSeaWorld,
 ) {
-  // if (isSeaWorld) {
-  //   const birdLeft = birdX - birdWidth / 2;
-  //   const birdRight = birdX + birdWidth / 2;
-  //   const birdTop = birdY - birdHeight / 2;
-  //   const birdBottom = birdY + birdHeight / 2;
-
-  //   const obstacleLeft = x - obstacleWidth / 2;
-  //   const obstacleRight = x + obstacleWidth / 2;
-  //   const obstacleBottom = isTop ? y + obstacleHeight : y;
-  //   const obstacleTop = isTop ? y : y - obstacleHeight;
-
-  //   return (
-  //     birdLeft < obstacleRight
-  //       && birdRight > obstacleLeft
-  //       && birdTop < obstacleBottom
-  //       && birdBottom > obstacleTop
-  //   );
-  // }
-
   return customCollision(
     x,
     y,
@@ -222,7 +201,6 @@ function Obstacle({
   const birdX = useSelector((state) => state.bird.x);
   const birdY = useSelector((state) => state.bird.y);
   const birdWidth = useSelector((state) => state.game.birdWidth);
-  const birdHeight = useSelector((state) => state.game.birdHeight);
   const obstacleWidth = useSelector((state) => state.game.obstacleWidth);
   const width = useSelector((state) => state.game.width);
   const gameHeight = useSelector((state) => state.game.height);
@@ -250,8 +228,6 @@ function Obstacle({
           height,
           birdX,
           birdY,
-          birdWidth,
-          birdHeight,
           isTop,
           gameHeight,
           isSeaWorld,
