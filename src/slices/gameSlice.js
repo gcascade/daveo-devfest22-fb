@@ -33,6 +33,7 @@ const initialState = {
   changingLevel: false,
   changeLevelEnabled: true,
   scoreNeededForNextLevel: 100,
+  animationEnabled: false,
 };
 
 export const gameSlice = createSlice({
@@ -115,6 +116,7 @@ export const gameSlice = createSlice({
       state.changeLevelEnabled = action.payload.changeLevelEnabled ?? state.changeLevelEnabled;
       state.scoreNeededForNextLevel = action.payload.scoreNeededForNextLevel
       ?? state.scoreNeededForNextLevel;
+      state.animationEnabled = action.payload.animationEnabled ?? state.animationEnabled;
 
       if (state.isSeaWorld) {
         state.birdWidth = state.nautilusWidth;

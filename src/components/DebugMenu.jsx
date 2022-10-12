@@ -18,6 +18,7 @@ export default function DebugMenu() {
   const seaWorld = useSelector((state) => state.game.isSeaWorld);
   const scoreNeededForNextLevel = useSelector((state) => state.game.scoreNeededForNextLevel);
   const changeLevelEnabled = useSelector((state) => state.game.changeLevelEnabled);
+  const animationEnabled = useSelector((state) => state.game.animationEnabled);
 
   return (
     <div>
@@ -146,6 +147,22 @@ export default function DebugMenu() {
             value={godMode}
             checked={godMode}
             onChange={((e) => dispatch(updateSettings({ godMode: e.target.checked })))}
+          />
+        </div>
+        <br />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'right',
+          }}
+        >
+          <span>Animation</span>
+          <input
+            type="checkbox"
+            value={animationEnabled}
+            checked={animationEnabled}
+            onChange={((e) => dispatch(updateSettings({ animationEnabled: e.target.checked })))}
           />
         </div>
       </div>
