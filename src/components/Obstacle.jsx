@@ -11,6 +11,7 @@ import {
 } from '../slices/gameSlice';
 import { balloonSprite, nautilusSprite } from '../constants';
 import { pointHitRectangle } from '../utils/collisionUtils';
+import { randomNumberBetween } from '../utils/randomUtils';
 
 /** check body
   * isTop => anchorY = 0 !isTop => anchorY = 1
@@ -205,8 +206,6 @@ function Obstacle({
   const width = useSelector((state) => state.game.width);
   const gameHeight = useSelector((state) => state.game.height);
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
-  // const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
-  // const obstacleMaxSpacing = useSelector((state) => state.game.obstacleMaxSpacing);
   const obstacleImageHeight = useSelector((state) => state.game.obstacleImageHeight);
   const gap = useSelector((state) => state.game.obstacleGap);
   const [scored, setScored] = useState(false);
@@ -217,6 +216,8 @@ function Obstacle({
   const speedIncrease = useSelector((state) => state.game.speedIncrease);
   const minHeight = useSelector((state) => state.game.obstacleMinHeight);
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
+  const obstacles = useSelector((state) => state.obstacle.obstacles);
+  const obstacleGap = useSelector((state) => state.game.obstacleGap);
 
   useTick(() => {
     if (!paused && gameHasStarted) {
@@ -247,13 +248,59 @@ function Obstacle({
         }
       } else if ((isDual && isTop) || !isDual) {
         dispatch(removeObstacle(id));
-        // const rand = Math.random() * (obstacleMaxSpacing -
-        // obstacleMinSpacing) + obstacleMinSpacing;
         const rand = 0;
         const newObstacleX = width + rand;
-        const newHeight = Math.floor(Math.random() * (0.5 * (gameHeight - minHeight)) + minHeight);
+
+        let newHeight = 0;
+
+        const lastObstacle = obstacles[obstacles.length - 1];
 
         const newIsDual = Math.random() >= 0.5;
+        const newIsTop = Math.random() >= 0.5;
+
+        const switchingOrientation = !newIsDual && newIsTop !== isTop;
+
+        // cut the screen in three parts : 40% top, 20% middle, 40% bottom
+        // if lastObstacle is in the top or bottom part, generate an obstacle in the middle part
+        const inTopOrBottomPart = lastObstacle.height < gameHeight * 0.2
+        || lastObstacle.height > 0.6 * gameHeight;
+
+        const startingHeight = newIsDual ? minHeight + obstacleGap / 2 : minHeight;
+
+        if (inTopOrBottomPart) {
+          // console.log('In top or bottom let\'s go mid');
+
+          if (lastObstacle.height > gameHeight / 2) {
+            // console.log("But I was so tall so I'll be nice this time");
+            if (switchingOrientation) {
+              // console.log("I'll be even nicer");
+              newHeight = newIsDual ? gameHeight / 2 : 0.4 * gameHeight;
+            } else {
+              newHeight = randomNumberBetween(startingHeight, gameHeight / 3);
+            }
+          } else {
+            newHeight = randomNumberBetween(gameHeight / 3, (gameHeight / 3) * 2);
+          }
+        } else {
+          if (switchingOrientation) {
+            // console.log("I might be mean, so I'll try to be nice");
+            newHeight = randomNumberBetween(startingHeight, gameHeight / 2);
+          }
+          newHeight = randomNumberBetween(startingHeight, 0.7 * gameHeight);
+        }
+
+        // last adjustments
+        if (newIsDual && Math.abs(lastObstacle.height - newHeight) > 0.25 * gameHeight) {
+          newHeight = randomNumberBetween(0.4 * gameHeight, 0.6 * gameHeight);
+        } else if (switchingOrientation && lastObstacle.height + newHeight > 0.8 * gameHeight) {
+          // make a small if the sum of the heights is too high
+          newHeight = randomNumberBetween(minHeight, 0.4 * gameHeight);
+        }
+
+        if (newIsDual) {
+          newHeight -= obstacleGap / 2;
+        }
+
         if (newIsDual) {
           dispatch(addDualObstacle({
             x: newObstacleX,
@@ -261,8 +308,6 @@ function Obstacle({
             gap,
           }));
         } else {
-          const newIsTop = Math.random() >= 0.5;
-
           dispatch(addObstacle({
             isTop: newIsTop, x: newObstacleX, y: newIsTop ? 0 : gameHeight, height: newHeight,
           }));
