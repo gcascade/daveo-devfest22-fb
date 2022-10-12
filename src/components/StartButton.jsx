@@ -29,7 +29,7 @@ function Start({ x, y, scale }) {
           dispatch(reset());
           dispatch(resetBird());
           dispatch(removeAllObstacles());
-          dispatch(setGameSpeed(2));
+          dispatch(setGameSpeed(4));
           dispatch(addDualObstacle({
             isTop: true,
             x: width,
