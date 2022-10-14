@@ -209,8 +209,6 @@ export default function SeaWorld({ width, height }) {
       moveElementHorizontally(yellowCoral2x, setYellowCoral2x, 2 * width, -1);
       moveElementHorizontally(redCoral1x, setRedCoral1x, 2 * width, -1);
       moveElementHorizontally(redCoral2x, setRedCoral2x, 2 * width, -1);
-
-      // TODO animation where fish goes faster once they disappear from the screen
     }
   });
 

@@ -91,6 +91,7 @@ export default function AirWorld({ width, height }) {
           <Cloud x={cloud3x} y={height * 0.5} scale={0.4} />
           <Mountain x={mountain1x} y={0.85 * height} scale={0.5} />
           <Mountain x={mountain2x} y={0.85 * height} scale={0.3} />
+          { !hidden && (<Elephant x={elephantX} y={0.85 * height} scale={0.1} />) }
           <Rock x={rockX} y={0.85 * height} scale={0.6} />
           <Tree x={tree1x} y={0.85 * height} scale={0.15} />
           <Tree x={tree3x} y={1 * height * 0.86} scale={0.2} />
@@ -99,7 +100,6 @@ export default function AirWorld({ width, height }) {
           <Tree x={tree6x} y={0.86 * height} scale={0.2} />
           <Tree x={tree7x} y={1 * height} scale={0.2} />
           <Tree x={tree2x} y={1 * height} scale={0.25} />
-          { !hidden && (<Elephant x={elephantX} y={0.85 * height} scale={0.1} />) }
           <Zeppelin x={zeppelinX} y={0.2 * height} scale={0.15} />
         </>
       )}
