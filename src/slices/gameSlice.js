@@ -10,7 +10,7 @@ const initialState = {
   height: 0.981 * 1080,
   width: 0.99 * 1920,
   obstacleSpeed: 1,
-  birdJumpVelocity: 15,
+  birdJumpVelocity: 20,
   birdWidth: 94,
   birdHeight: 120,
   obstacleWidth: 100,
@@ -34,6 +34,7 @@ const initialState = {
   changeLevelEnabled: true,
   scoreNeededForNextLevel: 100,
   animationEnabled: true,
+  birdScale: 1,
 };
 
 export const gameSlice = createSlice({
@@ -125,6 +126,8 @@ export const gameSlice = createSlice({
         state.birdWidth = initialState.balloonWidth;
         state.birdHeight = initialState.balloonHeight;
       }
+
+      state.birdScale = action.payload.birdScale ?? state.birdScale;
     },
     displayDebugMenu(state) {
       state.displayDebugMenu = true;

@@ -1,5 +1,5 @@
 export function moveElementHorizontally(x, setX, resetValue, speed) {
-  if ((speed < 0 && x > 0) || (speed > 0 && x < 1920)) {
+  if ((speed < 0 && x > -1920 / 2) || (speed > 0 && x < 1920)) {
     setX(x + speed);
   } else {
     setX(resetValue);

@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import obstacleImage from '../images/veryLongObstacle.png';
+import { useDispatch, useSelector } from 'react-redux';
+import obstacleImage2 from '../images/veryLongObstacle.png';
 import {
-  removeObstacle, moveObstacle, addObstacle, addDualObstacle,
+  addDualObstacle, addObstacle, moveObstacle, removeObstacle,
 } from '../slices/obstacleSlice';
-import {
-  incrementScore, endGame, updateSettings,
-} from '../slices/gameSlice';
+import { endGame, incrementScore, updateSettings } from '../slices/gameSlice';
 import { rollNextBonus, addBonus } from '../slices/bonusSlice';
 import { balloonSprite, nautilusSprite } from '../constants';
 import { pointHitRectangle } from '../utils/collisionUtils';
 import { randomNumberBetween, randomBonus } from '../utils/randomUtils';
 
 /** check body
-  * isTop => anchorY = 0 !isTop => anchorY = 1
-  * x
-  * isTop => body goes from obstacleX - obstacleWidth / 2 + 16 to obstacleX + obstacleWidth / 2 - 14
-  * !isTop => body goes from obstacleX - obstacleWidth / 2 + 14 to obstacleX + obstacleWidth / 2 -16
-  * y
-  * isTop => body goes from y = 0 = obstacleY to y = bodySize
-  * !isTop => body goes from gameHeight = y - bodySize to gameHeight = y
-  */
+ * isTop => anchorY = 0 !isTop => anchorY = 1
+ * x
+ * isTop => body goes from obstacleX - obstacleWidth / 2 + 16 to obstacleX + obstacleWidth / 2 - 14
+ * !isTop => body goes from obstacleX - obstacleWidth / 2 + 14 to obstacleX + obstacleWidth / 2 -16
+ * y
+ * isTop => body goes from y = 0 = obstacleY to y = bodySize
+ * !isTop => body goes from gameHeight = y - bodySize to gameHeight = y
+ */
 function checkCollisionWithObstacleBody(
   birdX,
   birdY,
@@ -111,15 +109,15 @@ function checkCollisionWithObstacle(
     headSize,
     isTop,
   )
-  || checkCollisionWithObstacleBody(
-    birdX,
-    birdY,
-    obstacleX,
-    obstacleY,
-    obstacleWidth,
-    bodySize,
-    isTop,
-  );
+        || checkCollisionWithObstacleBody(
+          birdX,
+          birdY,
+          obstacleX,
+          obstacleY,
+          obstacleWidth,
+          bodySize,
+          isTop,
+        );
 }
 
 function customCollision(
@@ -129,6 +127,7 @@ function customCollision(
   obstacleHeight,
   birdX,
   birdY,
+  birdScale,
   isTop,
   gameHeight,
   isSeaWorld,
@@ -142,8 +141,8 @@ function customCollision(
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < sprite.collisionData.coords.length; i++) {
     const birdPoint = sprite.collisionData.coords[i];
-    const birdPointX = birdX + birdPoint.x - sprite.collisionData.center.x;
-    const birdPointY = birdY + birdPoint.y - sprite.collisionData.center.y;
+    const birdPointX = birdX + birdPoint.x * birdScale - sprite.collisionData.center.x * birdScale;
+    const birdPointY = birdY + birdPoint.y * birdScale - sprite.collisionData.center.y * birdScale;
 
     if (checkCollisionWithObstacle(
       birdPointX,
@@ -171,6 +170,7 @@ function hasCollidedWithBird(
   obstacleHeight,
   birdX,
   birdY,
+  birdScale,
   isTop,
   gameHeight,
   isSeaWorld,
@@ -182,6 +182,7 @@ function hasCollidedWithBird(
     obstacleHeight,
     birdX,
     birdY,
+    birdScale,
     isTop,
     gameHeight,
     isSeaWorld,
@@ -203,6 +204,7 @@ function Obstacle({
   const birdX = useSelector((state) => state.bird.x);
   const birdY = useSelector((state) => state.bird.y);
   const birdWidth = useSelector((state) => state.game.birdWidth);
+  const birdScale = useSelector((state) => state.game.birdScale);
   const obstacleWidth = useSelector((state) => state.game.obstacleWidth);
   const width = useSelector((state) => state.game.width);
   const gameHeight = useSelector((state) => state.game.height);
@@ -231,6 +233,7 @@ function Obstacle({
           height,
           birdX,
           birdY,
+          birdScale,
           isTop,
           gameHeight,
           isSeaWorld,
@@ -275,7 +278,7 @@ function Obstacle({
         // cut the screen in three parts : 40% top, 20% middle, 40% bottom
         // if lastObstacle is in the top or bottom part, generate an obstacle in the middle part
         const inTopOrBottomPart = lastObstacle.height < gameHeight * 0.2
-        || lastObstacle.height > 0.6 * gameHeight;
+                    || lastObstacle.height > 0.6 * gameHeight;
 
         const startingHeight = newIsDual ? minHeight + obstacleGap / 2 : minHeight;
 
@@ -327,14 +330,16 @@ function Obstacle({
       }
     }
   });
+
+  const obstacleScale = 0.269;
   return (
     <Sprite
-      image={obstacleImage}
+      image={obstacleImage2}
       x={x}
       y={isTop ? y + height : y + obstacleImageHeight - height}
       angle={isTop ? 180 : 0}
       anchor={{ x: 0.5, y: isTop ? 0 : 1 }}
-      {...(isTop && { scale: { x: -1, y: 1 } })}
+      {...(isTop ? { scale: { x: -obstacleScale, y: obstacleScale } } : { scale: obstacleScale })}
     />
   );
 }

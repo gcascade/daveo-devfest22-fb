@@ -25,8 +25,9 @@ export default function AirWorld({ width, height }) {
   const gameIsRunning = gameIsStarted && !paused;
 
   const [cloud1x, setCloud1x] = useState(0.5 * width);
-  const [cloud2x, setCloud2x] = useState(1 * width);
+  const [cloud2x, setCloud2x] = useState(0.9 * width);
   const [cloud3x, setCloud3x] = useState(1.5 * width);
+  const [cloud4x, setCloud4x] = useState(2 * width);
   const [mountain1x, setMountain1x] = useState(0.5 * width);
   const [mountain2x, setMountain2x] = useState(0.25 * width);
   const [mountain3x, setMountain3x] = useState(1.25 * width);
@@ -51,6 +52,7 @@ export default function AirWorld({ width, height }) {
       moveElementHorizontally(cloud1x, setCloud1x, 2 * width, -0.1);
       moveElementHorizontally(cloud2x, setCloud2x, 2 * width, -0.1);
       moveElementHorizontally(cloud3x, setCloud3x, 2 * width, -0.1);
+      moveElementHorizontally(cloud4x, setCloud4x, 2 * width, -0.1);
       moveElementHorizontally(mountain1x, setMountain1x, 2 * width, -0.1);
       moveElementHorizontally(mountain2x, setMountain2x, 2 * width, -0.1);
       moveElementHorizontally(mountain3x, setMountain3x, 2 * width, -0.1);
@@ -75,31 +77,32 @@ export default function AirWorld({ width, height }) {
     <Container>
       {!isSeaWorld && (
         <>
-          <Cloud x={cloud1x} y={height * 0.5} scale={0.4} />
-          <Cloud x={cloud2x} y={height * 0.45} scale={0.5} />
+          <Cloud x={cloud1x} y={height * 0.2} scale={0.4} />
+          <Cloud x={cloud2x} y={height * 0.3} scale={0.5} mirrored />
           <Mountain x={mountain1x} y={0.85 * height} scale={0.5} />
           <Mountain x={mountain2x} y={0.85 * height} scale={0.3} />
           <Rock x={rockX} y={0.85 * height} scale={0.5} />
           <Tree x={tree1x} y={0.85 * height} scale={0.15} />
-          <Tree x={tree2x} y={1 * height} scale={0.25} />
-          <Tree x={tree3x} y={1 * height * 0.86} scale={0.2} />
+          <Tree x={tree2x} y={1 * height} scale={0.35} />
+          <Tree x={tree3x} y={0.86 * height} scale={0.2} />
           <Zeppelin x={zeppelinX} y={0.2 * height} scale={0.15} />
           <Container>
             <DaveoLogo x={daveoLogoX} y={0.2 * height} scale={0.1} color={1} />
             <DevFest x={devFestX} y={0.42 * height} scale={0.1} color={1} />
           </Container>
-          <Cloud x={cloud3x} y={height * 0.5} scale={0.4} />
+          <Cloud x={cloud3x} y={height * 0.2} scale={0.4} mirrored />
+          <Cloud x={cloud4x} y={height * 0.3} scale={0.5} />
           <Mountain x={mountain1x} y={0.85 * height} scale={0.5} />
           <Mountain x={mountain2x} y={0.85 * height} scale={0.3} />
-          { !hidden && (<Elephant x={elephantX} y={0.85 * height} scale={0.1} />) }
+          {!hidden && (<Elephant x={elephantX} y={0.85 * height} scale={0.4} />)}
           <Rock x={rockX} y={0.85 * height} scale={0.6} />
           <Tree x={tree1x} y={0.85 * height} scale={0.15} />
-          <Tree x={tree3x} y={1 * height * 0.86} scale={0.2} />
-          <Tree x={tree4x} y={0.85 * height} scale={0.15} />
+          <Tree x={tree3x} y={0.86 * height} scale={0.2} />
+          <Tree x={tree4x} y={0.85 * height} scale={0.15} mirrored />
           <Tree x={tree5x} y={0.85 * height} scale={0.25} />
           <Tree x={tree6x} y={0.86 * height} scale={0.2} />
-          <Tree x={tree7x} y={1 * height} scale={0.2} />
-          <Tree x={tree2x} y={1 * height} scale={0.25} />
+          <Tree x={tree7x} y={1 * height} scale={0.3} mirrored />
+          <Tree x={tree2x} y={1 * height} scale={0.35} />
           <Zeppelin x={zeppelinX} y={0.2 * height} scale={0.15} />
         </>
       )}

@@ -8,6 +8,7 @@ export default function DebugMenu() {
   const obstacleSpeed = useSelector((state) => state.game.obstacleSpeed);
   const gravity = useSelector((state) => state.game.gravity);
   const birdJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
+  const birdScale = useSelector((state) => state.game.birdScale);
   const obstacleGap = useSelector((state) => state.game.obstacleGap);
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const maxGameSpeed = useSelector((state) => state.game.maxGameSpeed);
@@ -51,6 +52,13 @@ export default function DebugMenu() {
           type="number"
           value={birdJumpVelocity}
           onChange={((e) => dispatch(updateSettings({ birdJumpVelocity: parseFloat(e.target.value.replace(',', '.')) })))}
+        />
+        <br />
+        <span>Bird scale</span>
+        <input
+          type="number"
+          value={birdScale}
+          onChange={((e) => dispatch(updateSettings({ birdScale: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
         <span>Obstacle Speed</span>

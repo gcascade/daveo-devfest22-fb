@@ -5,9 +5,17 @@ import PropTypes from 'prop-types';
 
 import cloudImage from '../images/clouds.png';
 
-export default function Cloud({ x, y, scale }) {
+export default function Cloud({
+  x, y, scale, mirrored,
+}) {
   return (
-    <Sprite image={cloudImage} scale={scale} x={x} y={y} anchor={(0.5, 1)} />
+    <Sprite
+      image={cloudImage}
+      scale={{ x: mirrored ? -scale : scale, y: scale }}
+      x={x}
+      y={y}
+      anchor={0.5}
+    />
   );
 }
 
@@ -15,4 +23,9 @@ Cloud.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   scale: PropTypes.number.isRequired,
+  mirrored: PropTypes.bool,
+};
+
+Cloud.defaultProps = {
+  mirrored: false,
 };
