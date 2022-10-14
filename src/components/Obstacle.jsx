@@ -322,6 +322,7 @@ function Obstacle({
       y={isTop ? y + height : y + obstacleImageHeight - height}
       angle={isTop ? 180 : 0}
       anchor={{ x: 0.5, y: isTop ? 0 : 1 }}
+      {...(isTop && { scale: { x: -1, y: 1 } })}
     />
   );
 }
