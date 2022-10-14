@@ -12,13 +12,7 @@ import Elephant from './Elephant';
 import DevFest from './DevFest';
 import Zeppelin from './Zeppelin';
 
-function moveElementHorizontally(x, setX, resetValue, speed) {
-  if ((speed < 0 && x > 0) || (speed > 0 && x < 1920)) {
-    setX(x + speed);
-  } else {
-    setX(resetValue);
-  }
-}
+import { moveElementHorizontally } from '../utils/movementUtils';
 
 export default function AirWorld({ width, height }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
@@ -50,6 +44,9 @@ export default function AirWorld({ width, height }) {
   const [devFestX, setDevFestX] = useState(0.6 * width);
 
   useTick(() => {
+    if (isSeaWorld) {
+      return;
+    }
     if (animationEnabled && gameIsRunning) {
       moveElementHorizontally(cloud1x, setCloud1x, 2 * width, -0.1);
       moveElementHorizontally(cloud2x, setCloud2x, 2 * width, -0.1);

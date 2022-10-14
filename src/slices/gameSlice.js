@@ -33,7 +33,7 @@ const initialState = {
   changingLevel: false,
   changeLevelEnabled: true,
   scoreNeededForNextLevel: 100,
-  animationEnabled: false,
+  animationEnabled: true,
 };
 
 export const gameSlice = createSlice({
