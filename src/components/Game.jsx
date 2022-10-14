@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import background from '../images/background.png';
 import seaBackground from '../images/seaBackground.png';
 
+import Bonus from './Bonus';
 import Bird from './Bird';
 import Stage from './Stage';
 import Obstacle from './Obstacle';
@@ -93,6 +94,27 @@ function ObstacleContainer() {
   );
 }
 
+function BonusContainer() {
+  const bonus = useSelector((state) => state.bonus.currentBonus);
+  return (
+    <Container>
+      {bonus
+      && (
+      <Bonus
+        id={bonus.id}
+        x={bonus.x}
+        y={bonus.y}
+        type={bonus.type}
+        scale={bonus.scale}
+        active={bonus.active}
+        goingUp={bonus.goingUp}
+        minY={bonus.minY}
+        maxY={bonus.maxY}
+      />
+      )}
+    </Container>
+  );
+}
 const spaceKey = keyboard(' ');
 const enterKey = keyboard('Enter');
 const dKey = keyboard('d');
@@ -222,6 +244,7 @@ function Game() {
         <Container>
           <Bird />
         </Container>
+        <BonusContainer />
         <ObstacleContainer />
         <StartButtonContainer width={width} height={height} />
         <ScoreContainer width={width} height={height} />

@@ -6,6 +6,7 @@ import startImage from '../images/start.png';
 import { startGame, reset, setGameSpeed } from '../slices/gameSlice';
 import { addObstacle, addDualObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { move as moveBird, resetBird } from '../slices/birdSlice';
+import { reset as resetBonus } from '../slices/bonusSlice';
 
 function Start({ x, y, scale }) {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function Start({ x, y, scale }) {
         if (!gameHasStarted) {
           dispatch(reset());
           dispatch(resetBird());
+          dispatch(resetBonus());
           dispatch(removeAllObstacles());
           dispatch(setGameSpeed(4));
           dispatch(addDualObstacle({

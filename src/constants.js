@@ -142,3 +142,5 @@ export const obstacleHeadSprite = {
     ],
   },
 };
+
+export const bonusTypes = ['coin', 'heart'];

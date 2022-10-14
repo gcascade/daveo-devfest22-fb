@@ -9,9 +9,10 @@ import {
 import {
   incrementScore, endGame, updateSettings,
 } from '../slices/gameSlice';
+import { rollNextBonus, addBonus } from '../slices/bonusSlice';
 import { balloonSprite, nautilusSprite } from '../constants';
 import { pointHitRectangle } from '../utils/collisionUtils';
-import { randomNumberBetween } from '../utils/randomUtils';
+import { randomNumberBetween, randomBonus } from '../utils/randomUtils';
 
 /** check body
   * isTop => anchorY = 0 !isTop => anchorY = 1
@@ -218,6 +219,7 @@ function Obstacle({
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
   const obstacles = useSelector((state) => state.obstacle.obstacles);
   const obstacleGap = useSelector((state) => state.game.obstacleGap);
+  const nextBonus = useSelector((state) => state.bonus.nextBonus);
 
   useTick(() => {
     if (!paused && gameHasStarted) {
@@ -240,6 +242,16 @@ function Obstacle({
           if (hasPassedBird(x, birdX, obstacleWidth, birdWidth) && !scored) {
             dispatch(incrementScore());
             setScored(true);
+
+            if (score >= nextBonus) {
+              dispatch(rollNextBonus());
+              dispatch(addBonus({
+                x: width,
+                y: randomNumberBetween(0.1 * gameHeight, 0.9 * gameHeight),
+                scale: 0.5,
+                type: randomBonus(),
+              }));
+            }
 
             if (score >= 19 && score % 10 === 9 && gameSpeed < maxGameSpeed) {
               dispatch(updateSettings({ gameSpeed: gameSpeed + speedIncrease }));
