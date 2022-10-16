@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import {
   Sprite, Text, Container, useTick,
 } from '@inlet/react-pixi';
-
+import { sound } from '@pixi/sound';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -133,16 +133,19 @@ function BackgroundContainer() {
   const [updatedLevel, setUpdatedLevel] = React.useState(false);
 
   const backgroundImage = isSeaWorld ? seaBackground : background;
+  const jumpSound = isSeaWorld ? 'nautilus_jump' : 'balloon_jump';
 
   enterKey.press = () => {
     if (!paused && gameHasStarted) {
       dispatch(jump());
+      sound.play(jumpSound);
     }
   };
 
   spaceKey.press = () => {
     if (!paused && gameHasStarted) {
       dispatch(jump());
+      sound.play(jumpSound);
     }
   };
 
@@ -190,6 +193,7 @@ function BackgroundContainer() {
           if (!paused && gameHasStarted) {
             dispatch(setJumpVelocity(birdJumpVelocity));
             dispatch(jump());
+            sound.play(jumpSound);
           }
         }}
       />

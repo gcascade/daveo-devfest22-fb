@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
+import { sound } from '@pixi/sound';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import obstacleImage2 from '../images/veryLongObstacle.png';
@@ -249,6 +250,7 @@ function Obstacle({
             dispatch(loseLife());
             dispatch(removeOneHeartBonus());
             dispatch(setInvincible(true));
+            sound.play('hit');
           } else {
             dispatch(endGame());
           }

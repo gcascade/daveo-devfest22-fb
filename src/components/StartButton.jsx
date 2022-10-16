@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sprite } from '@inlet/react-pixi';
+import { sound } from '@pixi/sound';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import startImage from '../images/start.png';
@@ -26,6 +27,8 @@ function Start({ x, y, scale }) {
       scale={scale}
       interactive
       pointerdown={() => {
+        sound.context.playEmptySound();
+        sound.play('start');
         if (!gameHasStarted) {
           dispatch(reset());
           dispatch(resetBird());

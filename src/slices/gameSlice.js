@@ -38,6 +38,7 @@ const initialState = {
   lives: 0,
   pointsPerCoin: 10,
   totalScore: 0,
+  sound: true,
 };
 
 export const gameSlice = createSlice({
@@ -116,6 +117,7 @@ export const gameSlice = createSlice({
       state.animationEnabled = action.payload.animationEnabled ?? state.animationEnabled;
       state.lives = action.payload.lives ?? state.lives;
       state.pointsPerCoin = action.payload.pointsPerCoin ?? state.pointsPerCoin;
+      state.sound = action.payload.sound ?? state.sound;
 
       if (state.isSeaWorld) {
         state.birdWidth = state.nautilusWidth;

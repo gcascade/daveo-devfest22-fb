@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
+import { sound } from '@pixi/sound';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import coin from '../images/coin_100x100.png';
@@ -71,8 +72,10 @@ function Bonus({
 
       if (type === 'heart') {
         dispatch(getLife());
+        sound.play('heart');
       } else if (type === 'coin') {
         dispatch(incrementTotalScore(pointsPerCoin));
+        sound.play('coin');
       }
     }
 
