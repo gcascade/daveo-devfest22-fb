@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/daveo-devfest22-fb/static/css/main.31d6cfe0.css",
-    "main.js": "/daveo-devfest22-fb/static/js/main.4e4db07c.js",
+    "main.js": "/daveo-devfest22-fb/static/js/main.54250f22.js",
     "static/media/seaBackground.png": "/daveo-devfest22-fb/static/media/seaBackground.10210d5cc2d459f0ae7b.png",
     "static/media/background.png": "/daveo-devfest22-fb/static/media/background.039b85c568cce56ce5ae.png",
     "static/media/tree.png": "/daveo-devfest22-fb/static/media/tree.4c7f1fb158396757c68e.png",
@@ -11,10 +11,10 @@
     "static/media/veryLongObstacle.png": "/daveo-devfest22-fb/static/media/veryLongObstacle.3f4f0f58b75c5a4d2040.png",
     "static/media/clouds.png": "/daveo-devfest22-fb/static/media/clouds.5380850d60182f3b6107.png",
     "index.html": "/daveo-devfest22-fb/index.html",
-    "main.4e4db07c.js.map": "/daveo-devfest22-fb/static/js/main.4e4db07c.js.map"
+    "main.54250f22.js.map": "/daveo-devfest22-fb/static/js/main.54250f22.js.map"
   },
   "entrypoints": [
     "static/css/main.31d6cfe0.css",
-    "static/js/main.4e4db07c.js"
+    "static/js/main.54250f22.js"
   ]
 }
