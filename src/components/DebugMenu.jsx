@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { updateSettings } from '../slices/gameSlice';
+import { updateSettings, incrementTotalScore, decreaseTotalScore } from '../slices/gameSlice';
+import { collectBonus, removeOneCoinBonus, removeOneHeartBonus } from '../slices/bonusSlice';
 
 export default function DebugMenu() {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ export default function DebugMenu() {
   const scoreNeededForNextLevel = useSelector((state) => state.game.scoreNeededForNextLevel);
   const changeLevelEnabled = useSelector((state) => state.game.changeLevelEnabled);
   const animationEnabled = useSelector((state) => state.game.animationEnabled);
+  const lives = useSelector((state) => state.game.lives);
+  const pointsPerCoin = useSelector((state) => state.game.pointsPerCoin);
 
   return (
     <div>
@@ -110,6 +113,20 @@ export default function DebugMenu() {
           onChange={((e) => dispatch(updateSettings({ scoreNeededForNextLevel: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
+        <span>Lives</span>
+        <input
+          type="number"
+          value={lives}
+          onChange={((e) => dispatch(updateSettings({ lives: parseFloat(e.target.value.replace(',', '.')) })))}
+        />
+        <br />
+        <span>Points per coin</span>
+        <input
+          type="number"
+          value={pointsPerCoin}
+          onChange={((e) => dispatch(updateSettings({ pointsPerCoin: parseFloat(e.target.value.replace(',', '.')) })))}
+        />
+        <br />
         <div
           style={{
             display: 'flex',
@@ -172,6 +189,74 @@ export default function DebugMenu() {
             checked={animationEnabled}
             onChange={((e) => dispatch(updateSettings({ animationEnabled: e.target.checked })))}
           />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            justifyItems: 'center',
+          }}
+        >
+          <button
+            onClick={() => {
+              dispatch(collectBonus({ type: 'coin' }));
+              dispatch(incrementTotalScore(pointsPerCoin));
+            }}
+            type="button"
+            style={{
+              margin: '0 8px',
+            }}
+          >
+            +1 coin
+          </button>
+          <button
+            onClick={() => {
+              dispatch(removeOneCoinBonus());
+              dispatch(decreaseTotalScore(pointsPerCoin));
+            }}
+            type="button"
+            style={{
+              margin: '0 8px',
+            }}
+          >
+            -1 coin
+          </button>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            justifyItems: 'center',
+          }}
+        >
+          <button
+            onClick={() => {
+              dispatch(collectBonus({ type: 'heart' }));
+              dispatch(updateSettings({ lives: lives + 1 }));
+            }}
+            type="button"
+            style={{
+              margin: '0 8px',
+            }}
+          >
+            +1 heart
+          </button>
+          <button
+            onClick={() => {
+              dispatch(removeOneHeartBonus());
+              dispatch(updateSettings({ lives: lives - 1 }));
+            }}
+            type="button"
+            style={{
+              margin: '0 8px',
+            }}
+          >
+            -1 heart
+          </button>
         </div>
       </div>
       )}

@@ -1,9 +1,10 @@
-import { Sprite, useTick } from '@inlet/react-pixi';
+import { AnimatedSprite, Sprite, useTick } from '@inlet/react-pixi';
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import balloonImage from '../images/balloon_daveo.png';
 import nautilusImage from '../images/Nautilus.png';
+import transparentImage from '../images/transparent.png';
 import {
   move, resetFallVelocity, setFallVelocity, setJumpVelocity, setY, stopJump,
 } from '../slices/birdSlice';
@@ -26,6 +27,7 @@ export default function Bird() {
   const godMode = useSelector((state) => state.game.godMode);
   const paused = useSelector((state) => state.game.paused);
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
+  const playHitAnimation = useSelector((state) => state.bird.invincible);
 
   const image = isSeaWorld ? nautilusImage : balloonImage;
 
@@ -61,6 +63,21 @@ export default function Bird() {
   const xScale = isSeaWorld ? -nautilusScale : ballonScale;
   const yScale = isSeaWorld ? nautilusScale : ballonScale;
 
+  if (playHitAnimation) {
+    return (
+      <AnimatedSprite
+        images={[image, transparentImage]}
+        scale={{ x: xScale, y: yScale }}
+        x={x}
+        y={y}
+        anchor={0.5}
+        isPlaying={playHitAnimation}
+        animationSpeed={0.2}
+      />
+    );
+  }
+  // workaround to force the default image after animation
+  // best way would be to use PIXI.AnimatedSprite and not react-pixi AnimatedSprite
   return (
     <Sprite
       image={image}

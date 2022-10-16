@@ -7,6 +7,7 @@ const initialState = {
   isJumping: false,
   jumpVelocity: 0,
   fallVelocity: 1,
+  invincible: false,
 };
 
 export const birdSlice = createSlice({
@@ -41,12 +42,17 @@ export const birdSlice = createSlice({
       state.isJumping = initialState.isJumping;
       state.jumpVelocity = initialState.jumpVelocity;
       state.fallVelocity = initialState.fallVelocity;
+      state.invincible = initialState.invincible;
+    },
+    setInvincible(state, action) {
+      state.invincible = action.payload;
     },
   },
 });
 
 export const {
   move, setY, jump, stopJump, setJumpVelocity, resetBird, setFallVelocity, resetFallVelocity,
+  setInvincible,
 } = birdSlice.actions;
 
 export default birdSlice.reducer;

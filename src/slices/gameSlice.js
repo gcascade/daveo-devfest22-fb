@@ -35,6 +35,9 @@ const initialState = {
   scoreNeededForNextLevel: 100,
   animationEnabled: true,
   birdScale: 1,
+  lives: 0,
+  pointsPerCoin: 10,
+  totalScore: 0,
 };
 
 export const gameSlice = createSlice({
@@ -42,36 +45,29 @@ export const gameSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      // state.gravity = initialState.gravity;
       state.score = initialState.score;
       state.hasStarted = initialState.hasStarted;
-      // state.height = initialState.height;
-      // state.width = initialState.width;
-      // state.obstacleSpeed = initialState.obstacleSpeed;
-      // state.birdJumpVelocity = initialState.birdJumpVelocity;
-      // state.birdWidth = initialState.birdWidth;
-      // state.birdHeight = initialState.birdHeight;
-      // state.obstacleWidth = initialState.obstacleWidth;
       state.gameSpeed = initialState.gameSpeed;
-      // state.obstacleMinSpacing = initialState.obstacleMinSpacing;
-      // state.obstacleMaxSpacing = initialState.obstacleMaxSpacing;
-      // state.obstacleGap = initialState.obstacleGap;
-      // state.obstacleImageHeight = initialState.obstacleImageHeight;
-      // state.godMode = initialState.godMode;
-      // state.maxGameSpeed = initialState.maxGameSpeed;
       state.displayDebugMenu = initialState.displayDebugMenu;
       state.paused = initialState.paused;
-      // state.speedIncrease = initialState.speedIncrease;
-      // state.obstacleMinHeight = initialState.obstacleMinHeight;
       state.isSeaWorld = initialState.isSeaWorld;
+      state.lives = initialState.lives;
+      state.totalScore = initialState.totalScore;
     },
     incrementScore(state) {
       state.score += 1;
+      state.totalScore += 1;
 
       if (state.changeLevelEnabled && state.score === state.scoreNeededForNextLevel) {
         state.changingLevel = true;
         state.paused = true;
       }
+    },
+    incrementTotalScore(state, action) {
+      state.totalScore += action.payload ?? 0;
+    },
+    decreaseTotalScore(state, action) {
+      state.totalScore -= action.payload ?? 0;
     },
     startGame(state) {
       state.hasStarted = true;
@@ -82,7 +78,7 @@ export const gameSlice = createSlice({
 
       if (REACT_APP_SAVE_SCORE === 'true') {
         const scores = JSON.parse(localStorage.getItem('scores') || '[]');
-        scores.push(state.score);
+        scores.push(state.totalScore);
         localStorage.setItem('scores', JSON.stringify(scores));
 
         // save file to server
@@ -92,7 +88,7 @@ export const gameSlice = createSlice({
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ score: state.score }),
+            body: JSON.stringify({ score: state.totalScore }),
           });
         }
       }
@@ -118,6 +114,8 @@ export const gameSlice = createSlice({
       state.scoreNeededForNextLevel = action.payload.scoreNeededForNextLevel
       ?? state.scoreNeededForNextLevel;
       state.animationEnabled = action.payload.animationEnabled ?? state.animationEnabled;
+      state.lives = action.payload.lives ?? state.lives;
+      state.pointsPerCoin = action.payload.pointsPerCoin ?? state.pointsPerCoin;
 
       if (state.isSeaWorld) {
         state.birdWidth = state.nautilusWidth;
@@ -141,12 +139,20 @@ export const gameSlice = createSlice({
     resumeGame(state) {
       state.paused = false;
     },
+    getLife(state) {
+      state.lives += 1;
+    },
+    loseLife(state) {
+      state.lives -= 1;
+    },
   },
 });
 
 export const {
   reset,
   incrementScore,
+  incrementTotalScore,
+  decreaseTotalScore,
   startGame,
   endGame,
   setGameSpeed,
@@ -155,6 +161,8 @@ export const {
   hideDebugMenu,
   pauseGame,
   resumeGame,
+  getLife,
+  loseLife,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

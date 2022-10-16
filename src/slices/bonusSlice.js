@@ -1,12 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { v4 as randomUuid } from 'uuid';
 
 const initialState = {
   collectedBonuses: [],
   nextBonus: 5,
   currentBonus: {
-    id: '1', type: 'coin', x: -500, y: 500, scale: 0.5, active: false, goingUp: true, minY: 400, maxY: 600,
+    type: 'coin', x: -500, y: 500, scale: 0.5, active: false, goingUp: true, minY: 400, maxY: 600,
   },
 };
 
@@ -16,7 +15,6 @@ export const bonusSlice = createSlice({
   reducers: {
     addBonus: (state, action) => {
       state.currentBonus = {
-        id: randomUuid,
         type: action.payload.type,
         x: action.payload.x,
         y: action.payload.y,
@@ -58,11 +56,31 @@ export const bonusSlice = createSlice({
         active: action.payload.active ?? state.currentBonus.active,
       };
     },
+    removeOneHeartBonus: (state) => {
+      const bonusIndex = state.collectedBonuses.findIndex((bonus) => bonus.type === 'heart');
+      if (bonusIndex !== -1) {
+        state.collectedBonuses.splice(bonusIndex, 1);
+      }
+    },
+    removeOneCoinBonus: (state) => {
+      const bonusIndex = state.collectedBonuses.findIndex((bonus) => bonus.type === 'coin');
+      if (bonusIndex !== -1) {
+        state.collectedBonuses.splice(bonusIndex, 1);
+      }
+    },
   },
 });
 
 export const {
-  addBonus, reset, rollNextBonus, moveBonus, collectBonus, resetBonus, updateBonus,
+  addBonus,
+  reset,
+  rollNextBonus,
+  moveBonus,
+  collectBonus,
+  resetBonus,
+  updateBonus,
+  removeOneHeartBonus,
+  removeOneCoinBonus,
 } = bonusSlice.actions;
 
 export default bonusSlice.reducer;

@@ -6,8 +6,11 @@ import obstacleImage2 from '../images/veryLongObstacle.png';
 import {
   addDualObstacle, addObstacle, moveObstacle, removeObstacle,
 } from '../slices/obstacleSlice';
-import { endGame, incrementScore, updateSettings } from '../slices/gameSlice';
-import { rollNextBonus, addBonus } from '../slices/bonusSlice';
+import {
+  endGame, incrementScore, updateSettings, loseLife,
+} from '../slices/gameSlice';
+import { rollNextBonus, addBonus, removeOneHeartBonus } from '../slices/bonusSlice';
+import { setInvincible } from '../slices/birdSlice';
 import { balloonSprite, nautilusSprite } from '../constants';
 import { pointHitRectangle } from '../utils/collisionUtils';
 import { randomNumberBetween, randomBonus } from '../utils/randomUtils';
@@ -192,6 +195,8 @@ function hasCollidedWithBird(
 function hasPassedBird(x, birdX, obstacleWidth, birdWidth) {
   const birdLeft = birdX - birdWidth / 2;
   const obstacleRight = x + obstacleWidth / 2;
+
+  // + hasCollidedBird ??
   return obstacleRight < birdLeft;
 }
 
@@ -222,6 +227,8 @@ function Obstacle({
   const obstacles = useSelector((state) => state.obstacle.obstacles);
   const obstacleGap = useSelector((state) => state.game.obstacleGap);
   const nextBonus = useSelector((state) => state.bonus.nextBonus);
+  const lives = useSelector((state) => state.game.lives);
+  const birdIsInvincible = useSelector((state) => state.bird.invincible);
 
   useTick(() => {
     if (!paused && gameHasStarted) {
@@ -237,19 +244,27 @@ function Obstacle({
           isTop,
           gameHeight,
           isSeaWorld,
-        ) && !godMode) {
-          dispatch(endGame());
+        ) && !godMode && !birdIsInvincible && !scored) {
+          if (lives && lives > 0) {
+            dispatch(loseLife());
+            dispatch(removeOneHeartBonus());
+            dispatch(setInvincible(true));
+          } else {
+            dispatch(endGame());
+          }
         } else if ((isDual && isTop) || !isDual) {
           dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed }));
 
           if (hasPassedBird(x, birdX, obstacleWidth, birdWidth) && !scored) {
             dispatch(incrementScore());
+            dispatch(setInvincible(false));
             setScored(true);
 
             if (score >= nextBonus) {
               dispatch(rollNextBonus());
               dispatch(addBonus({
-                x: width,
+                // between 2 pipes
+                x: 1.125 * width - obstacleWidth / 2 - birdWidth / 2,
                 y: randomNumberBetween(0.1 * gameHeight, 0.9 * gameHeight),
                 scale: 0.5,
                 type: randomBonus(),

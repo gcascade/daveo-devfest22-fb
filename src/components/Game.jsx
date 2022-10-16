@@ -17,6 +17,7 @@ import Obstacle from './Obstacle';
 import DualObstacle from './DualObstacle';
 import StartButton from './StartButton';
 import DebugMenu from './DebugMenu';
+import CollectedBonusesContainer from './CollectedBonusesDisplay';
 
 import AirWorld from './AirWorld';
 import SeaWorld from './SeaWorld';
@@ -101,7 +102,6 @@ function BonusContainer() {
       {bonus
       && (
       <Bonus
-        id={bonus.id}
         x={bonus.x}
         y={bonus.y}
         type={bonus.type}
@@ -208,13 +208,13 @@ function StartButtonContainer({ width, height }) {
 }
 
 function ScoreContainer({ width, height }) {
-  const score = useSelector((state) => state.game.score);
+  const totalScore = useSelector((state) => state.game.totalScore);
   return (
     <Container
       x={width / 2}
       y={height / 10}
     >
-      <Text text={score} style={textStyle} anchor={0.5} />
+      <Text text={totalScore} style={textStyle} anchor={0.5} />
     </Container>
   );
 }
@@ -248,6 +248,7 @@ function Game() {
         <ObstacleContainer />
         <StartButtonContainer width={width} height={height} />
         <ScoreContainer width={width} height={height} />
+        <CollectedBonusesContainer width={width} height={height} />
       </Stage>
       <DebugMenu enabled={REACT_APP_ENABLE_CHEATS === 'true'} />
     </>
@@ -262,6 +263,11 @@ ScoreContainer.propTypes = {
 };
 
 StartButtonContainer.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
+
+CollectedBonusesContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
 };

@@ -8,6 +8,7 @@ import { pointHitCircle } from '../utils/collisionUtils';
 import {
   collectBonus, moveBonus, resetBonus, updateBonus,
 } from '../slices/bonusSlice';
+import { getLife, incrementTotalScore } from '../slices/gameSlice';
 import { balloonSprite, nautilusSprite } from '../constants';
 
 const baseRadius = 50;
@@ -29,7 +30,7 @@ function checkCollision(x, y, radius, birdX, birdY, isSeaWorld) {
 }
 
 function Bonus({
-  id, x, y, type, scale, active, goingUp, minY, maxY,
+  x, y, type, scale, active, goingUp, minY, maxY,
 }) {
   const dispatch = useDispatch();
   const birdX = useSelector((state) => state.bird.x);
@@ -38,6 +39,7 @@ function Bonus({
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const paused = useSelector((state) => state.game.paused);
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
+  const pointsPerCoin = useSelector((state) => state.game.pointsPerCoin);
 
   let image;
 
@@ -65,7 +67,13 @@ function Bonus({
     }
 
     if (checkCollision(x, y, baseRadius * scale, birdX, birdY, isSeaWorld)) {
-      dispatch(collectBonus({ id, type }));
+      dispatch(collectBonus({ type }));
+
+      if (type === 'heart') {
+        dispatch(getLife());
+      } else if (type === 'coin') {
+        dispatch(incrementTotalScore(pointsPerCoin));
+      }
     }
 
     if (x < 0) {
@@ -85,7 +93,6 @@ function Bonus({
 }
 
 Bonus.propTypes = {
-  id: PropTypes.string.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
