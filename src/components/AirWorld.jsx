@@ -64,7 +64,7 @@ export default function AirWorld({ width, height }) {
       moveElementHorizontally(tree5x, setTree5x, 2 * width, -0.1);
       moveElementHorizontally(tree6x, setTree6x, 2 * width, -0.1);
       moveElementHorizontally(tree7x, setTree7x, 2 * width, -1);
-      moveElementHorizontally(elephantX, setElephantX, 2 * width, -0.1);
+      moveElementHorizontally(elephantX, setElephantX, 2 * width, -0.5);
       moveElementHorizontally(zeppelinX, setZeppelinX, -2 * width, 2);
       moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.1);
       moveElementHorizontally(devFestX, setDevFestX, -width, 0.1);
@@ -94,13 +94,13 @@ export default function AirWorld({ width, height }) {
           <Cloud x={cloud4x} y={height * 0.3} scale={0.5} />
           <Mountain x={mountain1x} y={0.85 * height} scale={0.5} />
           <Mountain x={mountain2x} y={0.85 * height} scale={0.3} />
-          {!hidden && (<Elephant x={elephantX} y={0.85 * height} scale={0.4} />)}
           <Rock x={rockX} y={0.85 * height} scale={0.6} />
           <Tree x={tree1x} y={0.85 * height} scale={0.15} />
           <Tree x={tree3x} y={0.86 * height} scale={0.2} />
           <Tree x={tree4x} y={0.85 * height} scale={0.15} mirrored />
           <Tree x={tree5x} y={0.85 * height} scale={0.25} />
           <Tree x={tree6x} y={0.86 * height} scale={0.2} />
+          {!hidden && (<Elephant x={elephantX} y={0.85 * height} scale={0.4} />)}
           <Tree x={tree7x} y={1 * height} scale={0.3} mirrored />
           <Tree x={tree2x} y={1 * height} scale={0.35} />
           <Zeppelin x={zeppelinX} y={0.2 * height} scale={0.15} />
