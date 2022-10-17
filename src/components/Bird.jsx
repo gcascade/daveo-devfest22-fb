@@ -4,7 +4,9 @@ import React from 'react';
 import { sound } from '@pixi/sound';
 import { useDispatch, useSelector } from 'react-redux';
 import balloonImage from '../images/balloon_daveo.png';
+import ballonGameOverImage from '../images/balloon_game_over.png';
 import nautilusImage from '../images/nautilus.png';
+import nautilusGameOverImage from '../images/nautilus_game_over.png';
 import transparentImage from '../images/transparent.png';
 import {
   move, resetFallVelocity, setFallVelocity, setJumpVelocity, setY, stopJump,
@@ -29,8 +31,19 @@ export default function Bird() {
   const paused = useSelector((state) => state.game.paused);
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
   const playHitAnimation = useSelector((state) => state.bird.invincible);
+  const gameOver = useSelector((state) => state.game.gameOver);
 
-  const image = isSeaWorld ? nautilusImage : balloonImage;
+  let image;
+
+  if (isSeaWorld && gameOver) {
+    image = nautilusGameOverImage;
+  } else if (isSeaWorld && !gameOver) {
+    image = nautilusImage;
+  } else if (!isSeaWorld && gameOver) {
+    image = ballonGameOverImage;
+  } else {
+    image = balloonImage;
+  }
 
   useTick((delta) => {
     if (!paused && gameHasStarted) {
@@ -61,10 +74,11 @@ export default function Bird() {
     }
   });
 
-  const nautilusScale = 0.10 * birdScale;
+  const nautilusScale = -0.10 * birdScale;
   const ballonScale = 0.125 * birdScale;
-  const xScale = isSeaWorld ? -nautilusScale : ballonScale;
-  const yScale = isSeaWorld ? nautilusScale : ballonScale;
+  let xScale = isSeaWorld ? nautilusScale : ballonScale;
+  const yScale = isSeaWorld ? -nautilusScale : ballonScale;
+  xScale = isSeaWorld && gameOver ? -xScale : xScale;
 
   if (playHitAnimation) {
     return (

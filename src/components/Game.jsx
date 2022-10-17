@@ -28,6 +28,8 @@ import {
   reset, displayDebugMenu, hideDebugMenu, pauseGame, resumeGame, updateSettings,
 } from '../slices/gameSlice';
 import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
+import { randomFromList } from '../utils/randomUtils';
+import { seaBgm } from '../constants';
 
 const {
   REACT_APP_ENABLE_CHEATS,
@@ -170,6 +172,7 @@ function BackgroundContainer() {
       } else if (!updatedLevel && noise > 1) {
         dispatch(updateSettings({ isSeaWorld: true }));
         setUpdatedLevel(true);
+        sound.stopAll();
       } else if (updatedLevel && noise >= 0) {
         setNoise(noise - noiseIncrement);
       } else {
@@ -177,6 +180,7 @@ function BackgroundContainer() {
         setUpdatedLevel(false);
         dispatch(updateSettings({ changingLevel: false }));
         dispatch(resumeGame());
+        sound.play(randomFromList(seaBgm), { loop: true, volume: 0.5 });
       }
     }
   });

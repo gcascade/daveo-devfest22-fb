@@ -39,6 +39,7 @@ const initialState = {
   pointsPerCoin: 10,
   totalScore: 0,
   sound: true,
+  gameOver: false,
 };
 
 export const gameSlice = createSlice({
@@ -54,6 +55,7 @@ export const gameSlice = createSlice({
       state.isSeaWorld = initialState.isSeaWorld;
       state.lives = initialState.lives;
       state.totalScore = initialState.totalScore;
+      state.gameOver = initialState.gameOver;
     },
     incrementScore(state) {
       state.score += 1;
@@ -76,6 +78,7 @@ export const gameSlice = createSlice({
     },
     endGame(state) {
       state.hasStarted = false;
+      state.gameOver = true;
 
       if (REACT_APP_SAVE_SCORE === 'true') {
         const scores = JSON.parse(localStorage.getItem('scores') || '[]');

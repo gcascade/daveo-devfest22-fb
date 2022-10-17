@@ -106,7 +106,7 @@ export default function DebugMenu() {
           onChange={((e) => dispatch(updateSettings({ speedIncrease: parseFloat(e.target.value.replace(',', '.')) })))}
         />
         <br />
-        <span>Score needed for next level</span>
+        <span>Obstacles needed for next level</span>
         <input
           type="number"
           value={scoreNeededForNextLevel}
