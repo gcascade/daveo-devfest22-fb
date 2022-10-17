@@ -8,6 +8,8 @@ import { startGame, reset, setGameSpeed } from '../slices/gameSlice';
 import { addObstacle, addDualObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { move as moveBird, resetBird } from '../slices/birdSlice';
 import { reset as resetBonus } from '../slices/bonusSlice';
+import { bgm } from '../constants';
+import { randomFromList } from '../utils/randomUtils';
 
 function Start({ x, y, scale }) {
   const dispatch = useDispatch();
@@ -29,6 +31,7 @@ function Start({ x, y, scale }) {
       pointerdown={() => {
         sound.context.playEmptySound();
         sound.play('start');
+        sound.play(randomFromList(bgm), { loop: true, volume: 0.1 });
         if (!gameHasStarted) {
           dispatch(reset());
           dispatch(resetBird());

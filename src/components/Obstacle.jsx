@@ -253,6 +253,8 @@ function Obstacle({
             sound.play('hit');
           } else {
             dispatch(endGame());
+            sound.stopAll();
+            sound.play('game_over');
           }
         } else if ((isDual && isTop) || !isDual) {
           dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed }));
@@ -261,6 +263,7 @@ function Obstacle({
             dispatch(incrementScore());
             dispatch(setInvincible(false));
             setScored(true);
+            sound.play('score_point');
 
             if (score >= nextBonus) {
               dispatch(rollNextBonus());
@@ -275,6 +278,7 @@ function Obstacle({
 
             if (score >= 19 && score % 10 === 9 && gameSpeed < maxGameSpeed) {
               dispatch(updateSettings({ gameSpeed: gameSpeed + speedIncrease }));
+              sound.play('fast');
             }
           }
         }

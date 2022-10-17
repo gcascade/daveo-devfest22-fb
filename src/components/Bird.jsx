@@ -1,9 +1,10 @@
 import { AnimatedSprite, Sprite, useTick } from '@inlet/react-pixi';
 
 import React from 'react';
+import { sound } from '@pixi/sound';
 import { useDispatch, useSelector } from 'react-redux';
 import balloonImage from '../images/balloon_daveo.png';
-import nautilusImage from '../images/Nautilus.png';
+import nautilusImage from '../images/nautilus.png';
 import transparentImage from '../images/transparent.png';
 import {
   move, resetFallVelocity, setFallVelocity, setJumpVelocity, setY, stopJump,
@@ -54,6 +55,8 @@ export default function Bird() {
         dispatch(setFallVelocity(fallVelocity + gravity * 0.025));
       } else if (!godMode) {
         dispatch(endGame());
+        sound.stopAll();
+        sound.play('game_over');
       }
     }
   });

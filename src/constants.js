@@ -144,3 +144,5 @@ export const obstacleHeadSprite = {
 };
 
 export const bonusTypes = ['coin', 'heart'];
+
+export const bgm = ['bgm1', 'bgm2'];
