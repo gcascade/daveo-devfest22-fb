@@ -3,9 +3,10 @@ import {
   Sprite, Text, Container, useTick,
 } from '@inlet/react-pixi';
 import { sound } from '@pixi/sound';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { GamepadsProvider, useGamepads } from 'react-gamepads';
 
 import background from '../images/background.png';
 import seaBackground from '../images/seaBackground.png';
@@ -25,11 +26,16 @@ import SeaWorld from './SeaWorld';
 import keyboard from './KeyboardController';
 
 import {
-  reset, displayDebugMenu, hideDebugMenu, pauseGame, resumeGame, updateSettings,
+  reset, displayDebugMenu, hideDebugMenu, pauseGame, resumeGame, updateSettings, startGame,
+  setGameSpeed,
 } from '../slices/gameSlice';
-import { move as moveBird, jump, setJumpVelocity } from '../slices/birdSlice';
+import {
+  move as moveBird, jump, setJumpVelocity, resetBird,
+} from '../slices/birdSlice';
+import { addDualObstacle, addObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { randomFromList } from '../utils/randomUtils';
-import { seaBgm } from '../constants';
+import { resetBonus } from '../slices/bonusSlice';
+import { seaBgm, bgm } from '../constants';
 
 const {
   REACT_APP_ENABLE_CHEATS,
@@ -121,7 +127,7 @@ const spaceKey = keyboard(' ');
 const enterKey = keyboard('Enter');
 const dKey = keyboard('d');
 
-function BackgroundContainer() {
+function BackgroundContainer({ width, height }) {
   const dispatch = useDispatch();
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const birdJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
@@ -136,6 +142,131 @@ function BackgroundContainer() {
 
   const backgroundImage = isSeaWorld ? seaBackground : background;
   const jumpSound = isSeaWorld ? 'nautilus_jump' : 'balloon_jump';
+
+  const [gamepads, setGamepads] = React.useState({});
+  useGamepads((gp) => setGamepads(gp));
+  const [directionUpWasPressed, setDirectionUpWasPressed] = React.useState(false);
+  const [buttonDownWasPressed, setButtonDownWasPressed] = React.useState(false);
+  const [buttonRightWasPressed, setButtonRightWasPressed] = React.useState(false);
+  const [buttonStartWasPressed, setButtonStartWasPressed] = React.useState(false);
+
+  const playing = !paused && gameHasStarted;
+
+  const obstacleMaxSpacing = useSelector((state) => state.game.obstacleMaxSpacing);
+  const gap = useSelector((state) => state.game.obstacleGap);
+  const initialTopObstacleHeight = 0;
+  const initialBottomObstacleHeight = height;
+
+  useEffect(() => {
+    // If controller connected with buttons
+    if (gamepads && gamepads[0] && gamepads[0].buttons.length > 0) {
+      const directionUp = gamepads[0].buttons[12].pressed;
+      // const directionDown = gamepads[0].buttons[13].pressed;
+      // const directionLeft = gamepads[0].buttons[14].pressed;
+      // const directionRight = gamepads[0].buttons[15].pressed;
+      const buttonDown = gamepads[0].buttons[0].pressed;
+      const buttonRight = gamepads[0].buttons[1].pressed;
+      // const buttonLeft = gamepads[0].buttons[2].pressed;
+      // const buttonUp = gamepads[0].buttons[3].pressed;
+      // const select = gamepads[0].buttons[8].pressed;
+      const start = gamepads[0].buttons[9].pressed;
+
+      if (directionUp && !directionUpWasPressed) {
+        setDirectionUpWasPressed(true);
+
+        if (playing) {
+          dispatch(jump());
+          sound.play(jumpSound);
+        }
+      }
+
+      if (!directionUp && directionUpWasPressed) {
+        setDirectionUpWasPressed(false);
+      }
+
+      if (buttonDown && !buttonDownWasPressed) {
+        setButtonDownWasPressed(true);
+
+        if (playing) {
+          dispatch(jump());
+          sound.play(jumpSound);
+        }
+      }
+
+      if (!buttonDown && buttonDownWasPressed) {
+        setButtonDownWasPressed(false);
+      }
+
+      if (buttonRight && !buttonRightWasPressed) {
+        setButtonRightWasPressed(true);
+
+        if (playing) {
+          dispatch(jump());
+          sound.play(jumpSound);
+        }
+      }
+
+      if (!buttonRight && buttonRightWasPressed) {
+        setButtonRightWasPressed(false);
+      }
+
+      if (start && !buttonStartWasPressed) {
+        setButtonStartWasPressed(true);
+
+        if (playing) {
+          dispatch(jump());
+          sound.play(jumpSound);
+        } else if (!gameHasStarted && !paused) {
+          // duplicated code from StartButton
+          // -----
+          sound.context.playEmptySound();
+          sound.stopAll();
+          sound.play('start');
+          const music = randomFromList(bgm);
+          console.log(`Playing ${music}`);
+          sound.play(music, { loop: true, volume: 0.1 });
+          if (!gameHasStarted) {
+            dispatch(reset());
+            dispatch(resetBird());
+            dispatch(resetBonus());
+            dispatch(removeAllObstacles());
+            dispatch(setGameSpeed(4));
+            dispatch(addDualObstacle({
+              isTop: true,
+              x: width,
+              height: (height - gap) / 2,
+              gap,
+            }));
+            dispatch(addDualObstacle({
+              isTop: true,
+              x: width + obstacleMaxSpacing,
+              height: (height - gap) / 2,
+              gap,
+            }));
+            dispatch(addObstacle({
+              isTop: false,
+              x: width + 2 * obstacleMaxSpacing,
+              y: initialBottomObstacleHeight,
+              height: 0.4 * height,
+            }));
+            dispatch(addObstacle({
+              isTop: true,
+              x: width + 3 * obstacleMaxSpacing,
+              y: initialTopObstacleHeight,
+              height: 0.4 * height,
+            }));
+            dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
+            dispatch(startGame());
+            // -----
+          }
+        }
+      }
+
+      if (!start && buttonStartWasPressed) {
+        setButtonStartWasPressed(false);
+      }
+    }
+  });
 
   enterKey.press = () => {
     if (!paused && gameHasStarted) {
@@ -180,7 +311,9 @@ function BackgroundContainer() {
         setUpdatedLevel(false);
         dispatch(updateSettings({ changingLevel: false }));
         dispatch(resumeGame());
-        sound.play(randomFromList(seaBgm), { loop: true, volume: 0.5 });
+        const music = randomFromList(seaBgm);
+        console.log(`Playing ${music}`);
+        sound.play(music, { loop: true, volume: 0.5 });
       }
     }
   });
@@ -240,23 +373,25 @@ function Game() {
         height={height}
         options={{ backgroundColor: 0x1099bb }}
       >
-        <BackgroundContainer />
-        <AirWorld
-          width={width}
-          height={height}
-        />
-        <SeaWorld
-          width={width}
-          height={height}
-        />
-        <Container>
-          <Bird />
-        </Container>
-        <BonusContainer />
-        <ObstacleContainer />
-        <StartButtonContainer width={width} height={height} />
-        <ScoreContainer width={width} height={height} />
-        <CollectedBonusesContainer width={width} height={height} />
+        <GamepadsProvider>
+          <BackgroundContainer width={width} height={height} />
+          <AirWorld
+            width={width}
+            height={height}
+          />
+          <SeaWorld
+            width={width}
+            height={height}
+          />
+          <Container>
+            <Bird />
+          </Container>
+          <BonusContainer />
+          <ObstacleContainer />
+          <StartButtonContainer width={width} height={height} />
+          <ScoreContainer width={width} height={height} />
+          <CollectedBonusesContainer width={width} height={height} />
+        </GamepadsProvider>
       </Stage>
       <DebugMenu enabled={REACT_APP_ENABLE_CHEATS === 'true'} />
     </>
@@ -276,6 +411,11 @@ StartButtonContainer.propTypes = {
 };
 
 CollectedBonusesContainer.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
+
+BackgroundContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
 };

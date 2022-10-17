@@ -30,8 +30,11 @@ function Start({ x, y, scale }) {
       interactive
       pointerdown={() => {
         sound.context.playEmptySound();
+        sound.stopAll();
         sound.play('start');
-        sound.play(randomFromList(bgm), { loop: true, volume: 0.1 });
+        const music = randomFromList(bgm);
+        console.log(`Playing ${music}`);
+        sound.play(music, { loop: true, volume: 0.1 });
         if (!gameHasStarted) {
           dispatch(reset());
           dispatch(resetBird());
