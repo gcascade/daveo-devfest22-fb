@@ -12,6 +12,7 @@ import Fish from './Fish';
 import Ground from './Ground';
 
 import { moveElementHorizontally, moveElementVerticallyAndScaleUp, moveElementVerticallyBetween } from '../utils/movementUtils';
+import Octopus from './Octopus';
 
 export default function SeaWorld({ width, height }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
@@ -47,6 +48,12 @@ export default function SeaWorld({ width, height }) {
   const [yellowCoral2x, setYellowCoral2x] = useState(0.85 * width);
   const [redCoral1x, setRedCoral1x] = useState(0.5 * width);
   const [redCoral2x, setRedCoral2x] = useState(0.9 * width);
+
+  const [octopusX, setOctopusX] = useState(0.6 * width);
+  const [octopusY, setOctopusY] = useState(0.7 * height);
+  const [octopusGoingUp, setOctopusGoingUp] = useState(true);
+  const octopusMinY = 0.6 * height;
+  const octopusMaxY = 0.8 * height;
 
   const [redfish1x, setRedfish1x] = useState(0.2 * width);
   const [redfish1y, setRedfish1y] = useState(0.2 * height);
@@ -201,6 +208,16 @@ export default function SeaWorld({ width, height }) {
         redfish3maxY,
       );
 
+      moveElementHorizontally(octopusX, setOctopusX, 1.1 * width, -2);
+      moveElementVerticallyBetween(
+        octopusY,
+        setOctopusY,
+        0.5,
+        octopusGoingUp,
+        setOctopusGoingUp,
+        octopusMinY,
+        octopusMaxY,
+      );
       // logos
       moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.5);
       moveElementHorizontally(devFestX, setDevFestX, -width, 0.5);
@@ -331,6 +348,7 @@ export default function SeaWorld({ width, height }) {
           <Fish x={redfish1x} y={redfish1y} scale={0.15} color={2} />
           <Fish x={redfish2x} y={redfish2y} scale={0.17} color={2} />
           <Fish x={redfish3x} y={redfish3y} scale={0.07} color={2} />
+          <Octopus x={octopusX} y={octopusY} scale={0.1} />
           <Coral x={yellowCoral1x} y={0.85 * height} scale={0.4} color={1} />
           <Coral x={redCoral1x} y={0.85 * height} scale={0.45} color={2} />
           <Coral x={redCoral2x} y={0.85 * height} scale={0.2} color={2} />
