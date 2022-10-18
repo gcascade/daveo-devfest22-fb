@@ -230,7 +230,7 @@ function BackgroundContainer({ width, height }) {
             dispatch(resetBird());
             dispatch(resetBonus());
             dispatch(removeAllObstacles());
-            dispatch(setGameSpeed(4));
+            dispatch(setGameSpeed(8));
             dispatch(addDualObstacle({
               isTop: true,
               x: width,
