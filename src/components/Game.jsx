@@ -272,6 +272,49 @@ function BackgroundContainer({ width, height }) {
     if (!paused && gameHasStarted) {
       dispatch(jump());
       sound.play(jumpSound);
+    } else if (!gameHasStarted && !paused) {
+      // duplicated code from StartButton
+      // -----
+      sound.context.playEmptySound();
+      sound.stopAll();
+      sound.play('start');
+      const music = randomFromList(bgm);
+      console.log(`Playing ${music}`);
+      sound.play(music, { loop: true, volume: 0.1 });
+      if (!gameHasStarted) {
+        dispatch(reset());
+        dispatch(resetBird());
+        dispatch(resetBonus());
+        dispatch(removeAllObstacles());
+        dispatch(setGameSpeed(8));
+        dispatch(addDualObstacle({
+          isTop: true,
+          x: width,
+          height: (height - gap) / 2,
+          gap,
+        }));
+        dispatch(addDualObstacle({
+          isTop: true,
+          x: width + obstacleMaxSpacing,
+          height: (height - gap) / 2,
+          gap,
+        }));
+        dispatch(addObstacle({
+          isTop: false,
+          x: width + 2 * obstacleMaxSpacing,
+          y: initialBottomObstacleHeight,
+          height: 0.4 * height,
+        }));
+        dispatch(addObstacle({
+          isTop: true,
+          x: width + 3 * obstacleMaxSpacing,
+          y: initialTopObstacleHeight,
+          height: 0.4 * height,
+        }));
+        dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
+        dispatch(startGame());
+        // -----
+      }
     }
   };
 
@@ -279,6 +322,49 @@ function BackgroundContainer({ width, height }) {
     if (!paused && gameHasStarted) {
       dispatch(jump());
       sound.play(jumpSound);
+    } else if (!gameHasStarted && !paused) {
+      // duplicated code from StartButton
+      // -----
+      sound.context.playEmptySound();
+      sound.stopAll();
+      sound.play('start');
+      const music = randomFromList(bgm);
+      console.log(`Playing ${music}`);
+      sound.play(music, { loop: true, volume: 0.1 });
+      if (!gameHasStarted) {
+        dispatch(reset());
+        dispatch(resetBird());
+        dispatch(resetBonus());
+        dispatch(removeAllObstacles());
+        dispatch(setGameSpeed(8));
+        dispatch(addDualObstacle({
+          isTop: true,
+          x: width,
+          height: (height - gap) / 2,
+          gap,
+        }));
+        dispatch(addDualObstacle({
+          isTop: true,
+          x: width + obstacleMaxSpacing,
+          height: (height - gap) / 2,
+          gap,
+        }));
+        dispatch(addObstacle({
+          isTop: false,
+          x: width + 2 * obstacleMaxSpacing,
+          y: initialBottomObstacleHeight,
+          height: 0.4 * height,
+        }));
+        dispatch(addObstacle({
+          isTop: true,
+          x: width + 3 * obstacleMaxSpacing,
+          y: initialTopObstacleHeight,
+          height: 0.4 * height,
+        }));
+        dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
+        dispatch(startGame());
+        // -----
+      }
     }
   };
 
