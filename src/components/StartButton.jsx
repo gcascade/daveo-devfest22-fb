@@ -34,13 +34,13 @@ function Start({ x, y, scale }) {
         sound.play('start');
         const music = randomFromList(bgm);
         console.log(`Playing ${music}`);
-        sound.play(music, { loop: true, volume: 0.1 });
+        sound.play(music, { loop: true, volume: 0.2 });
         if (!gameHasStarted) {
           dispatch(reset());
           dispatch(resetBird());
           dispatch(resetBonus());
           dispatch(removeAllObstacles());
-          dispatch(setGameSpeed(4));
+          dispatch(setGameSpeed(8));
           dispatch(addDualObstacle({
             isTop: true,
             x: width,

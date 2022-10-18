@@ -66,8 +66,8 @@ export default function AirWorld({ width, height }) {
       moveElementHorizontally(tree7x, setTree7x, 2 * width, -1);
       moveElementHorizontally(elephantX, setElephantX, 2 * width, -0.5);
       moveElementHorizontally(zeppelinX, setZeppelinX, -2 * width, 2);
-      moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.1);
-      moveElementHorizontally(devFestX, setDevFestX, -width, 0.1);
+      moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.5);
+      moveElementHorizontally(devFestX, setDevFestX, -width, 0.5);
     }
   });
 

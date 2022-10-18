@@ -202,8 +202,8 @@ export default function SeaWorld({ width, height }) {
       );
 
       // logos
-      moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.1);
-      moveElementHorizontally(devFestX, setDevFestX, -width, 0.1);
+      moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.5);
+      moveElementHorizontally(devFestX, setDevFestX, -width, 0.5);
 
       // bubble 1
       moveElementVerticallyAndScaleUp(
