@@ -42,3 +42,21 @@ export function moveElementVerticallyAndScaleUp(
     setScale(0);
   }
 }
+
+export function moveElementVerticallyBetween(
+  y,
+  setY,
+  speed,
+  direction,
+  setDirection,
+  minY,
+  maxY,
+
+) {
+  const yMovement = direction === 'up' ? -speed : speed;
+  setY(y + yMovement);
+
+  if (y + yMovement < minY || y + yMovement > maxY) {
+    setDirection(direction === 'up' ? 'down' : 'up');
+  }
+}

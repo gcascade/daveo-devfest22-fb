@@ -11,7 +11,7 @@ import DevFest from './DevFest';
 import Fish from './Fish';
 import Ground from './Ground';
 
-import { moveElementHorizontally, moveElementVerticallyAndScaleUp } from '../utils/movementUtils';
+import { moveElementHorizontally, moveElementVerticallyAndScaleUp, moveElementVerticallyBetween } from '../utils/movementUtils';
 
 export default function SeaWorld({ width, height }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
@@ -23,15 +23,6 @@ export default function SeaWorld({ width, height }) {
 
   const gameIsRunning = gameIsStarted && !paused;
 
-  const [redfish1x, setRedfish1x] = useState(0.2 * width);
-  const [redfish2x, setRedfish2x] = useState(0.9 * width);
-  const [redfish3x, setRedfish3x] = useState(0.66 * width);
-  const [yellowfish1x, setYellowfish1x] = useState(0.295 * width);
-  const [yellowfish2x, setYellowfish2x] = useState(0.293 * width);
-  const [yellowfish3x, setYellowfish3x] = useState(0.32 * width);
-  const [yellowfish4x, setYellowfish4x] = useState(0.9 * width);
-  const [redFish1SwimmingForward, setRedFish1SwimmingForward] = useState(false);
-  const [yellowFish4SwimmingForward, setYellowFish4SwimmingForward] = useState(false);
   const [daveoLogoX, setDaveoLogoX] = useState(0.1 * width);
   const [devFestX, setDevFestX] = useState(0.6 * width);
   const [bubble1Y, setBubble1Y] = useState(0.7 * height);
@@ -57,11 +48,56 @@ export default function SeaWorld({ width, height }) {
   const [redCoral1x, setRedCoral1x] = useState(0.5 * width);
   const [redCoral2x, setRedCoral2x] = useState(0.9 * width);
 
+  const [redfish1x, setRedfish1x] = useState(0.2 * width);
+  const [redfish1y, setRedfish1y] = useState(0.2 * height);
+  const [redfish1goingUp, setRedfish1goingUp] = useState(false);
+  const redfish1minY = 0.175 * height;
+  const redfish1maxY = 0.225 * height;
+  const [redFish1SwimmingForward, setRedFish1SwimmingForward] = useState(false);
+
+  const [redfish2x, setRedfish2x] = useState(0.9 * width);
+  const [redfish2y, setRedfish2y] = useState(0.8 * height);
+  const [redfish2goingUp, setRedfish2goingUp] = useState(false);
+  const redfish2minY = 0.8 * height;
+  const redfish2maxY = 0.85 * height;
+
+  const [redfish3x, setRedfish3x] = useState(0.66 * width);
+  const [redfish3y, setRedfish3y] = useState(0.12 * height);
+  const [redfish3goingUp, setRedfish3goingUp] = useState(false);
+  const redfish3minY = 0.115 * height;
+  const redfish3maxY = 0.125 * height;
+
+  const [yellowfish1x, setYellowfish1x] = useState(0.295 * width);
+  const [yellowfish1y, setYellowfish1y] = useState(0.49 * height);
+  const [yellowfish1goingUp, setYellowfish1goingUp] = useState(false);
+  const yellowfish1minY = 0.48 * height;
+  const yellowfish1maxY = 0.50 * height;
+
+  const [yellowfish2x, setYellowfish2x] = useState(0.293 * width);
+  const [yellowfish2y, setYellowfish2y] = useState(0.52 * height);
+  const [yellowfish2goingUp, setYellowfish2goingUp] = useState(false);
+  const yellowfish2minY = 0.51 * height;
+  const yellowfish2maxY = 0.53 * height;
+
+  const [yellowfish3x, setYellowfish3x] = useState(0.32 * width);
+  const [yellowfish3y, setYellowfish3y] = useState(0.5 * height);
+  const [yellowfish3goingUp, setYellowfish3goingUp] = useState(false);
+  const yellowfish3minY = 0.49 * height;
+  const yellowfish3maxY = 0.51 * height;
+
+  const [yellowfish4x, setYellowfish4x] = useState(0.9 * width);
+  const [yellowfish4y, setYellowfish4y] = useState(0.25 * height);
+  const [yellowfish4goingUp, setYellowfish4goingUp] = useState(false);
+  const yellowfish4minY = 0.23 * height;
+  const yellowfish4maxY = 0.27 * height;
+  const [yellowFish4SwimmingForward, setYellowFish4SwimmingForward] = useState(false);
+
   useTick(() => {
     if (!isSeaWorld) {
       return;
     }
     if (animationEnabled && gameIsRunning) {
+      // fish
       if (!redFish1SwimmingForward) {
         moveElementHorizontally(redfish1x, setRedfish1x, 2 * width, -0.9);
         if (redfish1x <= 10) {
@@ -95,6 +131,77 @@ export default function SeaWorld({ width, height }) {
         moveElementHorizontally(yellowfish4x, setYellowfish4x, 2 * width, 5);
       }
 
+      moveElementVerticallyBetween(
+        yellowfish1y,
+        setYellowfish1y,
+        0.1,
+        yellowfish1goingUp,
+        setYellowfish1goingUp,
+        yellowfish1minY,
+        yellowfish1maxY,
+      );
+
+      moveElementVerticallyBetween(
+        yellowfish2y,
+        setYellowfish2y,
+        0.1,
+        yellowfish2goingUp,
+        setYellowfish2goingUp,
+        yellowfish2minY,
+        yellowfish2maxY,
+      );
+
+      moveElementVerticallyBetween(
+        yellowfish3y,
+        setYellowfish3y,
+        0.1,
+        yellowfish3goingUp,
+        setYellowfish3goingUp,
+        yellowfish3minY,
+        yellowfish3maxY,
+      );
+
+      moveElementVerticallyBetween(
+        yellowfish4y,
+        setYellowfish4y,
+        0.2,
+        yellowfish4goingUp,
+        setYellowfish4goingUp,
+        yellowfish4minY,
+        yellowfish4maxY,
+      );
+
+      moveElementVerticallyBetween(
+        redfish1y,
+        setRedfish1y,
+        0.5,
+        redfish1goingUp,
+        setRedfish1goingUp,
+        redfish1minY,
+        redfish1maxY,
+      );
+
+      moveElementVerticallyBetween(
+        redfish2y,
+        setRedfish2y,
+        0.2,
+        redfish2goingUp,
+        setRedfish2goingUp,
+        redfish2minY,
+        redfish2maxY,
+      );
+
+      moveElementVerticallyBetween(
+        redfish3y,
+        setRedfish3y,
+        0.1,
+        redfish3goingUp,
+        setRedfish3goingUp,
+        redfish3minY,
+        redfish3maxY,
+      );
+
+      // logos
       moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.1);
       moveElementHorizontally(devFestX, setDevFestX, -width, 0.1);
 
@@ -203,12 +310,12 @@ export default function SeaWorld({ width, height }) {
       );
 
       // foreground
-      moveElementHorizontally(algae1x, setAlgae1x, 2 * width, -1);
-      moveElementHorizontally(algae2x, setAlgae2x, 2 * width, -1);
-      moveElementHorizontally(yellowCoral1x, setYellowCoral1x, 2 * width, -1);
-      moveElementHorizontally(yellowCoral2x, setYellowCoral2x, 2 * width, -1);
-      moveElementHorizontally(redCoral1x, setRedCoral1x, 2 * width, -1);
-      moveElementHorizontally(redCoral2x, setRedCoral2x, 2 * width, -1);
+      moveElementHorizontally(algae1x, setAlgae1x, 1.2 * width, -1);
+      moveElementHorizontally(algae2x, setAlgae2x, 1.2 * width, -1);
+      moveElementHorizontally(yellowCoral1x, setYellowCoral1x, 1.2 * width, -1);
+      moveElementHorizontally(yellowCoral2x, setYellowCoral2x, 1.2 * width, -1);
+      moveElementHorizontally(redCoral1x, setRedCoral1x, 1.2 * width, -1);
+      moveElementHorizontally(redCoral2x, setRedCoral2x, 1.2 * width, -1);
     }
   });
 
@@ -217,13 +324,13 @@ export default function SeaWorld({ width, height }) {
       {isSeaWorld && (
         <>
           <Ground x={width} y={height} scale={1} color={2} />
-          <Fish x={yellowfish1x} y={0.49 * height} scale={0.09} color={1} />
-          <Fish x={yellowfish2x} y={0.52 * height} scale={0.11} color={1} />
-          <Fish x={yellowfish3x} y={0.5 * height} scale={0.1} color={1} />
-          <Fish x={yellowfish4x} y={0.25 * height} scale={0.2} color={1} />
-          <Fish x={redfish1x} y={0.2 * height} scale={0.15} color={2} />
-          <Fish x={redfish2x} y={0.8 * height} scale={0.17} color={2} />
-          <Fish x={redfish3x} y={0.12 * height} scale={0.07} color={2} />
+          <Fish x={yellowfish1x} y={yellowfish1y} scale={0.09} color={1} />
+          <Fish x={yellowfish2x} y={yellowfish2y} scale={0.11} color={1} />
+          <Fish x={yellowfish3x} y={yellowfish3y} scale={0.1} color={1} />
+          <Fish x={yellowfish4x} y={yellowfish4y} scale={0.2} color={1} />
+          <Fish x={redfish1x} y={redfish1y} scale={0.15} color={2} />
+          <Fish x={redfish2x} y={redfish2y} scale={0.17} color={2} />
+          <Fish x={redfish3x} y={redfish3y} scale={0.07} color={2} />
           <Coral x={yellowCoral1x} y={0.85 * height} scale={0.4} color={1} />
           <Coral x={redCoral1x} y={0.85 * height} scale={0.45} color={2} />
           <Coral x={redCoral2x} y={0.85 * height} scale={0.2} color={2} />
