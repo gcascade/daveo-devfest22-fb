@@ -52,7 +52,7 @@ export default function Bird() {
 
         if (y - jumpHeight >= defaultOffset) {
           dispatch(move({ y: -(jumpHeight > 0 ? jumpHeight : 0) }));
-          dispatch(setJumpVelocity(jumpVelocity - gravity));
+          dispatch(setJumpVelocity(jumpVelocity - gravity * delta));
         } else {
           dispatch(setY(defaultOffset));
           dispatch(setJumpVelocity(defaultJumpVelocity));
