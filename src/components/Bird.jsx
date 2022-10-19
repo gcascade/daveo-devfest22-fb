@@ -5,7 +5,7 @@ import { sound } from '@pixi/sound';
 import { useDispatch, useSelector } from 'react-redux';
 import balloonImage from '../images/balloon_daveo.png';
 import ballonGameOverImage from '../images/balloon_game_over.png';
-import nautilusImage from '../images/nautilus.png';
+import nautilusImage from '../images/Nautilus.png';
 import nautilusGameOverImage from '../images/nautilus_game_over.png';
 import transparentImage from '../images/transparent.png';
 import {
@@ -45,23 +45,24 @@ export default function Bird() {
     image = balloonImage;
   }
 
-  useTick((delta) => {
+  useTick((delta = 0) => {
     if (!paused && gameHasStarted) {
       if (isJumping) {
         const jumpHeight = (-(gravity) / 2) * delta ** 2 + jumpVelocity * delta;
 
         if (y - jumpHeight >= defaultOffset) {
-          dispatch(move({ y: -jumpHeight }));
-          dispatch(setJumpVelocity(jumpVelocity - gravity * delta));
-          dispatch(resetFallVelocity());
+          dispatch(move({ y: -(jumpHeight > 0 ? jumpHeight : 0) }));
+          dispatch(setJumpVelocity(jumpVelocity - gravity));
         } else {
           dispatch(setY(defaultOffset));
           dispatch(setJumpVelocity(defaultJumpVelocity));
           dispatch(stopJump());
+          dispatch(resetFallVelocity());
         }
         if (jumpVelocity <= 0) {
           dispatch(setJumpVelocity(defaultJumpVelocity));
           dispatch(stopJump());
+          dispatch(resetFallVelocity());
         }
       } else if (y + defaultOffset < height) {
         dispatch(move({ y: fallVelocity }));

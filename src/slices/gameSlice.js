@@ -4,13 +4,13 @@ import { createSlice } from '@reduxjs/toolkit';
 const { REACT_APP_SAVE_SCORE, REACT_APP_SCORE_PATH } = process.env;
 
 const initialState = {
-  gravity: 3,
+  gravity: 15,
   score: 0,
   hasStarted: false,
   height: 0.981 * 1080,
   width: 0.99 * 1920,
   obstacleSpeed: 1,
-  birdJumpVelocity: 25,
+  birdJumpVelocity: 60,
   birdWidth: 94,
   birdHeight: 120,
   obstacleWidth: 100,
