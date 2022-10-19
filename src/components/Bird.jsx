@@ -5,7 +5,7 @@ import { sound } from '@pixi/sound';
 import { useDispatch, useSelector } from 'react-redux';
 import balloonImage from '../images/balloon_daveo.png';
 import ballonGameOverImage from '../images/balloon_game_over.png';
-import nautilusImage from '../images/Nautilus.png';
+import nautilusImage from '../images/nautilus.png';
 import nautilusGameOverImage from '../images/nautilus_game_over.png';
 import transparentImage from '../images/transparent.png';
 import {
@@ -45,7 +45,7 @@ export default function Bird() {
     image = balloonImage;
   }
 
-  useTick((delta = 0) => {
+  useTick((delta) => {
     if (!paused && gameHasStarted) {
       if (isJumping) {
         const jumpHeight = (-(gravity) / 2) * delta ** 2 + jumpVelocity * delta;
@@ -67,6 +67,7 @@ export default function Bird() {
       } else if (y + defaultOffset < height) {
         dispatch(move({ y: fallVelocity }));
         dispatch(setFallVelocity(fallVelocity + gravity * 0.025));
+        dispatch(setJumpVelocity(defaultJumpVelocity));
       } else if (!godMode) {
         dispatch(endGame());
         sound.stopAll();
