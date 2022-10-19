@@ -30,7 +30,7 @@ import {
   setGameSpeed,
 } from '../slices/gameSlice';
 import {
-  move as moveBird, jump, setJumpVelocity, resetBird,
+  move as moveBird, jump, setJumpVelocity, resetBird, stopJump,
 } from '../slices/birdSlice';
 import { addDualObstacle, addObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { randomFromList } from '../utils/randomUtils';
@@ -157,6 +157,12 @@ function BackgroundContainer({ width, height }) {
   const initialTopObstacleHeight = 0;
   const initialBottomObstacleHeight = height;
 
+  const jumpAndSound = ()  =>{
+    dispatch(setJumpVelocity(birdJumpVelocity));
+    dispatch(jump());
+    sound.play(jumpSound);
+  }
+
   useEffect(() => {
     // If controller connected with buttons
     if (gamepads && gamepads[0] && gamepads[0].buttons.length > 0) {
@@ -175,8 +181,7 @@ function BackgroundContainer({ width, height }) {
         setDirectionUpWasPressed(true);
 
         if (playing) {
-          dispatch(jump());
-          sound.play(jumpSound);
+          jumpAndSound()
         }
       }
 
@@ -188,8 +193,7 @@ function BackgroundContainer({ width, height }) {
         setButtonDownWasPressed(true);
 
         if (playing) {
-          dispatch(jump());
-          sound.play(jumpSound);
+          jumpAndSound()
         }
       }
 
@@ -201,8 +205,7 @@ function BackgroundContainer({ width, height }) {
         setButtonRightWasPressed(true);
 
         if (playing) {
-          dispatch(jump());
-          sound.play(jumpSound);
+          jumpAndSound()
         }
       }
 
@@ -214,8 +217,7 @@ function BackgroundContainer({ width, height }) {
         setButtonStartWasPressed(true);
 
         if (playing) {
-          dispatch(jump());
-          sound.play(jumpSound);
+          jumpAndSound()
         } else if (!gameHasStarted && !paused) {
           // duplicated code from StartButton
           // -----
@@ -270,8 +272,7 @@ function BackgroundContainer({ width, height }) {
 
   enterKey.press = () => {
     if (!paused && gameHasStarted) {
-      dispatch(jump());
-      sound.play(jumpSound);
+      jumpAndSound()
     } else if (!gameHasStarted && !paused) {
       // duplicated code from StartButton
       // -----
@@ -320,8 +321,7 @@ function BackgroundContainer({ width, height }) {
 
   spaceKey.press = () => {
     if (!paused && gameHasStarted) {
-      dispatch(jump());
-      sound.play(jumpSound);
+      jumpAndSound()
     } else if (!gameHasStarted && !paused) {
       // duplicated code from StartButton
       // -----
@@ -414,9 +414,7 @@ function BackgroundContainer({ width, height }) {
         interactive
         pointerdown={() => {
           if (!paused && gameHasStarted) {
-            dispatch(setJumpVelocity(birdJumpVelocity));
-            dispatch(jump());
-            sound.play(jumpSound);
+            jumpAndSound()
           }
         }}
       />
