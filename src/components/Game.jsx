@@ -303,16 +303,16 @@ function BackgroundContainer({ width, height }) {
 
   const noiseIncrement = 0.005;
 
-  useTick(() => {
+  useTick((delta) => {
     if (changeLevelEnabled && paused && changingLevel) {
       if (!updatedLevel && noise <= 1) {
-        setNoise(noise + noiseIncrement);
+        setNoise(noise + noiseIncrement * delta);
       } else if (!updatedLevel && noise > 1) {
         dispatch(updateSettings({ isSeaWorld: true }));
         setUpdatedLevel(true);
         sound.stopAll();
       } else if (updatedLevel && noise >= 0) {
-        setNoise(noise - noiseIncrement);
+        setNoise(noise - noiseIncrement * delta);
       } else {
         setNoise(0);
         setUpdatedLevel(false);

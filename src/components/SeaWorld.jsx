@@ -99,49 +99,49 @@ export default function SeaWorld({ width, height }) {
   const yellowfish4maxY = 0.27 * height;
   const [yellowFish4SwimmingForward, setYellowFish4SwimmingForward] = useState(false);
 
-  useTick(() => {
+  useTick((delta) => {
     if (!isSeaWorld) {
       return;
     }
     if (animationEnabled && gameIsRunning) {
       // fish
       if (!redFish1SwimmingForward) {
-        moveElementHorizontally(redfish1x, setRedfish1x, 2 * width, -0.9);
+        moveElementHorizontally(redfish1x, setRedfish1x, 2 * width, -0.9 * delta);
         if (redfish1x <= 10) {
           setRedFish1SwimmingForward(true);
         }
       } else if (redfish1x <= 1) {
         setRedFish1SwimmingForward(true);
-        moveElementHorizontally(redfish1x, setRedfish1x, 2 * width, 5);
+        moveElementHorizontally(redfish1x, setRedfish1x, 2 * width, 5 * delta);
       } else if (redfish1x > 1.2 * width) {
         setRedFish1SwimmingForward(false);
       } else {
-        moveElementHorizontally(redfish1x, setRedfish1x, 2 * width, 5);
+        moveElementHorizontally(redfish1x, setRedfish1x, 2 * width, 5 * delta);
       }
-      moveElementHorizontally(redfish2x, setRedfish2x, 2 * width, -0.9);
-      moveElementHorizontally(redfish3x, setRedfish3x, 2 * width, -0.3);
-      moveElementHorizontally(yellowfish1x, setYellowfish1x, 2 * width, -0.5);
-      moveElementHorizontally(yellowfish2x, setYellowfish2x, 2 * width, -0.5);
-      moveElementHorizontally(yellowfish3x, setYellowfish3x, 2 * width, -0.5);
+      moveElementHorizontally(redfish2x, setRedfish2x, 2 * width, -0.9 * delta);
+      moveElementHorizontally(redfish3x, setRedfish3x, 2 * width, -0.3 * delta);
+      moveElementHorizontally(yellowfish1x, setYellowfish1x, 2 * width, -0.5 * delta);
+      moveElementHorizontally(yellowfish2x, setYellowfish2x, 2 * width, -0.5 * delta);
+      moveElementHorizontally(yellowfish3x, setYellowfish3x, 2 * width, -0.5 * delta);
 
       if (!yellowFish4SwimmingForward) {
-        moveElementHorizontally(yellowfish4x, setYellowfish4x, 2 * width, -0.7);
+        moveElementHorizontally(yellowfish4x, setYellowfish4x, 2 * width, -0.7 * delta);
         if (yellowfish4x <= 0.5 * width) {
           setYellowFish4SwimmingForward(true);
         }
       } else if (yellowfish4x <= 0.5 * width) {
         setYellowFish4SwimmingForward(true);
-        moveElementHorizontally(yellowfish4x, setYellowfish4x, 2 * width, 5);
+        moveElementHorizontally(yellowfish4x, setYellowfish4x, 2 * width, 5 * delta);
       } else if (yellowfish4x > 0.9 * width) {
         setYellowFish4SwimmingForward(false);
       } else {
-        moveElementHorizontally(yellowfish4x, setYellowfish4x, 2 * width, 5);
+        moveElementHorizontally(yellowfish4x, setYellowfish4x, 2 * width, 5 * delta);
       }
 
       moveElementVerticallyBetween(
         yellowfish1y,
         setYellowfish1y,
-        0.1,
+        0.1 * delta,
         yellowfish1goingUp,
         setYellowfish1goingUp,
         yellowfish1minY,
@@ -151,7 +151,7 @@ export default function SeaWorld({ width, height }) {
       moveElementVerticallyBetween(
         yellowfish2y,
         setYellowfish2y,
-        0.1,
+        0.1 * delta,
         yellowfish2goingUp,
         setYellowfish2goingUp,
         yellowfish2minY,
@@ -161,7 +161,7 @@ export default function SeaWorld({ width, height }) {
       moveElementVerticallyBetween(
         yellowfish3y,
         setYellowfish3y,
-        0.1,
+        0.1 * delta,
         yellowfish3goingUp,
         setYellowfish3goingUp,
         yellowfish3minY,
@@ -171,7 +171,7 @@ export default function SeaWorld({ width, height }) {
       moveElementVerticallyBetween(
         yellowfish4y,
         setYellowfish4y,
-        0.2,
+        0.2 * delta,
         yellowfish4goingUp,
         setYellowfish4goingUp,
         yellowfish4minY,
@@ -181,7 +181,7 @@ export default function SeaWorld({ width, height }) {
       moveElementVerticallyBetween(
         redfish1y,
         setRedfish1y,
-        0.5,
+        0.5 * delta,
         redfish1goingUp,
         setRedfish1goingUp,
         redfish1minY,
@@ -191,7 +191,7 @@ export default function SeaWorld({ width, height }) {
       moveElementVerticallyBetween(
         redfish2y,
         setRedfish2y,
-        0.2,
+        0.2 * delta,
         redfish2goingUp,
         setRedfish2goingUp,
         redfish2minY,
@@ -201,37 +201,37 @@ export default function SeaWorld({ width, height }) {
       moveElementVerticallyBetween(
         redfish3y,
         setRedfish3y,
-        0.1,
+        0.1 * delta,
         redfish3goingUp,
         setRedfish3goingUp,
         redfish3minY,
         redfish3maxY,
       );
 
-      moveElementHorizontally(octopusX, setOctopusX, 1.1 * width, -2);
+      moveElementHorizontally(octopusX, setOctopusX, 1.1 * width, -2 * delta);
       moveElementVerticallyBetween(
         octopusY,
         setOctopusY,
-        0.5,
+        0.5 * delta,
         octopusGoingUp,
         setOctopusGoingUp,
         octopusMinY,
         octopusMaxY,
       );
       // logos
-      moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.5);
-      moveElementHorizontally(devFestX, setDevFestX, -width, 0.5);
+      moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.5 * delta);
+      moveElementHorizontally(devFestX, setDevFestX, -width, 0.5 * delta);
 
       // bubble 1
       moveElementVerticallyAndScaleUp(
         bubble1Y,
         setBubble1Y,
         0.7 * height,
-        -0.2,
+        -0.2 * delta,
         -2.6 * height,
         bubble1scale,
         setBubble1scale,
-        0.00001,
+        0.00001 * delta,
         0.5,
       );
 
@@ -240,11 +240,11 @@ export default function SeaWorld({ width, height }) {
         bubble2Y,
         setBubble2Y,
         0.1 * height,
-        -0.1,
+        -0.1 * delta,
         -2 * height,
         bubble2scale,
         setBubble2scale,
-        0.00003,
+        0.00003 * delta,
         0.3,
       );
 
@@ -253,11 +253,11 @@ export default function SeaWorld({ width, height }) {
         bubble3Y,
         setBubble3Y,
         0.05 * height,
-        -0.1,
+        -0.1 * delta,
         -0.3 * height,
         bubble3scale,
         setBubble3scale,
-        0.00001,
+        0.00001 * delta,
         0.3,
       );
 
@@ -266,11 +266,11 @@ export default function SeaWorld({ width, height }) {
         bubble4Y,
         setBubble4Y,
         0.3 * height,
-        -0.1,
+        -0.1 * delta,
         -4 * height,
         bubble4scale,
         setBubble4scale,
-        0.00003,
+        0.00003 * delta,
         0.15,
       );
 
@@ -279,11 +279,11 @@ export default function SeaWorld({ width, height }) {
         bubble5Y,
         setBubble5Y,
         0.6 * height,
-        -0.1,
+        -0.1 * delta,
         0 * height,
         bubble5scale,
         setBubble5scale,
-        0.00001,
+        0.00001 * delta,
         0.25,
       );
 
@@ -292,11 +292,11 @@ export default function SeaWorld({ width, height }) {
         bubble6Y,
         setBubble6Y,
         0.66 * height,
-        -0.1,
+        -0.1 * delta,
         -3 * height,
         bubble6scale,
         setBubble6scale,
-        0.00003,
+        0.00003 * delta,
         0.4,
       );
 
@@ -305,11 +305,11 @@ export default function SeaWorld({ width, height }) {
         bubble7Y,
         setBubble7Y,
         0.66 * height,
-        -0.1,
+        -0.1 * delta,
         -0.5 * height,
         bubble7scale,
         setBubble7scale,
-        0.00002,
+        0.00002 * delta,
         0.25,
       );
 
@@ -318,21 +318,21 @@ export default function SeaWorld({ width, height }) {
         bubble8Y,
         setBubble8Y,
         0.71 * height,
-        -0.1,
+        -0.1 * delta,
         -0.9 * height,
         bubble8scale,
         setBubble8scale,
-        0.00003,
+        0.00003 * delta,
         0.45,
       );
 
       // foreground
-      moveElementHorizontally(algae1x, setAlgae1x, 1.2 * width, -1);
-      moveElementHorizontally(algae2x, setAlgae2x, 1.2 * width, -1);
-      moveElementHorizontally(yellowCoral1x, setYellowCoral1x, 1.2 * width, -1);
-      moveElementHorizontally(yellowCoral2x, setYellowCoral2x, 1.2 * width, -1);
-      moveElementHorizontally(redCoral1x, setRedCoral1x, 1.2 * width, -1);
-      moveElementHorizontally(redCoral2x, setRedCoral2x, 1.2 * width, -1);
+      moveElementHorizontally(algae1x, setAlgae1x, 1.2 * width, -1 * delta);
+      moveElementHorizontally(algae2x, setAlgae2x, 1.2 * width, -1 * delta);
+      moveElementHorizontally(yellowCoral1x, setYellowCoral1x, 1.2 * width, -1 * delta);
+      moveElementHorizontally(yellowCoral2x, setYellowCoral2x, 1.2 * width, -1 * delta);
+      moveElementHorizontally(redCoral1x, setRedCoral1x, 1.2 * width, -1 * delta);
+      moveElementHorizontally(redCoral2x, setRedCoral2x, 1.2 * width, -1 * delta);
     }
   });
 

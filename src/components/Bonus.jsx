@@ -54,14 +54,14 @@ function Bonus({
     return null;
   }
 
-  useTick(() => {
+  useTick((delta) => {
     if (!gameHasStarted || paused || !active) {
       return;
     }
 
-    const yMovement = goingUp ? -1 : 1;
+    const yMovement = goingUp ? -delta : delta;
 
-    dispatch(moveBonus({ x: -gameSpeed, y: yMovement }));
+    dispatch(moveBonus({ x: -gameSpeed * delta, y: yMovement }));
 
     if (y + yMovement < minY || y + yMovement > maxY) {
       dispatch(updateBonus({ goingUp: !goingUp }));

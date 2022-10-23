@@ -231,7 +231,7 @@ function Obstacle({
   const lives = useSelector((state) => state.game.lives);
   const birdIsInvincible = useSelector((state) => state.bird.invincible);
 
-  useTick(() => {
+  useTick((delta) => {
     if (!paused && gameHasStarted) {
       if (x >= 0) {
         if (hasCollidedWithBird(
@@ -257,7 +257,7 @@ function Obstacle({
             sound.play('game_over');
           }
         } else if ((isDual && isTop) || !isDual) {
-          dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed }));
+          dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed * delta }));
 
           if (hasPassedBird(x, birdX, obstacleWidth, birdWidth) && !scored) {
             dispatch(incrementScore());
@@ -283,13 +283,16 @@ function Obstacle({
           }
         }
       } else if ((isDual && isTop) || !isDual) {
+        // Delete current obstacle and generate a new one
         dispatch(removeObstacle(id));
-        const rand = 0;
-        const newObstacleX = width + rand;
+        const lastObstacle = obstacles[obstacles.length - 1];
+
+        // adjust the variation between obstacles caused by the useTick's delta
+        const expectDistanceBetweenObstacles = width / 4;
+        const adjustments = width - lastObstacle.x - expectDistanceBetweenObstacles;
+        const newObstacleX = width - adjustments;
 
         let newHeight = 0;
-
-        const lastObstacle = obstacles[obstacles.length - 1];
 
         const newIsDual = Math.random() >= 0.5;
         const newIsTop = Math.random() >= 0.5;

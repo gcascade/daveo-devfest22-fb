@@ -44,30 +44,30 @@ export default function AirWorld({ width, height }) {
   const [daveoLogoX, setDaveoLogoX] = useState(0.1 * width);
   const [devFestX, setDevFestX] = useState(0.6 * width);
 
-  useTick(() => {
+  useTick((delta) => {
     if (isSeaWorld) {
       return;
     }
     if (animationEnabled && gameIsRunning) {
-      moveElementHorizontally(cloud1x, setCloud1x, 2 * width, -0.1);
-      moveElementHorizontally(cloud2x, setCloud2x, 2 * width, -0.1);
-      moveElementHorizontally(cloud3x, setCloud3x, 2 * width, -0.1);
-      moveElementHorizontally(cloud4x, setCloud4x, 2 * width, -0.1);
-      moveElementHorizontally(mountain1x, setMountain1x, 2 * width, -0.1);
-      moveElementHorizontally(mountain2x, setMountain2x, 2 * width, -0.1);
-      moveElementHorizontally(mountain3x, setMountain3x, 2 * width, -0.1);
-      moveElementHorizontally(rockX, setRockX, 2 * width, -0.1);
-      moveElementHorizontally(tree1x, setTree1x, 2 * width, -0.1);
-      moveElementHorizontally(tree2x, setTree2x, 2 * width, -1);
-      moveElementHorizontally(tree3x, setTree3x, 2 * width, -0.1);
-      moveElementHorizontally(tree4x, setTree4x, 2 * width, -0.1);
-      moveElementHorizontally(tree5x, setTree5x, 2 * width, -0.1);
-      moveElementHorizontally(tree6x, setTree6x, 2 * width, -0.1);
-      moveElementHorizontally(tree7x, setTree7x, 2 * width, -1);
-      moveElementHorizontally(elephantX, setElephantX, 2 * width, -0.5);
-      moveElementHorizontally(zeppelinX, setZeppelinX, -2 * width, 2);
-      moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.5);
-      moveElementHorizontally(devFestX, setDevFestX, -width, 0.5);
+      moveElementHorizontally(cloud1x, setCloud1x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(cloud2x, setCloud2x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(cloud3x, setCloud3x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(cloud4x, setCloud4x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(mountain1x, setMountain1x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(mountain2x, setMountain2x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(mountain3x, setMountain3x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(rockX, setRockX, 2 * width, -0.1 * delta);
+      moveElementHorizontally(tree1x, setTree1x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(tree2x, setTree2x, 2 * width, -1 * delta);
+      moveElementHorizontally(tree3x, setTree3x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(tree4x, setTree4x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(tree5x, setTree5x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(tree6x, setTree6x, 2 * width, -0.1 * delta);
+      moveElementHorizontally(tree7x, setTree7x, 2 * width, -1 * delta);
+      moveElementHorizontally(elephantX, setElephantX, 2 * width, -0.5 * delta);
+      moveElementHorizontally(zeppelinX, setZeppelinX, -2 * width, 2 * delta);
+      moveElementHorizontally(daveoLogoX, setDaveoLogoX, -width, 0.5 * delta);
+      moveElementHorizontally(devFestX, setDevFestX, -width, 0.5 * delta);
     }
   });
 

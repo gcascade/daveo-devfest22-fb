@@ -67,7 +67,7 @@ export default function Bird() {
         }
       } else if (y + defaultOffset < height) {
         dispatch(move({ y: fallVelocity }));
-        dispatch(setFallVelocity(fallVelocity + gravity * 0.1));
+        dispatch(setFallVelocity(fallVelocity + gravity * 0.1 * delta));
         dispatch(setJumpVelocity(defaultJumpVelocity));
       } else if (!godMode) {
         dispatch(endGame());
