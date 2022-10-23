@@ -277,17 +277,7 @@ function BackgroundContainer({ width, height }) {
     if (!paused && gameHasStarted) {
       jumpAndSound();
     } else if (!gameHasStarted && !paused) {
-      // duplicated code from StartButton
-      // -----
-      sound.context.playEmptySound();
-      sound.stopAll();
-      sound.play('start');
-      const music = randomFromList(bgm);
-      console.log(`Playing ${music}`);
-      sound.play(music, { loop: true, volume: 0.1 });
-      if (!gameHasStarted) {
-        start();
-      }
+      start();
     }
   };
 
