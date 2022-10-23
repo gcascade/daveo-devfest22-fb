@@ -30,11 +30,11 @@ import {
   setGameSpeed,
 } from '../slices/gameSlice';
 import {
-  move as moveBird, jump, setJumpVelocity, resetBird, stopJump,
+  move as moveBird, jump, setJumpVelocity, resetBird,
 } from '../slices/birdSlice';
 import { addDualObstacle, addObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { randomFromList } from '../utils/randomUtils';
-import { resetBonus } from '../slices/bonusSlice';
+import { reset as resetBonus } from '../slices/bonusSlice';
 import { seaBgm, bgm } from '../constants';
 
 const {
@@ -157,11 +157,55 @@ function BackgroundContainer({ width, height }) {
   const initialTopObstacleHeight = 0;
   const initialBottomObstacleHeight = height;
 
-  const jumpAndSound = ()  =>{
+  const jumpAndSound = () => {
     dispatch(setJumpVelocity(birdJumpVelocity));
     dispatch(jump());
     sound.play(jumpSound);
-  }
+  };
+
+  const start = () => {
+    // duplicated code from StartButton
+    // -----
+    sound.context.playEmptySound();
+    sound.stopAll();
+    sound.play('start');
+    const music = randomFromList(bgm);
+    console.log(`Playing ${music}`);
+    sound.play(music, { loop: true, volume: 0.1 });
+    if (!gameHasStarted) {
+      dispatch(reset());
+      dispatch(resetBird());
+      dispatch(resetBonus());
+      dispatch(removeAllObstacles());
+      dispatch(setGameSpeed(8));
+      dispatch(addDualObstacle({
+        isTop: true,
+        x: width,
+        height: (height - gap) / 2,
+        gap,
+      }));
+      dispatch(addDualObstacle({
+        isTop: true,
+        x: width + obstacleMaxSpacing,
+        height: (height - gap) / 2,
+        gap,
+      }));
+      dispatch(addObstacle({
+        isTop: false,
+        x: width + 2 * obstacleMaxSpacing,
+        y: initialBottomObstacleHeight,
+        height: 0.4 * height,
+      }));
+      dispatch(addObstacle({
+        isTop: true,
+        x: width + 3 * obstacleMaxSpacing,
+        y: initialTopObstacleHeight,
+        height: 0.4 * height,
+      }));
+      dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
+      dispatch(startGame());
+    } // -----
+  };
 
   useEffect(() => {
     // If controller connected with buttons
@@ -175,13 +219,13 @@ function BackgroundContainer({ width, height }) {
       // const buttonLeft = gamepads[0].buttons[2].pressed;
       // const buttonUp = gamepads[0].buttons[3].pressed;
       // const select = gamepads[0].buttons[8].pressed;
-      const start = gamepads[0].buttons[9].pressed;
+      const buttonStart = gamepads[0].buttons[9].pressed;
 
       if (directionUp && !directionUpWasPressed) {
         setDirectionUpWasPressed(true);
 
         if (playing) {
-          jumpAndSound()
+          jumpAndSound();
         }
       }
 
@@ -193,7 +237,7 @@ function BackgroundContainer({ width, height }) {
         setButtonDownWasPressed(true);
 
         if (playing) {
-          jumpAndSound()
+          jumpAndSound();
         }
       }
 
@@ -205,7 +249,7 @@ function BackgroundContainer({ width, height }) {
         setButtonRightWasPressed(true);
 
         if (playing) {
-          jumpAndSound()
+          jumpAndSound();
         }
       }
 
@@ -213,54 +257,13 @@ function BackgroundContainer({ width, height }) {
         setButtonRightWasPressed(false);
       }
 
-      if (start && !buttonStartWasPressed) {
+      if (buttonStart && !buttonStartWasPressed) {
         setButtonStartWasPressed(true);
 
         if (playing) {
-          jumpAndSound()
+          jumpAndSound();
         } else if (!gameHasStarted && !paused) {
-          // duplicated code from StartButton
-          // -----
-          sound.context.playEmptySound();
-          sound.stopAll();
-          sound.play('start');
-          const music = randomFromList(bgm);
-          console.log(`Playing ${music}`);
-          sound.play(music, { loop: true, volume: 0.1 });
-          if (!gameHasStarted) {
-            dispatch(reset());
-            dispatch(resetBird());
-            dispatch(resetBonus());
-            dispatch(removeAllObstacles());
-            dispatch(setGameSpeed(8));
-            dispatch(addDualObstacle({
-              isTop: true,
-              x: width,
-              height: (height - gap) / 2,
-              gap,
-            }));
-            dispatch(addDualObstacle({
-              isTop: true,
-              x: width + obstacleMaxSpacing,
-              height: (height - gap) / 2,
-              gap,
-            }));
-            dispatch(addObstacle({
-              isTop: false,
-              x: width + 2 * obstacleMaxSpacing,
-              y: initialBottomObstacleHeight,
-              height: 0.4 * height,
-            }));
-            dispatch(addObstacle({
-              isTop: true,
-              x: width + 3 * obstacleMaxSpacing,
-              y: initialTopObstacleHeight,
-              height: 0.4 * height,
-            }));
-            dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
-            dispatch(startGame());
-            // -----
-          }
+          start();
         }
       }
 
@@ -272,7 +275,7 @@ function BackgroundContainer({ width, height }) {
 
   enterKey.press = () => {
     if (!paused && gameHasStarted) {
-      jumpAndSound()
+      jumpAndSound();
     } else if (!gameHasStarted && !paused) {
       // duplicated code from StartButton
       // -----
@@ -283,88 +286,16 @@ function BackgroundContainer({ width, height }) {
       console.log(`Playing ${music}`);
       sound.play(music, { loop: true, volume: 0.1 });
       if (!gameHasStarted) {
-        dispatch(reset());
-        dispatch(resetBird());
-        dispatch(resetBonus());
-        dispatch(removeAllObstacles());
-        dispatch(setGameSpeed(8));
-        dispatch(addDualObstacle({
-          isTop: true,
-          x: width,
-          height: (height - gap) / 2,
-          gap,
-        }));
-        dispatch(addDualObstacle({
-          isTop: true,
-          x: width + obstacleMaxSpacing,
-          height: (height - gap) / 2,
-          gap,
-        }));
-        dispatch(addObstacle({
-          isTop: false,
-          x: width + 2 * obstacleMaxSpacing,
-          y: initialBottomObstacleHeight,
-          height: 0.4 * height,
-        }));
-        dispatch(addObstacle({
-          isTop: true,
-          x: width + 3 * obstacleMaxSpacing,
-          y: initialTopObstacleHeight,
-          height: 0.4 * height,
-        }));
-        dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
-        dispatch(startGame());
-        // -----
+        start();
       }
     }
   };
 
   spaceKey.press = () => {
     if (!paused && gameHasStarted) {
-      jumpAndSound()
+      jumpAndSound();
     } else if (!gameHasStarted && !paused) {
-      // duplicated code from StartButton
-      // -----
-      sound.context.playEmptySound();
-      sound.stopAll();
-      sound.play('start');
-      const music = randomFromList(bgm);
-      console.log(`Playing ${music}`);
-      sound.play(music, { loop: true, volume: 0.1 });
-      if (!gameHasStarted) {
-        dispatch(reset());
-        dispatch(resetBird());
-        dispatch(resetBonus());
-        dispatch(removeAllObstacles());
-        dispatch(setGameSpeed(8));
-        dispatch(addDualObstacle({
-          isTop: true,
-          x: width,
-          height: (height - gap) / 2,
-          gap,
-        }));
-        dispatch(addDualObstacle({
-          isTop: true,
-          x: width + obstacleMaxSpacing,
-          height: (height - gap) / 2,
-          gap,
-        }));
-        dispatch(addObstacle({
-          isTop: false,
-          x: width + 2 * obstacleMaxSpacing,
-          y: initialBottomObstacleHeight,
-          height: 0.4 * height,
-        }));
-        dispatch(addObstacle({
-          isTop: true,
-          x: width + 3 * obstacleMaxSpacing,
-          y: initialTopObstacleHeight,
-          height: 0.4 * height,
-        }));
-        dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
-        dispatch(startGame());
-        // -----
-      }
+      start();
     }
   };
 
@@ -414,7 +345,7 @@ function BackgroundContainer({ width, height }) {
         interactive
         pointerdown={() => {
           if (!paused && gameHasStarted) {
-            jumpAndSound()
+            jumpAndSound();
           }
         }}
       />

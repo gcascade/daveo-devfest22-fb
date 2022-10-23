@@ -49,7 +49,7 @@ export default function Bird() {
     if (!paused && gameHasStarted) {
       if (isJumping) {
         const jumpHeight = (-(gravity) / 2) * delta ** 2 + jumpVelocity * delta;
-        const jumpHeightOrZero = jumpHeight > 0 ? jumpHeight : 0
+        const jumpHeightOrZero = jumpHeight > 0 ? jumpHeight : 0;
 
         if (y - jumpHeightOrZero >= defaultOffset) {
           dispatch(move({ y: -jumpHeightOrZero }));
