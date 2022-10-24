@@ -47,32 +47,42 @@ export default function Bird() {
 
   useTick((delta) => {
     if (!paused && gameHasStarted) {
-      if (isJumping) {
-        const jumpHeight = (-(gravity) / 2) * delta ** 2 + jumpVelocity * delta;
-        const jumpHeightOrZero = jumpHeight > 0 ? jumpHeight : 0;
-
-        if (y - jumpHeightOrZero >= defaultOffset) {
-          dispatch(move({ y: -jumpHeightOrZero }));
-          dispatch(setJumpVelocity(jumpVelocity - gravity * delta));
-        } else {
-          dispatch(setY(defaultOffset));
-          dispatch(setJumpVelocity(defaultJumpVelocity));
-          dispatch(resetFallVelocity());
-          dispatch(stopJump());
-        }
-        if (jumpVelocity <= 0) {
-          dispatch(setJumpVelocity(defaultJumpVelocity));
-          dispatch(resetFallVelocity());
-          dispatch(stopJump());
-        }
+      const velocity = (-(gravity) / 2) * delta ** 2 + jumpVelocity * delta;
+      if (y - velocity < defaultOffset) {
+        dispatch(setY(defaultOffset));
+        dispatch(setJumpVelocity(0));
       } else if (y + defaultOffset < height) {
-        dispatch(move({ y: fallVelocity }));
-        dispatch(setFallVelocity(fallVelocity + gravity * 0.1 * delta));
-        dispatch(setJumpVelocity(defaultJumpVelocity));
+        dispatch(move({ y: -velocity }));
+        dispatch(setJumpVelocity(jumpVelocity - gravity * 0.15));
+        // if (isJumping) {
+        //   const jumpHeight = (-(gravity) / 2) * delta ** 2 + jumpVelocity * delta;
+        //   const jumpHeightOrZero = jumpHeight > 0 ? jumpHeight : 0;
+
+      //   if (y - jumpHeightOrZero >= defaultOffset) {
+      //     dispatch(move({ y: -jumpHeightOrZero }));
+      //     dispatch(setJumpVelocity(jumpVelocity - gravity * delta));
+      //   } else {
+      //     dispatch(setY(defaultOffset));
+      //     dispatch(setJumpVelocity(defaultJumpVelocity));
+      //     dispatch(resetFallVelocity());
+      //     dispatch(stopJump());
+      //   }
+      //   if (jumpVelocity <= 0) {
+      //     dispatch(setJumpVelocity(defaultJumpVelocity));
+      //     dispatch(resetFallVelocity());
+      //     dispatch(stopJump());
+      //   }
+      // } else if (y + defaultOffset < height) {
+      //   dispatch(move({ y: fallVelocity * delta }));
+      //   dispatch(setFallVelocity(fallVelocity + gravity * 0.1));
+      //   dispatch(setJumpVelocity(defaultJumpVelocity));
       } else if (!godMode) {
         dispatch(endGame());
         sound.stopAll();
         sound.play('game_over');
+      } else {
+        dispatch(setJumpVelocity(defaultJumpVelocity));
+        dispatch(setY(0.9 * height));
       }
     }
   });
