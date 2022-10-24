@@ -11,14 +11,12 @@ import { reset as resetBonus } from '../slices/bonusSlice';
 import { bgm } from '../constants';
 import { randomFromList } from '../utils/randomUtils';
 
-function Start({ x, y, scale }) {
+function Start({
+  x, y, scale, width, height,
+}) {
   const dispatch = useDispatch();
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
-  const obstacleMaxSpacing = useSelector((state) => state.game.obstacleMaxSpacing);
   const gap = useSelector((state) => state.game.obstacleGap);
-
-  const width = useSelector((state) => state.game.width);
-  const height = useSelector((state) => state.game.height);
   const initialTopObstacleHeight = 0;
   const initialBottomObstacleHeight = height;
   return (
@@ -49,19 +47,19 @@ function Start({ x, y, scale }) {
           }));
           dispatch(addDualObstacle({
             isTop: true,
-            x: width + obstacleMaxSpacing,
+            x: 1.25 * width,
             height: (height - gap) / 2,
             gap,
           }));
           dispatch(addObstacle({
             isTop: false,
-            x: width + 2 * obstacleMaxSpacing,
+            x: 1.5 * width,
             y: initialBottomObstacleHeight,
             height: 0.4 * height,
           }));
           dispatch(addObstacle({
             isTop: true,
-            x: width + 3 * obstacleMaxSpacing,
+            x: 1.75 * width,
             y: initialTopObstacleHeight,
             height: 0.4 * height,
           }));
@@ -78,6 +76,8 @@ Start.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   scale: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
 };
 
 export default Start;

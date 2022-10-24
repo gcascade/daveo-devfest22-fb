@@ -202,7 +202,7 @@ function hasPassedBird(x, birdX, obstacleWidth, birdWidth) {
 }
 
 function Obstacle({
-  id, x, y, isTop, height, isDual,
+  id, x, y, isTop, height, isDual, gameWidth, gameHeight,
 }) {
   const dispatch = useDispatch();
   const obstacleSpeed = useSelector((state) => state.game.obstacleSpeed);
@@ -212,8 +212,6 @@ function Obstacle({
   const birdWidth = useSelector((state) => state.game.birdWidth);
   const birdScale = useSelector((state) => state.game.birdScale);
   const obstacleWidth = useSelector((state) => state.game.obstacleWidth);
-  const width = useSelector((state) => state.game.width);
-  const gameHeight = useSelector((state) => state.game.height);
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const obstacleImageHeight = useSelector((state) => state.game.obstacleImageHeight);
   const gap = useSelector((state) => state.game.obstacleGap);
@@ -269,7 +267,7 @@ function Obstacle({
               dispatch(rollNextBonus());
               dispatch(addBonus({
                 // between 2 pipes
-                x: 1.125 * width - obstacleWidth / 2 - birdWidth / 2,
+                x: 1.125 * gameWidth - obstacleWidth / 2 - birdWidth / 2,
                 y: randomNumberBetween(0.1 * gameHeight, 0.9 * gameHeight),
                 scale: 0.5,
                 type: randomBonus(),
@@ -288,9 +286,9 @@ function Obstacle({
         const lastObstacle = obstacles[obstacles.length - 1];
 
         // adjust the variation between obstacles caused by the useTick's delta
-        const expectDistanceBetweenObstacles = width / 4;
-        const adjustments = width - lastObstacle.x - expectDistanceBetweenObstacles;
-        const newObstacleX = width - adjustments;
+        const expectDistanceBetweenObstacles = gameWidth / 4;
+        const adjustments = gameWidth - lastObstacle.x - expectDistanceBetweenObstacles;
+        const newObstacleX = gameWidth - adjustments;
 
         let newHeight = 0;
 
@@ -375,6 +373,8 @@ Obstacle.propTypes = {
   y: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   isDual: PropTypes.bool.isRequired,
+  gameWidth: PropTypes.number.isRequired,
+  gameHeight: PropTypes.number.isRequired,
 };
 
 export default Obstacle;

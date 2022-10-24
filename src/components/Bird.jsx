@@ -3,6 +3,7 @@ import { AnimatedSprite, Sprite, useTick } from '@inlet/react-pixi';
 import React from 'react';
 import { sound } from '@pixi/sound';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import balloonImage from '../images/balloon_daveo.png';
 import ballonGameOverImage from '../images/balloon_game_over.png';
 import nautilusImage from '../images/nautilus.png';
@@ -13,7 +14,7 @@ import {
 } from '../slices/birdSlice';
 import { endGame } from '../slices/gameSlice';
 
-export default function Bird() {
+export default function Bird({ gameHeight }) {
   const x = useSelector((state) => state.bird.x);
   const y = useSelector((state) => state.bird.y);
   const birdHeight = useSelector((state) => state.game.birdHeight);
@@ -21,7 +22,6 @@ export default function Bird() {
   const isJumping = useSelector((state) => state.bird.isJumping);
   const gravity = useSelector((state) => state.game.gravity);
   const fallVelocity = useSelector((state) => state.bird.fallVelocity);
-  const height = useSelector((state) => state.game.height);
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const jumpVelocity = useSelector((state) => state.bird.jumpVelocity);
   const defaultJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
@@ -65,7 +65,7 @@ export default function Bird() {
           dispatch(resetFallVelocity());
           dispatch(stopJump());
         }
-      } else if (y + defaultOffset < height) {
+      } else if (y + defaultOffset < gameHeight) {
         dispatch(move({ y: fallVelocity }));
         dispatch(setFallVelocity(fallVelocity + gravity * 0.1 * delta));
         dispatch(setJumpVelocity(defaultJumpVelocity));
@@ -108,3 +108,7 @@ export default function Bird() {
     />
   );
 }
+
+Bird.propTypes = {
+  gameHeight: PropTypes.number.isRequired,
+};

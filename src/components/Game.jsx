@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {
-  Sprite, Text, Container, useTick,
+  Sprite, Text, Container, useTick, useApp,
 } from '@inlet/react-pixi';
 import { sound } from '@pixi/sound';
 import React, { useEffect } from 'react';
@@ -37,6 +37,8 @@ import { randomFromList } from '../utils/randomUtils';
 import { reset as resetBonus } from '../slices/bonusSlice';
 import { seaBgm, bgm } from '../constants';
 
+import useWindowDimensions from '../hooks/windowDimensions';
+
 const {
   REACT_APP_ENABLE_CHEATS,
 } = process.env;
@@ -53,17 +55,14 @@ const textStyle = new PIXI.TextStyle({
   wordWrapWidth: 350,
 });
 
-function setupGame() {
+function setupGame(width, height) {
   const dispatch = useDispatch();
 
   dispatch(reset());
-
-  const width = useSelector((state) => state.game.width);
-  const height = useSelector((state) => state.game.height);
   dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
 }
 
-function displayObstacle(obstacle) {
+function displayObstacle(obstacle, gameWidth, gameHeight) {
   if (obstacle?.isDual) {
     return (
       <DualObstacle
@@ -75,6 +74,8 @@ function displayObstacle(obstacle) {
         topId={obstacle?.id}
         bottomId={obstacle?.id}
         topHeight={obstacle?.height}
+        gameHeight={gameHeight}
+        gameWidth={gameWidth}
       />
     );
   }
@@ -87,17 +88,19 @@ function displayObstacle(obstacle) {
       y={obstacle?.y}
       height={obstacle?.height}
       isDual={false}
+      gameHeight={gameHeight}
+      gameWidth={gameWidth}
     />
   );
 }
 
-function ObstacleContainer() {
+function ObstacleContainer({ width, height }) {
   const obstacles = useSelector((state) => state.obstacle.obstacles);
 
   return (
     <Container>
       {obstacles.map((obstacle) => (
-        displayObstacle(obstacle)
+        displayObstacle(obstacle, width, height)
       ))}
     </Container>
   );
@@ -162,6 +165,12 @@ function BackgroundContainer({ width, height }) {
     dispatch(jump());
     sound.play(jumpSound);
   };
+
+  const app = useApp();
+  app.ticker.minFPS = 144;
+  app.ticker.maxFPS = 144;
+
+  console.log(app);
 
   const start = () => {
     // duplicated code from StartButton
@@ -348,7 +357,15 @@ function StartButtonContainer({ width, height }) {
 
   return (
     <Container>
-      {!gameHasStarted && <StartButton x={width / 2} y={height / 2} scale={0.4} />}
+      {!gameHasStarted && (
+      <StartButton
+        x={width / 2}
+        y={height / 2}
+        scale={0.4}
+        width={width}
+        height={height}
+      />
+      )}
     </Container>
   );
 }
@@ -366,10 +383,11 @@ function ScoreContainer({ width, height }) {
 }
 
 function Game() {
-  const width = useSelector((state) => state.game.width);
-  const height = useSelector((state) => state.game.height);
+  const windowDimensions = useWindowDimensions();
 
-  setupGame();
+  const { width, height } = windowDimensions;
+
+  setupGame(width, height);
 
   return (
     <>
@@ -389,10 +407,10 @@ function Game() {
             height={height}
           />
           <Container>
-            <Bird />
+            <Bird gameHeight={height} />
           </Container>
           <BonusContainer />
-          <ObstacleContainer />
+          <ObstacleContainer width={width} height={height} />
           <StartButtonContainer width={width} height={height} />
           <ScoreContainer width={width} height={height} />
           <CollectedBonusesContainer width={width} height={height} />
@@ -421,6 +439,11 @@ CollectedBonusesContainer.propTypes = {
 };
 
 BackgroundContainer.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
+
+ObstacleContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
 };
