@@ -9,6 +9,8 @@ const initialState = {
   hasStarted: false,
   height: 0.981 * 1080,
   width: 0.99 * 1920,
+  mobileHeight: 640,
+  mobileWidth: 360,
   obstacleSpeed: 1,
   birdJumpVelocity: 25,
   birdWidth: 94,

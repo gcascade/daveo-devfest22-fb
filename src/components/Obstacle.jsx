@@ -228,6 +228,7 @@ function Obstacle({
   const nextBonus = useSelector((state) => state.bonus.nextBonus);
   const lives = useSelector((state) => state.game.lives);
   const birdIsInvincible = useSelector((state) => state.bird.invincible);
+  const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
 
   useTick((delta) => {
     if (!paused && gameHasStarted) {
@@ -286,7 +287,8 @@ function Obstacle({
         const lastObstacle = obstacles[obstacles.length - 1];
 
         // adjust the variation between obstacles caused by the useTick's delta
-        const expectDistanceBetweenObstacles = gameWidth / 4;
+        const expectDistanceBetweenObstacles = gameWidth / 4 > obstacleMinSpacing
+          ? gameWidth / 4 : obstacleMinSpacing;
         const adjustments = gameWidth - lastObstacle.x - expectDistanceBetweenObstacles;
         const newObstacleX = gameWidth - adjustments;
 

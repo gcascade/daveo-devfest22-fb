@@ -19,6 +19,8 @@ function Start({
   const gap = useSelector((state) => state.game.obstacleGap);
   const initialTopObstacleHeight = 0;
   const initialBottomObstacleHeight = height;
+  const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
+  const obstacleSpacing = 0.25 * width > obstacleMinSpacing ? 0.25 * width : obstacleMinSpacing;
   return (
     <Sprite
       image={startImage}
@@ -47,19 +49,19 @@ function Start({
           }));
           dispatch(addDualObstacle({
             isTop: true,
-            x: 1.25 * width,
+            x: width + obstacleSpacing,
             height: (height - gap) / 2,
             gap,
           }));
           dispatch(addObstacle({
             isTop: false,
-            x: 1.5 * width,
+            x: width + 2 * obstacleSpacing,
             y: initialBottomObstacleHeight,
             height: 0.4 * height,
           }));
           dispatch(addObstacle({
             isTop: true,
-            x: 1.75 * width,
+            x: width + 3 * obstacleSpacing,
             y: initialTopObstacleHeight,
             height: 0.4 * height,
           }));

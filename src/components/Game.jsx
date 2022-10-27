@@ -169,6 +169,7 @@ function BackgroundContainer({ width, height }) {
   const app = useApp();
   app.ticker.minFPS = 144;
   app.ticker.maxFPS = 144;
+  app.ticker.speed = 1;
 
   console.log(app);
 
@@ -384,8 +385,11 @@ function ScoreContainer({ width, height }) {
 
 function Game() {
   const windowDimensions = useWindowDimensions();
+  const maxWidth = useSelector((state) => state.game.width);
+  const maxHeight = useSelector((state) => state.game.height);
 
-  const { width, height } = windowDimensions;
+  const width = windowDimensions.width > maxWidth ? maxWidth : windowDimensions.width;
+  const height = windowDimensions.height > maxHeight ? maxHeight : windowDimensions.height;
 
   setupGame(width, height);
 

@@ -11,6 +11,7 @@ import Tree from './Tree';
 import Elephant from './Elephant';
 import DevFest from './DevFest';
 import Zeppelin from './Zeppelin';
+import Ground from './Ground';
 
 import { moveElementHorizontally } from '../utils/movementUtils';
 
@@ -77,6 +78,7 @@ export default function AirWorld({ width, height }) {
     <Container>
       {!isSeaWorld && (
         <>
+          <Ground x={width} y={height} scale={1} color={1} />
           <Cloud x={cloud1x} y={height * 0.2} scale={0.4} />
           <Cloud x={cloud2x} y={height * 0.3} scale={0.5} mirrored />
           <Mountain x={mountain1x} y={0.85 * height} scale={0.5} />
