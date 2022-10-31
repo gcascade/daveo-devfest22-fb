@@ -58,13 +58,6 @@ const textStyle = new PIXI.TextStyle({
   wordWrapWidth: 350,
 });
 
-function setupGame(width, height) {
-  const dispatch = useDispatch();
-
-  dispatch(reset());
-  dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
-}
-
 function displayObstacle(obstacle, gameWidth, gameHeight) {
   if (obstacle?.isDual) {
     return (
@@ -417,8 +410,13 @@ function Game() {
 
   const width = windowDimensions.width > maxWidth ? maxWidth : windowDimensions.width;
   const height = windowDimensions.height > maxHeight ? maxHeight : windowDimensions.height;
+  const dispatch = useDispatch();
 
-  setupGame(width, height);
+  useEffect(() => {
+    dispatch(reset());
+    dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
+    sound.stopAll();
+  }, [width, height]);
 
   return (
     <>
