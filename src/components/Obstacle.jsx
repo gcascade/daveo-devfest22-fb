@@ -229,6 +229,7 @@ function Obstacle({
   const lives = useSelector((state) => state.game.lives);
   const birdIsInvincible = useSelector((state) => state.bird.invincible);
   const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
+  const effectVolume = useSelector((state) => state.game.effectVolume);
 
   useTick((delta) => {
     if (!paused && gameHasStarted) {
@@ -249,11 +250,11 @@ function Obstacle({
             dispatch(loseLife());
             dispatch(removeOneHeartBonus());
             dispatch(setInvincible(true));
-            sound.play('hit');
+            sound.play('hit', { volume: effectVolume });
           } else {
             dispatch(endGame());
             sound.stopAll();
-            sound.play('game_over');
+            sound.play('game_over', { volume: effectVolume });
           }
         } else if ((isDual && isTop) || !isDual) {
           dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed * delta }));
@@ -262,13 +263,15 @@ function Obstacle({
             dispatch(incrementScore());
             dispatch(setInvincible(false));
             setScored(true);
-            sound.play('score_point');
+            sound.play('score_point', { volume: effectVolume });
 
             if (score >= nextBonus) {
               dispatch(rollNextBonus());
+              // between 2 pipes
+              const bonusDelta = 0.125 * gameWidth > obstacleMinSpacing / 2
+                ? 0.125 * gameWidth : obstacleMinSpacing / 2;
               dispatch(addBonus({
-                // between 2 pipes
-                x: 1.125 * gameWidth - obstacleWidth / 2 - birdWidth / 2,
+                x: gameWidth + bonusDelta - obstacleWidth / 2 - birdWidth / 2,
                 y: randomNumberBetween(0.1 * gameHeight, 0.9 * gameHeight),
                 scale: 0.5,
                 type: randomBonus(),
@@ -277,7 +280,7 @@ function Obstacle({
 
             if (score >= 19 && score % 10 === 9 && gameSpeed < maxGameSpeed) {
               dispatch(updateSettings({ gameSpeed: gameSpeed + speedIncrease }));
-              sound.play('fast');
+              sound.play('fast', { volume: effectVolume });
             }
           }
         }
@@ -332,7 +335,7 @@ function Obstacle({
         if (newIsDual && Math.abs(lastObstacle.height - newHeight) > 0.25 * gameHeight) {
           newHeight = randomNumberBetween(0.4 * gameHeight, 0.6 * gameHeight);
         } else if (switchingOrientation && lastObstacle.height + newHeight > 0.8 * gameHeight) {
-          // make a small if the sum of the heights is too high
+          // make a small one if the sum of the heights is too high
           newHeight = randomNumberBetween(minHeight, 0.4 * gameHeight);
         }
 

@@ -21,6 +21,9 @@ function Start({
   const initialBottomObstacleHeight = height;
   const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
   const obstacleSpacing = 0.25 * width > obstacleMinSpacing ? 0.25 * width : obstacleMinSpacing;
+  const mainVolume = useSelector((state) => state.game.mainVolume);
+  const effectVolume = useSelector((state) => state.game.effectVolume);
+
   return (
     <Sprite
       image={startImage}
@@ -31,10 +34,10 @@ function Start({
       pointerdown={() => {
         sound.context.playEmptySound();
         sound.stopAll();
-        sound.play('start');
+        sound.play('start', { volume: effectVolume });
         const music = randomFromList(bgm);
         console.log(`Playing ${music}`);
-        sound.play(music, { loop: true, volume: 0.2 });
+        sound.play(music, { loop: true, volume: mainVolume });
         if (!gameHasStarted) {
           dispatch(reset());
           dispatch(resetBird());

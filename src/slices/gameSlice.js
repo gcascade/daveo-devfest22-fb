@@ -42,6 +42,9 @@ const initialState = {
   totalScore: 0,
   sound: true,
   gameOver: false,
+  mainVolume: 0.5,
+  effectVolume: 0.2,
+  showHelp: false,
 };
 
 export const gameSlice = createSlice({
@@ -123,6 +126,8 @@ export const gameSlice = createSlice({
       state.lives = action.payload.lives ?? state.lives;
       state.pointsPerCoin = action.payload.pointsPerCoin ?? state.pointsPerCoin;
       state.sound = action.payload.sound ?? state.sound;
+      state.mainVolume = action.payload.mainVolume ?? state.mainVolume;
+      state.effectVolume = action.payload.effectVolume ?? state.effectVolume;
 
       if (state.isSeaWorld) {
         state.birdWidth = state.nautilusWidth;
@@ -152,6 +157,12 @@ export const gameSlice = createSlice({
     loseLife(state) {
       state.lives -= 1;
     },
+    displayHelp(state) {
+      state.showHelp = true;
+    },
+    hideHelp(state) {
+      state.showHelp = false;
+    },
   },
 });
 
@@ -170,6 +181,8 @@ export const {
   resumeGame,
   getLife,
   loseLife,
+  displayHelp,
+  hideHelp,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

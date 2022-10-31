@@ -19,6 +19,9 @@ import DualObstacle from './DualObstacle';
 import StartButton from './StartButton';
 import DebugMenu from './DebugMenu';
 import CollectedBonusesContainer from './CollectedBonusesDisplay';
+import PauseButton from './PauseButton';
+import PauseMenu from './PauseMenu';
+import HelpButton from './HelpButton';
 
 import AirWorld from './AirWorld';
 import SeaWorld from './SeaWorld';
@@ -139,6 +142,8 @@ function BackgroundContainer({ width, height }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
   const changingLevel = useSelector((state) => state.game.changingLevel);
   const changeLevelEnabled = useSelector((state) => state.game.changeLevelEnabled);
+  const mainVolume = useSelector((state) => state.game.mainVolume);
+  const effectVolume = useSelector((state) => state.game.effectVolume);
 
   const [noise, setNoise] = React.useState(0);
   const [updatedLevel, setUpdatedLevel] = React.useState(false);
@@ -163,7 +168,7 @@ function BackgroundContainer({ width, height }) {
   const jumpAndSound = () => {
     dispatch(setJumpVelocity(birdJumpVelocity));
     dispatch(jump());
-    sound.play(jumpSound);
+    sound.play(jumpSound, { volume: effectVolume });
   };
 
   const app = useApp();
@@ -171,17 +176,15 @@ function BackgroundContainer({ width, height }) {
   app.ticker.maxFPS = 144;
   app.ticker.speed = 1;
 
-  console.log(app);
-
   const start = () => {
     // duplicated code from StartButton
     // -----
     sound.context.playEmptySound();
     sound.stopAll();
-    sound.play('start');
+    sound.play('start', { volume: effectVolume });
     const music = randomFromList(bgm);
     console.log(`Playing ${music}`);
-    sound.play(music, { loop: true, volume: 0.1 });
+    sound.play(music, { loop: true, volume: mainVolume });
     if (!gameHasStarted) {
       dispatch(reset());
       dispatch(resetBird());
@@ -330,7 +333,7 @@ function BackgroundContainer({ width, height }) {
         dispatch(resumeGame());
         const music = randomFromList(seaBgm);
         console.log(`Playing ${music}`);
-        sound.play(music, { loop: true, volume: 0.5 });
+        sound.play(music, { loop: true, volume: mainVolume });
       }
     }
   });
@@ -367,6 +370,30 @@ function StartButtonContainer({ width, height }) {
         height={height}
       />
       )}
+    </Container>
+  );
+}
+
+function PauseButtonContainer({ width, height }) {
+  return (
+    <Container>
+      <PauseButton
+        x={0.95 * width}
+        y={0.05 * height}
+        scale={0.5}
+      />
+    </Container>
+  );
+}
+
+function HelpButtonContainer({ width, height }) {
+  return (
+    <Container>
+      <HelpButton
+        x={0.91 * width}
+        y={0.05 * height}
+        scale={0.5}
+      />
     </Container>
   );
 }
@@ -418,6 +445,9 @@ function Game() {
           <StartButtonContainer width={width} height={height} />
           <ScoreContainer width={width} height={height} />
           <CollectedBonusesContainer width={width} height={height} />
+          <PauseButtonContainer width={width} height={height} />
+          <HelpButtonContainer width={width} height={height} />
+          <PauseMenu gameWidth={width} gameHeight={height} />
         </GamepadsProvider>
       </Stage>
       <DebugMenu enabled={REACT_APP_ENABLE_CHEATS === 'true'} />
@@ -448,6 +478,16 @@ BackgroundContainer.propTypes = {
 };
 
 ObstacleContainer.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
+
+PauseButtonContainer.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
+
+HelpButtonContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
 };

@@ -72,8 +72,6 @@ export default function AirWorld({ width, height }) {
     }
   });
 
-  const hidden = false;
-
   return (
     <Container>
       {!isSeaWorld && (
@@ -102,7 +100,7 @@ export default function AirWorld({ width, height }) {
           <Tree x={tree4x} y={0.85 * height} scale={0.15} mirrored />
           <Tree x={tree5x} y={0.85 * height} scale={0.25} />
           <Tree x={tree6x} y={0.86 * height} scale={0.2} />
-          {!hidden && (<Elephant x={elephantX} y={0.85 * height} scale={0.4} />)}
+          <Elephant x={elephantX} y={0.85 * height} scale={0.4} />
           <Tree x={tree7x} y={1 * height} scale={0.3} mirrored />
           <Tree x={tree2x} y={1 * height} scale={0.35} />
           <Zeppelin x={zeppelinX} y={0.2 * height} scale={0.15} />

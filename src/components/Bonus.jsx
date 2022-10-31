@@ -41,6 +41,7 @@ function Bonus({
   const paused = useSelector((state) => state.game.paused);
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const pointsPerCoin = useSelector((state) => state.game.pointsPerCoin);
+  const effectVolume = useSelector((state) => state.game.effectVolume);
 
   let image;
 
@@ -72,10 +73,10 @@ function Bonus({
 
       if (type === 'heart') {
         dispatch(getLife());
-        sound.play('heart');
+        sound.play('heart', { volume: effectVolume });
       } else if (type === 'coin') {
         dispatch(incrementTotalScore(pointsPerCoin));
-        sound.play('coin');
+        sound.play('coin', { volume: effectVolume });
       }
     }
 

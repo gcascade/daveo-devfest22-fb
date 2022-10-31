@@ -148,3 +148,5 @@ export const bonusTypes = ['coin', 'heart'];
 export const bgm = ['bgm1', 'bgm2', 'bgm3', 'bgm4', 'bgm5', 'bgm6'];
 
 export const seaBgm = ['bgm_sea1', 'bgm_sea2', 'bgm_sea3', 'bgm_sea4', 'bgm_sea5'];
+
+export const sfx = ['balloon_jump', 'change_level', 'coin', 'fast', 'game_over', 'heart', 'hit', 'nautilus_jump', 'score_point', 'start'];

@@ -28,18 +28,19 @@ export default function CollectedBonusesContainer({ width, height }) {
   const pointsPerCoin = useSelector((state) => state.game.pointsPerCoin);
   const hearts = collectedBonuses.filter((bonus) => bonus.type === 'heart');
   const coins = collectedBonuses.filter((bonus) => bonus.type === 'coin');
+  const showHelp = useSelector((state) => state.game.showHelp);
 
   const mainContainerWidth = 0.1 * width;
   const mainContainerHeight = 0.2 * height;
   const draw = useCallback((context) => {
     context.clear();
-    context.lineStyle(2, 0x000000, 1);
-    context.beginFill(0x000000, 0.25);
+    context.lineStyle(2, 0x003c5a, 1);
+    context.beginFill(0x003c5a, 0.25);
     context.drawRoundedRect(0, 0, mainContainerWidth, mainContainerHeight, 15);
     context.endFill();
   }, []);
 
-  // dirty
+  // TODO dirty
   const heartcountX = hearts.length >= 10 ? 78 : 70;
   const coincountX = coins.length >= 10 ? 78 : 70;
   const pointsPerCoinX = pointsPerCoin >= 10 ? 100 : 92;
@@ -50,6 +51,7 @@ export default function CollectedBonusesContainer({ width, height }) {
       y={0.2 * height}
       width={mainContainerWidth}
       height={mainContainerHeight}
+      visible={showHelp}
     >
       <Graphics draw={draw} />
       <Container>

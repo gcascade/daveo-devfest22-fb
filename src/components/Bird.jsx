@@ -32,6 +32,7 @@ export default function Bird({ gameHeight }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
   const playHitAnimation = useSelector((state) => state.bird.invincible);
   const gameOver = useSelector((state) => state.game.gameOver);
+  const effectVolume = useSelector((state) => state.game.effectVolume);
 
   let image;
 
@@ -72,7 +73,7 @@ export default function Bird({ gameHeight }) {
       } else if (!godMode) {
         dispatch(endGame());
         sound.stopAll();
-        sound.play('game_over');
+        sound.play('game_over', { volume: effectVolume });
       }
     }
   });
