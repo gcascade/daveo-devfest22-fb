@@ -30,8 +30,10 @@ export default function CollectedBonusesContainer({ width, height }) {
   const coins = collectedBonuses.filter((bonus) => bonus.type === 'coin');
   const showHelp = useSelector((state) => state.game.showHelp);
 
-  const mainContainerWidth = 0.1 * width;
-  const mainContainerHeight = 0.2 * height;
+  const minWidth = 180;
+  const minHeight = 200;
+  const mainContainerWidth = 0.1 * width > minWidth ? 0.1 * width : minWidth;
+  const mainContainerHeight = 0.2 * height > minHeight ? 0.2 * height : minHeight;
   const draw = useCallback((context) => {
     context.clear();
     context.lineStyle(2, 0x003c5a, 1);

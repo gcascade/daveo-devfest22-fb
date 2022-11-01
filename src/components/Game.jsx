@@ -367,7 +367,8 @@ function StartButtonContainer({ width, height }) {
   );
 }
 
-function PauseButtonContainer({ width, height }) {
+function ButtonContainer({ width, height, isMobile }) {
+  const spacing = isMobile ? 60 : 75;
   return (
     <Container>
       <PauseButton
@@ -375,15 +376,8 @@ function PauseButtonContainer({ width, height }) {
         y={0.05 * height}
         scale={0.5}
       />
-    </Container>
-  );
-}
-
-function HelpButtonContainer({ width, height }) {
-  return (
-    <Container>
       <HelpButton
-        x={0.91 * width}
+        x={0.95 * width - spacing}
         y={0.05 * height}
         scale={0.5}
       />
@@ -407,6 +401,7 @@ function Game() {
   const windowDimensions = useWindowDimensions();
   const maxWidth = useSelector((state) => state.game.width);
   const maxHeight = useSelector((state) => state.game.height);
+  const { isMobile } = windowDimensions;
 
   const width = windowDimensions.width > maxWidth ? maxWidth : windowDimensions.width;
   const height = windowDimensions.height > maxHeight ? maxHeight : windowDimensions.height;
@@ -430,10 +425,12 @@ function Game() {
           <AirWorld
             width={width}
             height={height}
+            isMobile={isMobile}
           />
           <SeaWorld
             width={width}
             height={height}
+            isMobile={isMobile}
           />
           <Container>
             <Bird gameHeight={height} />
@@ -443,9 +440,8 @@ function Game() {
           <StartButtonContainer width={width} height={height} />
           <ScoreContainer width={width} height={height} />
           <CollectedBonusesContainer width={width} height={height} />
-          <PauseButtonContainer width={width} height={height} />
-          <HelpButtonContainer width={width} height={height} />
-          <PauseMenu gameWidth={width} gameHeight={height} />
+          <ButtonContainer width={width} height={height} isMobile={isMobile} />
+          <PauseMenu gameWidth={width} gameHeight={height} isMobile={isMobile} />
         </GamepadsProvider>
       </Stage>
       <DebugMenu enabled={REACT_APP_ENABLE_CHEATS === 'true'} />
@@ -480,12 +476,12 @@ ObstacleContainer.propTypes = {
   height: PropTypes.number.isRequired,
 };
 
-PauseButtonContainer.propTypes = {
+ButtonContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
 };
 
-HelpButtonContainer.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
+ButtonContainer.defaultProps = {
+  isMobile: false,
 };

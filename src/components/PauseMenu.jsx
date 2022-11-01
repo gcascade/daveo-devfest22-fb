@@ -12,7 +12,7 @@ import { updateSettings } from '../slices/gameSlice';
 import { bgm, seaBgm, sfx } from '../constants';
 
 export default function PauseMenu({
-  gameWidth, gameHeight,
+  gameWidth, gameHeight, isMobile,
 }) {
   const paused = useSelector((state) => state.game.paused);
   const changingLevel = useSelector((state) => state.game.changingLevel);
@@ -71,54 +71,95 @@ export default function PauseMenu({
     updateSoundEffectVolume(eVolume / 100);
   }, [eVolume]);
 
+  const rectWidth = isMobile ? 300 : 0.4 * gameWidth;
+  const rectHeight = isMobile ? 275 : 0.4 * gameHeight;
+  const topLeftPoint = {
+    x: isMobile ? (gameWidth - rectWidth) / 2 : 0.3 * gameWidth,
+    y: isMobile ? (gameHeight - rectHeight) / 2 : 0.3 * gameHeight,
+  };
+
   const draw = useCallback((context) => {
     context.clear();
     context.lineStyle(5, 0x003c5a, 1);
     context.beginFill(0x003c5a, 0.25);
     context.drawRoundedRect(
-      0.3 * gameWidth,
-      0.3 * gameHeight,
-      0.4 * gameWidth,
-      0.4 * gameHeight,
+      topLeftPoint.x,
+      topLeftPoint.y,
+      rectWidth,
+      rectHeight,
       15,
     );
     context.endFill();
   }, []);
 
+  const pauseText = {
+    x: 0.5 * gameWidth,
+    y: isMobile ? gameHeight / 2 - 100 : 0.35 * gameHeight,
+    width: isMobile ? undefined : 0.07 * gameWidth,
+  };
+
+  const mainVolumeText = {
+    x: 0.5 * gameWidth,
+    y: 0.5 * gameHeight,
+    width: isMobile ? 125 : 0.2 * gameWidth,
+    minusButton: {
+      x: isMobile ? gameWidth / 2 - 100 : 0.35 * gameWidth,
+      y: 0.5 * gameHeight,
+    },
+    plusButton: {
+      x: isMobile ? gameWidth / 2 + 100 : 0.65 * gameWidth,
+      y: 0.5 * gameHeight,
+    },
+  };
+
+  const soundEffectsText = {
+    x: 0.5 * gameWidth,
+    y: isMobile ? 0.5 * gameHeight + 75 : 0.6 * gameHeight,
+    width: isMobile ? 125 : 0.2 * gameWidth,
+    minusButton: {
+      x: isMobile ? gameWidth / 2 - 100 : 0.35 * gameWidth,
+      y: 0.5 * gameHeight + 75,
+    },
+    plusButton: {
+      x: isMobile ? gameWidth / 2 + 100 : 0.65 * gameWidth,
+      y: 0.5 * gameHeight + 75,
+    },
+  };
+
   return (
     <Container>
       <Graphics draw={draw} visible={paused && !changingLevel} />
       <Text
-        x={0.5 * gameWidth}
-        y={0.35 * gameHeight}
+        x={pauseText.x}
+        y={pauseText.y}
         text="Pause"
         visible={paused && !changingLevel}
         anchor={0.5}
         style={titleStyle}
-        width={0.07 * gameWidth}
+        width={pauseText.width}
       />
       <Text
-        x={0.5 * gameWidth}
-        y={gameHeight / 2}
+        x={mainVolumeText.x}
+        y={mainVolumeText.y}
         text={`Main Volume: ${mVolume}%`}
         visible={paused && !changingLevel}
         anchor={0.5}
         style={textStyle}
-        width={0.2 * gameWidth}
+        width={mainVolumeText.width}
       />
       <Text
-        x={0.5 * gameWidth}
-        y={0.6 * gameHeight}
+        x={soundEffectsText.x}
+        y={soundEffectsText.y}
         text={`Sound Effects Volume: ${eVolume}%`}
         visible={paused && !changingLevel}
         anchor={0.5}
         style={textStyle}
-        width={0.2 * gameWidth}
+        width={soundEffectsText.width}
       />
       <Sprite
         image={minusImage}
-        x={0.35 * gameWidth}
-        y={gameHeight / 2}
+        x={mainVolumeText.minusButton.x}
+        y={mainVolumeText.minusButton.y}
         interactive
         pointerdown={() => {
           if (mVolume > 0) {
@@ -131,8 +172,8 @@ export default function PauseMenu({
       />
       <Sprite
         image={plusImage}
-        x={0.65 * gameWidth}
-        y={gameHeight / 2}
+        x={mainVolumeText.plusButton.x}
+        y={mainVolumeText.plusButton.y}
         interactive
         pointerdown={() => {
           if (mVolume < 100) {
@@ -145,8 +186,8 @@ export default function PauseMenu({
       />
       <Sprite
         image={minusImage}
-        x={0.35 * gameWidth}
-        y={0.6 * gameHeight}
+        x={soundEffectsText.minusButton.x}
+        y={soundEffectsText.minusButton.y}
         interactive
         pointerdown={() => {
           if (eVolume > 0) {
@@ -159,8 +200,8 @@ export default function PauseMenu({
       />
       <Sprite
         image={plusImage}
-        x={0.65 * gameWidth}
-        y={0.6 * gameHeight}
+        x={soundEffectsText.plusButton.x}
+        y={soundEffectsText.plusButton.y}
         interactive
         pointerdown={() => {
           if (eVolume < 100) {
@@ -178,4 +219,9 @@ export default function PauseMenu({
 PauseMenu.propTypes = {
   gameWidth: PropTypes.number.isRequired,
   gameHeight: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+PauseMenu.defaultProps = {
+  isMobile: false,
 };

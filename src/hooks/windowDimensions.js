@@ -5,6 +5,7 @@ function getWindowDimensions() {
   return {
     width,
     height,
+    isMobile: width < 768,
   };
 }
 
