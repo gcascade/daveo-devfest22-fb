@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import { encrypt } from '../utils/encryptUtils';
 
 const { REACT_APP_SAVE_SCORE, REACT_APP_SCORE_PATH } = process.env;
 
@@ -97,7 +98,7 @@ export const gameSlice = createSlice({
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ score: state.totalScore }),
+            body: JSON.stringify({ score: encrypt(state.totalScore.toString()) }),
           });
         }
       }
