@@ -14,7 +14,7 @@ import Ground from './Ground';
 import { moveElementHorizontally, moveElementVerticallyAndScaleUp, moveElementVerticallyBetween } from '../utils/movementUtils';
 import Octopus from './Octopus';
 
-export default function SeaWorld({ width, height }) {
+export default function SeaWorld({ width, height, isMobile }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
 
   const gameIsStarted = useSelector((state) => state.game.hasStarted);
@@ -232,7 +232,7 @@ export default function SeaWorld({ width, height }) {
         bubble1scale,
         setBubble1scale,
         0.00001 * delta,
-        0.5,
+        isMobile ? 0.25 : 0.5,
       );
 
       // bubble 2
@@ -245,7 +245,7 @@ export default function SeaWorld({ width, height }) {
         bubble2scale,
         setBubble2scale,
         0.00003 * delta,
-        0.3,
+        isMobile ? 0.15 : 0.3,
       );
 
       // bubble 3
@@ -258,7 +258,7 @@ export default function SeaWorld({ width, height }) {
         bubble3scale,
         setBubble3scale,
         0.00001 * delta,
-        0.3,
+        isMobile ? 0.15 : 0.3,
       );
 
       // bubble 4
@@ -271,7 +271,7 @@ export default function SeaWorld({ width, height }) {
         bubble4scale,
         setBubble4scale,
         0.00003 * delta,
-        0.15,
+        isMobile ? 0.075 : 0.15,
       );
 
       // bubble 5
@@ -284,7 +284,7 @@ export default function SeaWorld({ width, height }) {
         bubble5scale,
         setBubble5scale,
         0.00001 * delta,
-        0.25,
+        isMobile ? 0.125 : 0.25,
       );
 
       // bubble 6
@@ -297,7 +297,7 @@ export default function SeaWorld({ width, height }) {
         bubble6scale,
         setBubble6scale,
         0.00003 * delta,
-        0.4,
+        isMobile ? 0.2 : 0.4,
       );
 
       // bubble 7
@@ -310,7 +310,7 @@ export default function SeaWorld({ width, height }) {
         bubble7scale,
         setBubble7scale,
         0.00002 * delta,
-        0.25,
+        isMobile ? 0.125 : 0.25,
       );
 
       // bubble 8
@@ -323,7 +323,7 @@ export default function SeaWorld({ width, height }) {
         bubble8scale,
         setBubble8scale,
         0.00003 * delta,
-        0.45,
+        isMobile ? 0.225 : 0.45,
       );
 
       // foreground
@@ -341,20 +341,20 @@ export default function SeaWorld({ width, height }) {
       {isSeaWorld && (
         <>
           <Ground x={width} y={height} scale={1} color={2} />
-          <Fish x={yellowfish1x} y={yellowfish1y} scale={0.09} color={1} />
-          <Fish x={yellowfish2x} y={yellowfish2y} scale={0.11} color={1} />
-          <Fish x={yellowfish3x} y={yellowfish3y} scale={0.1} color={1} />
-          <Fish x={yellowfish4x} y={yellowfish4y} scale={0.2} color={1} />
-          <Fish x={redfish1x} y={redfish1y} scale={0.15} color={2} />
-          <Fish x={redfish2x} y={redfish2y} scale={0.17} color={2} />
-          <Fish x={redfish3x} y={redfish3y} scale={0.07} color={2} />
-          <Octopus x={octopusX} y={octopusY} scale={0.1} />
-          <Coral x={yellowCoral1x} y={0.85 * height} scale={0.4} color={1} />
-          <Coral x={redCoral1x} y={0.85 * height} scale={0.45} color={2} />
-          <Coral x={redCoral2x} y={0.85 * height} scale={0.2} color={2} />
-          <Coral x={yellowCoral2x} y={0.85 * height} scale={0.5} color={1} />
-          <Algae x={algae1x} y={0.8 * height} scale={0.7} />
-          <Algae x={algae2x} y={0.8 * height} scale={0.4} />
+          <Fish x={yellowfish1x} y={yellowfish1y} scale={isMobile ? 0.045 : 0.09} color={1} />
+          <Fish x={yellowfish2x} y={yellowfish2y} scale={isMobile ? 0.055 : 0.11} color={1} />
+          <Fish x={yellowfish3x} y={yellowfish3y} scale={isMobile ? 0.05 : 0.1} color={1} />
+          <Fish x={yellowfish4x} y={yellowfish4y} scale={isMobile ? 0.1 : 0.2} color={1} />
+          <Fish x={redfish1x} y={redfish1y} scale={isMobile ? 0.075 : 0.15} color={2} />
+          <Fish x={redfish2x} y={redfish2y} scale={isMobile ? 0.085 : 0.17} color={2} />
+          <Fish x={redfish3x} y={redfish3y} scale={isMobile ? 0.035 : 0.07} color={2} />
+          <Octopus x={octopusX} y={octopusY} scale={isMobile ? 0.05 : 0.1} />
+          <Coral x={yellowCoral1x} y={0.85 * height} scale={isMobile ? 0.2 : 0.4} color={1} />
+          <Coral x={redCoral1x} y={0.85 * height} scale={isMobile ? 0.225 : 0.45} color={2} />
+          <Coral x={redCoral2x} y={0.85 * height} scale={isMobile ? 0.1 : 0.2} color={2} />
+          <Coral x={yellowCoral2x} y={0.85 * height} scale={isMobile ? 0.25 : 0.5} color={1} />
+          <Algae x={algae1x} y={0.8 * height} scale={isMobile ? 0.35 : 0.7} />
+          <Algae x={algae2x} y={0.8 * height} scale={isMobile ? 0.2 : 0.4} />
           <Bubble x={0.45 * width} y={bubble1Y} scale={bubble1scale} />
           <Bubble x={0.1 * width} y={bubble2Y} scale={bubble2scale} />
           <Bubble x={0.7 * width} y={bubble3Y} scale={bubble3scale} />
@@ -364,8 +364,8 @@ export default function SeaWorld({ width, height }) {
           <Bubble x={0.8 * width} y={bubble7Y} scale={bubble7scale} />
           <Bubble x={0.84 * width} y={bubble8Y} scale={bubble8scale} />
           <Container>
-            <DaveoLogo x={daveoLogoX} y={0.2 * height} scale={0.1} color={2} />
-            <DevFest x={devFestX} y={0.42 * height} scale={0.1} color={2} />
+            <DaveoLogo x={daveoLogoX} y={0.2 * height} scale={isMobile ? 0.05 : 0.1} color={2} />
+            <DevFest x={devFestX} y={0.42 * height} scale={isMobile ? 0.05 : 0.1} color={2} />
           </Container>
         </>
       )}
@@ -376,4 +376,9 @@ export default function SeaWorld({ width, height }) {
 SeaWorld.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+SeaWorld.defaultProps = {
+  isMobile: false,
 };

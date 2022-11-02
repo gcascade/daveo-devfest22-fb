@@ -15,7 +15,7 @@ import Ground from './Ground';
 
 import { moveElementHorizontally } from '../utils/movementUtils';
 
-export default function AirWorld({ width, height }) {
+export default function AirWorld({ width, height, isMobile }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
 
   const gameIsStarted = useSelector((state) => state.game.hasStarted);
@@ -77,33 +77,32 @@ export default function AirWorld({ width, height }) {
       {!isSeaWorld && (
         <>
           <Ground x={width} y={height} scale={1} color={1} />
-          <Cloud x={cloud1x} y={height * 0.2} scale={0.4} />
-          <Cloud x={cloud2x} y={height * 0.3} scale={0.5} mirrored />
-          <Mountain x={mountain1x} y={0.85 * height} scale={0.5} />
-          <Mountain x={mountain2x} y={0.85 * height} scale={0.3} />
-          <Rock x={rockX} y={0.85 * height} scale={0.5} />
-          <Tree x={tree1x} y={0.85 * height} scale={0.15} />
-          <Tree x={tree2x} y={1 * height} scale={0.35} />
-          <Tree x={tree3x} y={0.86 * height} scale={0.2} />
-          <Zeppelin x={zeppelinX} y={0.2 * height} scale={0.15} />
+          <Cloud x={cloud1x} y={height * 0.2} scale={isMobile ? 0.2 : 0.4} />
+          <Cloud x={cloud2x} y={height * 0.3} scale={isMobile ? 0.25 : 0.5} mirrored />
+          <Mountain x={mountain1x} y={0.85 * height} scale={isMobile ? 0.25 : 0.5} />
+          <Mountain x={mountain2x} y={0.85 * height} scale={isMobile ? 0.15 : 0.3} />
+          <Rock x={rockX} y={0.85 * height} scale={isMobile ? 0.25 : 0.5} />
+          <Tree x={tree1x} y={0.85 * height} scale={isMobile ? 0.075 : 0.15} />
+          <Tree x={tree2x} y={1 * height} scale={isMobile ? 0.175 : 0.35} />
+          <Tree x={tree3x} y={0.86 * height} scale={isMobile ? 0.1 : 0.2} />
+          <Zeppelin x={zeppelinX} y={0.2 * height} scale={isMobile ? 0.075 : 0.15} />
           <Container>
-            <DaveoLogo x={daveoLogoX} y={0.2 * height} scale={0.1} color={1} />
-            <DevFest x={devFestX} y={0.42 * height} scale={0.1} color={1} />
+            <DaveoLogo x={daveoLogoX} y={0.2 * height} scale={isMobile ? 0.05 : 0.1} color={1} />
+            <DevFest x={devFestX} y={0.42 * height} scale={isMobile ? 0.05 : 0.1} color={1} />
           </Container>
-          <Cloud x={cloud3x} y={height * 0.2} scale={0.4} mirrored />
-          <Cloud x={cloud4x} y={height * 0.3} scale={0.5} />
-          <Mountain x={mountain1x} y={0.85 * height} scale={0.5} />
-          <Mountain x={mountain2x} y={0.85 * height} scale={0.3} />
-          <Rock x={rockX} y={0.85 * height} scale={0.6} />
-          <Tree x={tree1x} y={0.85 * height} scale={0.15} />
-          <Tree x={tree3x} y={0.86 * height} scale={0.2} />
-          <Tree x={tree4x} y={0.85 * height} scale={0.15} mirrored />
-          <Tree x={tree5x} y={0.85 * height} scale={0.25} />
-          <Tree x={tree6x} y={0.86 * height} scale={0.2} />
-          <Elephant x={elephantX} y={0.85 * height} scale={0.4} />
-          <Tree x={tree7x} y={1 * height} scale={0.3} mirrored />
-          <Tree x={tree2x} y={1 * height} scale={0.35} />
-          <Zeppelin x={zeppelinX} y={0.2 * height} scale={0.15} />
+          <Cloud x={cloud3x} y={height * 0.2} scale={isMobile ? 0.2 : 0.4} mirrored />
+          <Cloud x={cloud4x} y={height * 0.3} scale={isMobile ? 0.25 : 0.5} />
+          <Mountain x={mountain1x} y={0.85 * height} scale={isMobile ? 0.25 : 0.5} />
+          <Mountain x={mountain2x} y={0.85 * height} scale={isMobile ? 0.15 : 0.3} />
+          <Rock x={rockX} y={0.85 * height} scale={isMobile ? 0.3 : 0.6} />
+          <Tree x={tree1x} y={0.85 * height} scale={isMobile ? 0.075 : 0.15} />
+          <Tree x={tree3x} y={0.86 * height} scale={isMobile ? 0.1 : 0.2} />
+          <Tree x={tree4x} y={0.85 * height} scale={isMobile ? 0.075 : 0.15} mirrored />
+          <Tree x={tree5x} y={0.85 * height} scale={isMobile ? 0.125 : 0.25} />
+          <Tree x={tree6x} y={0.86 * height} scale={isMobile ? 0.1 : 0.2} />
+          <Elephant x={elephantX} y={0.85 * height} scale={isMobile ? 0.2 : 0.4} />
+          <Tree x={tree7x} y={1 * height} scale={isMobile ? 0.15 : 0.3} mirrored />
+          <Tree x={tree2x} y={1 * height} scale={isMobile ? 0.175 : 0.35} />
         </>
       )}
     </Container>
@@ -114,4 +113,9 @@ export default function AirWorld({ width, height }) {
 AirWorld.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+AirWorld.defaultProps = {
+  isMobile: false,
 };

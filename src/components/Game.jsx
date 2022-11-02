@@ -433,10 +433,10 @@ function Game() {
             isMobile={isMobile}
           />
           <Container>
-            <Bird gameHeight={height} />
+            <Bird gameHeight={height} isMobile={isMobile} />
           </Container>
-          <BonusContainer />
-          <ObstacleContainer width={width} height={height} />
+          <BonusContainer isMobile={isMobile} />
+          <ObstacleContainer width={width} height={height} isMobile={isMobile} />
           <StartButtonContainer width={width} height={height} />
           <ScoreContainer width={width} height={height} />
           <CollectedBonusesContainer width={width} height={height} />
