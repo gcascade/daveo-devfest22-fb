@@ -118,11 +118,11 @@ export default function PauseMenu({
     width: isMobile ? 125 : 0.2 * gameWidth,
     minusButton: {
       x: isMobile ? gameWidth / 2 - 100 : 0.35 * gameWidth,
-      y: 0.5 * gameHeight + 75,
+      y: isMobile ? 0.5 * gameHeight + 75 : 0.6 * gameHeight,
     },
     plusButton: {
       x: isMobile ? gameWidth / 2 + 100 : 0.65 * gameWidth,
-      y: 0.5 * gameHeight + 75,
+      y: isMobile ? 0.5 * gameHeight + 75 : 0.6 * gameHeight,
     },
   };
 
