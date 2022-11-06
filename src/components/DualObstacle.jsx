@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Obstacle from './Obstacle';
 
 export default function DualObstacle({
-  x, topHeight, gap, topId, bottomId, gameWidth, gameHeight,
+  x, topHeight, gap, topId, bottomId, gameWidth, gameHeight, isMobile,
 }) {
   const bottomHeight = gameHeight - topHeight - gap;
   return (
@@ -17,6 +17,7 @@ export default function DualObstacle({
         isDual
         gameHeight={gameHeight}
         gameWidth={gameWidth}
+        isMobile={isMobile}
       />
       <Obstacle
         id={bottomId}
@@ -27,6 +28,7 @@ export default function DualObstacle({
         isDual
         gameHeight={gameHeight}
         gameWidth={gameWidth}
+        isMobile={isMobile}
       />
     </>
   );
@@ -40,4 +42,9 @@ DualObstacle.propTypes = {
   bottomId: PropTypes.string.isRequired,
   gameWidth: PropTypes.number.isRequired,
   gameHeight: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+DualObstacle.defaultProps = {
+  isMobile: false,
 };

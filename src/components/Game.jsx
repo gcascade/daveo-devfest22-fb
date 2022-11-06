@@ -58,7 +58,7 @@ const textStyle = new PIXI.TextStyle({
   wordWrapWidth: 350,
 });
 
-function displayObstacle(obstacle, gameWidth, gameHeight) {
+function displayObstacle(obstacle, gameWidth, gameHeight, isMobile) {
   if (obstacle?.isDual) {
     return (
       <DualObstacle
@@ -72,6 +72,7 @@ function displayObstacle(obstacle, gameWidth, gameHeight) {
         topHeight={obstacle?.height}
         gameHeight={gameHeight}
         gameWidth={gameWidth}
+        isMobile={isMobile}
       />
     );
   }
@@ -86,17 +87,18 @@ function displayObstacle(obstacle, gameWidth, gameHeight) {
       isDual={false}
       gameHeight={gameHeight}
       gameWidth={gameWidth}
+      isMobile={isMobile}
     />
   );
 }
 
-function ObstacleContainer({ width, height }) {
+function ObstacleContainer({ width, height, isMobile }) {
   const obstacles = useSelector((state) => state.obstacle.obstacles);
 
   return (
     <Container>
       {obstacles.map((obstacle) => (
-        displayObstacle(obstacle, width, height)
+        displayObstacle(obstacle, width, height, isMobile)
       ))}
     </Container>
   );
@@ -474,6 +476,11 @@ BackgroundContainer.propTypes = {
 ObstacleContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+ObstacleContainer.defaultProps = {
+  isMobile: false,
 };
 
 ButtonContainer.propTypes = {

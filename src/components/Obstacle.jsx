@@ -135,9 +135,10 @@ function customCollision(
   isTop,
   gameHeight,
   isSeaWorld,
+  isMobile,
 ) {
   // check head : head has a height of 55px
-  const headSize = 55;
+  const headSize = isMobile ? 27.5 : 55;
   const bodySize = obstacleHeight - headSize;
 
   const sprite = isSeaWorld ? nautilusSprite : balloonSprite;
@@ -159,6 +160,7 @@ function customCollision(
       headSize,
       bodySize,
       gameHeight,
+      isMobile,
     )) {
       return true;
     }
@@ -178,6 +180,7 @@ function hasCollidedWithBird(
   isTop,
   gameHeight,
   isSeaWorld,
+  isMobile,
 ) {
   return customCollision(
     x,
@@ -190,6 +193,7 @@ function hasCollidedWithBird(
     isTop,
     gameHeight,
     isSeaWorld,
+    isMobile,
   );
 }
 
@@ -197,12 +201,11 @@ function hasPassedBird(x, birdX, obstacleWidth, birdWidth) {
   const birdLeft = birdX - birdWidth / 2;
   const obstacleRight = x + obstacleWidth / 2;
 
-  // + hasCollidedBird ??
   return obstacleRight < birdLeft;
 }
 
 function Obstacle({
-  id, x, y, isTop, height, isDual, gameWidth, gameHeight,
+  id, x, y, isTop, height, isDual, gameWidth, gameHeight, isMobile,
 }) {
   const dispatch = useDispatch();
   const obstacleSpeed = useSelector((state) => state.game.obstacleSpeed);
@@ -241,10 +244,11 @@ function Obstacle({
           height,
           birdX,
           birdY,
-          birdScale,
+          isMobile ? birdScale / 2 : birdScale,
           isTop,
           gameHeight,
           isSeaWorld,
+          isMobile,
         ) && !godMode && !birdIsInvincible && !scored) {
           if (lives && lives > 0) {
             dispatch(loseLife());
@@ -358,12 +362,14 @@ function Obstacle({
     }
   });
 
-  const obstacleScale = 0.269;
+  const defaultScale = 0.269;
+  const obstacleScale = isMobile ? 0.2 : defaultScale;
+  const imageHeight = obstacleImageHeight * (obstacleScale / defaultScale);
   return (
     <Sprite
       image={obstacleImage2}
       x={x}
-      y={isTop ? y + height : y + obstacleImageHeight - height}
+      y={isTop ? y + height : y + imageHeight - height}
       angle={isTop ? 180 : 0}
       anchor={{ x: 0.5, y: isTop ? 0 : 1 }}
       {...(isTop ? { scale: { x: -obstacleScale, y: obstacleScale } } : { scale: obstacleScale })}
@@ -380,6 +386,11 @@ Obstacle.propTypes = {
   isDual: PropTypes.bool.isRequired,
   gameWidth: PropTypes.number.isRequired,
   gameHeight: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+Obstacle.defaultProps = {
+  isMobile: false,
 };
 
 export default Obstacle;

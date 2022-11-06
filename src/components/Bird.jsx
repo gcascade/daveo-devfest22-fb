@@ -14,7 +14,7 @@ import {
 } from '../slices/birdSlice';
 import { endGame } from '../slices/gameSlice';
 
-export default function Bird({ gameHeight }) {
+export default function Bird({ gameHeight, isMobile }) {
   const x = useSelector((state) => state.bird.x);
   const y = useSelector((state) => state.bird.y);
   const birdHeight = useSelector((state) => state.game.birdHeight);
@@ -81,8 +81,13 @@ export default function Bird({ gameHeight }) {
   const nautilusScale = -0.10 * birdScale;
   const ballonScale = 0.125 * birdScale;
   let xScale = isSeaWorld ? nautilusScale : ballonScale;
-  const yScale = isSeaWorld ? -nautilusScale : ballonScale;
+  let yScale = isSeaWorld ? -nautilusScale : ballonScale;
   xScale = isSeaWorld && gameOver ? -xScale : xScale;
+
+  if (isMobile) {
+    xScale /= 2;
+    yScale /= 2;
+  }
 
   if (playHitAnimation) {
     return (
@@ -112,4 +117,9 @@ export default function Bird({ gameHeight }) {
 
 Bird.propTypes = {
   gameHeight: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+Bird.defaultProps = {
+  isMobile: false,
 };
