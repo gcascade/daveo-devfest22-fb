@@ -377,30 +377,36 @@ function StartButtonContainer({ width, height }) {
 
 function ButtonContainer({ width, height, isMobile }) {
   const spacing = isMobile ? 60 : 75;
+  const isLoaded = useSelector((state) => state.sound.isLoaded);
   return (
     <Container>
+      {isLoaded && (
       <PauseButton
         x={0.95 * width}
         y={0.05 * height}
         scale={0.5}
       />
+      )}
+      {isLoaded && (
       <HelpButton
         x={0.95 * width - spacing}
         y={0.05 * height}
         scale={0.5}
       />
+      )}
     </Container>
   );
 }
 
 function ScoreContainer({ width, height }) {
   const totalScore = useSelector((state) => state.game.totalScore);
+  const isLoaded = useSelector((state) => state.sound.isLoaded);
   return (
     <Container
       x={width / 2}
       y={height / 10}
     >
-      <Text text={totalScore} style={textStyle} anchor={0.5} />
+      {isLoaded && <Text text={totalScore} style={textStyle} anchor={0.5} />}
     </Container>
   );
 }
