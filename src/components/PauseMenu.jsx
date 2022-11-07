@@ -86,8 +86,8 @@ export default function PauseMenu({
 
   const draw = useCallback((context) => {
     context.clear();
-    context.lineStyle(5, 0x003c5a, 1);
-    context.beginFill(0x003c5a, 0.25);
+    context.lineStyle(5, 0x000000, 1);
+    context.beginFill(0x003c5a, 1);
     context.drawRoundedRect(
       topLeftPoint.x,
       topLeftPoint.y,

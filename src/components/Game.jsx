@@ -353,7 +353,7 @@ function BackgroundContainer({ width, height }) {
   );
 }
 
-function StartButtonContainer({ width, height }) {
+function StartButtonContainer({ width, height, isMobile }) {
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const isLoaded = useSelector((state) => state.sound.isLoaded);
 
@@ -369,7 +369,7 @@ function StartButtonContainer({ width, height }) {
       />
       )}
       {!isLoaded && (
-      <Loader x={0.5 * width} y={0.5 * height} />
+      <Loader gameWidth={width} gameHeight={height} isMobile={isMobile} />
       )}
     </Container>
   );
@@ -451,7 +451,7 @@ function Game() {
           </Container>
           <BonusContainer isMobile={isMobile} />
           <ObstacleContainer width={width} height={height} isMobile={isMobile} />
-          <StartButtonContainer width={width} height={height} />
+          <StartButtonContainer width={width} height={height} isMobile={isMobile} />
           <ScoreContainer width={width} height={height} />
           <CollectedBonusesContainer width={width} height={height} />
           <ButtonContainer width={width} height={height} isMobile={isMobile} />
@@ -473,6 +473,11 @@ ScoreContainer.propTypes = {
 StartButtonContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+StartButtonContainer.defaultProps = {
+  isMobile: false,
 };
 
 CollectedBonusesContainer.propTypes = {
