@@ -1,6 +1,5 @@
 import React from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
-import { sound } from '@pixi/sound';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import coin from '../images/coin_100x100.png';
@@ -10,6 +9,7 @@ import {
   collectBonus, moveBonus, resetBonus, updateBonus,
 } from '../slices/bonusSlice';
 import { getLife, incrementTotalScore } from '../slices/gameSlice';
+import { play } from '../slices/soundSlice';
 import { balloonSprite, nautilusSprite } from '../constants';
 
 const baseRadius = 50;
@@ -41,7 +41,7 @@ function Bonus({
   const paused = useSelector((state) => state.game.paused);
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const pointsPerCoin = useSelector((state) => state.game.pointsPerCoin);
-  const effectVolume = useSelector((state) => state.game.effectVolume);
+  const effectVolume = useSelector((state) => state.sound.effectVolume);
 
   let image;
 
@@ -73,10 +73,10 @@ function Bonus({
 
       if (type === 'heart') {
         dispatch(getLife());
-        sound.play('heart', { volume: effectVolume });
+        dispatch(play({ name: 'heart', volume: effectVolume }));
       } else if (type === 'coin') {
         dispatch(incrementTotalScore(pointsPerCoin));
-        sound.play('coin', { volume: effectVolume });
+        dispatch(play({ name: 'coin', volume: effectVolume }));
       }
     }
 

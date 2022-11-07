@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Sprite, useTick } from '@inlet/react-pixi';
-import { sound } from '@pixi/sound';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import obstacleImage2 from '../images/veryLongObstacle.png';
@@ -12,6 +11,7 @@ import {
 } from '../slices/gameSlice';
 import { rollNextBonus, addBonus, removeOneHeartBonus } from '../slices/bonusSlice';
 import { setInvincible } from '../slices/birdSlice';
+import { play, stopAll } from '../slices/soundSlice';
 import { balloonSprite, nautilusSprite } from '../constants';
 import { pointHitRectangle } from '../utils/collisionUtils';
 import { randomNumberBetween, randomBonus } from '../utils/randomUtils';
@@ -232,7 +232,7 @@ function Obstacle({
   const lives = useSelector((state) => state.game.lives);
   const birdIsInvincible = useSelector((state) => state.bird.invincible);
   const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
-  const effectVolume = useSelector((state) => state.game.effectVolume);
+  const effectVolume = useSelector((state) => state.sound.effectVolume);
 
   useTick((delta) => {
     if (!paused && gameHasStarted) {
@@ -254,11 +254,11 @@ function Obstacle({
             dispatch(loseLife());
             dispatch(removeOneHeartBonus());
             dispatch(setInvincible(true));
-            sound.play('hit', { volume: effectVolume });
+            dispatch(play({ name: 'hit', volume: effectVolume }));
           } else {
             dispatch(endGame());
-            sound.stopAll();
-            sound.play('game_over', { volume: effectVolume });
+            dispatch(stopAll());
+            dispatch(play({ name: 'game_over', volume: effectVolume }));
           }
         } else if ((isDual && isTop) || !isDual) {
           dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed * delta }));
@@ -267,7 +267,7 @@ function Obstacle({
             dispatch(incrementScore());
             dispatch(setInvincible(false));
             setScored(true);
-            sound.play('score_point', { volume: effectVolume });
+            dispatch(play({ name: 'score_point', volume: effectVolume }));
 
             if (score >= nextBonus) {
               dispatch(rollNextBonus());
@@ -284,7 +284,7 @@ function Obstacle({
 
             if (score >= 19 && score % 10 === 9 && gameSpeed < maxGameSpeed) {
               dispatch(updateSettings({ gameSpeed: gameSpeed + speedIncrease }));
-              sound.play('fast', { volume: effectVolume });
+              dispatch(play({ name: 'fast', volume: effectVolume }));
             }
           }
         }

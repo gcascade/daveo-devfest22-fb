@@ -1,7 +1,6 @@
 import { AnimatedSprite, Sprite, useTick } from '@inlet/react-pixi';
 
 import React from 'react';
-import { sound } from '@pixi/sound';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import balloonImage from '../images/balloon_daveo.png';
@@ -13,6 +12,7 @@ import {
   move, resetFallVelocity, setFallVelocity, setJumpVelocity, setY, stopJump,
 } from '../slices/birdSlice';
 import { endGame } from '../slices/gameSlice';
+import { stopAll, play } from '../slices/soundSlice';
 
 export default function Bird({ gameHeight, isMobile }) {
   const x = useSelector((state) => state.bird.x);
@@ -32,7 +32,7 @@ export default function Bird({ gameHeight, isMobile }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
   const playHitAnimation = useSelector((state) => state.bird.invincible);
   const gameOver = useSelector((state) => state.game.gameOver);
-  const effectVolume = useSelector((state) => state.game.effectVolume);
+  const effectVolume = useSelector((state) => state.sound.effectVolume);
 
   let image;
 
@@ -72,8 +72,8 @@ export default function Bird({ gameHeight, isMobile }) {
         dispatch(setJumpVelocity(defaultJumpVelocity));
       } else if (!godMode) {
         dispatch(endGame());
-        sound.stopAll();
-        sound.play('game_over', { volume: effectVolume });
+        dispatch(stopAll());
+        dispatch(play({ name: 'game_over', volume: effectVolume }));
       }
     }
   });

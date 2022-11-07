@@ -5,9 +5,6 @@ import ContextBridge from './components/ContextBridge';
 import './index.css';
 import Game from './components/Game';
 import store from './store';
-import loadSounds from './sounds';
-
-loadSounds();
 
 ReactDOM.render(
   // eslint-disable-next-line react/jsx-filename-extension

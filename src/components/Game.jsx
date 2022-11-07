@@ -22,6 +22,7 @@ import CollectedBonusesContainer from './CollectedBonusesDisplay';
 import PauseButton from './PauseButton';
 import PauseMenu from './PauseMenu';
 import HelpButton from './HelpButton';
+import Loader from './Loader';
 
 import AirWorld from './AirWorld';
 import SeaWorld from './SeaWorld';
@@ -38,6 +39,7 @@ import {
 import { addDualObstacle, addObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { randomFromList } from '../utils/randomUtils';
 import { reset as resetBonus } from '../slices/bonusSlice';
+import { loop, play, stopAll } from '../slices/soundSlice';
 import { seaBgm, bgm } from '../constants';
 
 import useWindowDimensions from '../hooks/windowDimensions';
@@ -137,8 +139,8 @@ function BackgroundContainer({ width, height }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
   const changingLevel = useSelector((state) => state.game.changingLevel);
   const changeLevelEnabled = useSelector((state) => state.game.changeLevelEnabled);
-  const mainVolume = useSelector((state) => state.game.mainVolume);
-  const effectVolume = useSelector((state) => state.game.effectVolume);
+  const mainVolume = useSelector((state) => state.sound.mainVolume);
+  const effectVolume = useSelector((state) => state.sound.effectVolume);
 
   const [noise, setNoise] = React.useState(0);
   const [updatedLevel, setUpdatedLevel] = React.useState(false);
@@ -163,7 +165,7 @@ function BackgroundContainer({ width, height }) {
   const jumpAndSound = () => {
     dispatch(setJumpVelocity(birdJumpVelocity));
     dispatch(jump());
-    sound.play(jumpSound, { volume: effectVolume });
+    dispatch(play({ name: jumpSound, volume: effectVolume }));
   };
 
   const app = useApp();
@@ -175,11 +177,11 @@ function BackgroundContainer({ width, height }) {
     // duplicated code from StartButton
     // -----
     sound.context.playEmptySound();
-    sound.stopAll();
-    sound.play('start', { volume: effectVolume });
+    dispatch(stopAll());
+    dispatch(play({ name: 'start', volume: effectVolume }));
     const music = randomFromList(bgm);
     console.log(`Playing ${music}`);
-    sound.play(music, { loop: true, volume: mainVolume });
+    dispatch(loop({ name: music, volume: mainVolume }));
     if (!gameHasStarted) {
       dispatch(reset());
       dispatch(resetBird());
@@ -318,7 +320,7 @@ function BackgroundContainer({ width, height }) {
       } else if (!updatedLevel && noise > 1) {
         dispatch(updateSettings({ isSeaWorld: true }));
         setUpdatedLevel(true);
-        sound.stopAll();
+        dispatch(stopAll());
       } else if (updatedLevel && noise >= 0) {
         setNoise(noise - noiseIncrement * delta);
       } else {
@@ -328,7 +330,7 @@ function BackgroundContainer({ width, height }) {
         dispatch(resumeGame());
         const music = randomFromList(seaBgm);
         console.log(`Playing ${music}`);
-        sound.play(music, { loop: true, volume: mainVolume });
+        dispatch(loop({ name: music, volume: mainVolume }));
       }
     }
   });
@@ -353,10 +355,11 @@ function BackgroundContainer({ width, height }) {
 
 function StartButtonContainer({ width, height }) {
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
+  const isLoaded = useSelector((state) => state.sound.isLoaded);
 
   return (
     <Container>
-      {!gameHasStarted && (
+      {!gameHasStarted && isLoaded && (
       <StartButton
         x={width / 2}
         y={height / 2}
@@ -364,6 +367,9 @@ function StartButtonContainer({ width, height }) {
         width={width}
         height={height}
       />
+      )}
+      {!isLoaded && (
+      <Loader x={0.5 * width} y={0.5 * height} />
       )}
     </Container>
   );
@@ -412,7 +418,7 @@ function Game() {
   useEffect(() => {
     dispatch(reset());
     dispatch(moveBird({ x: width / 2, y: height * 0.3 }));
-    sound.stopAll();
+    dispatch(stopAll());
   }, [width, height]);
 
   return (

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { sound } from '@pixi/sound';
 import plusImage from '../images/plus.png';
 import minusImage from '../images/minus.png';
-import { updateSettings } from '../slices/gameSlice';
+import { updateMainVolume, updateEffectVolume } from '../slices/soundSlice';
 import { bgm, seaBgm, sfx } from '../constants';
 
 export default function PauseMenu({
@@ -16,8 +16,8 @@ export default function PauseMenu({
 }) {
   const paused = useSelector((state) => state.game.paused);
   const changingLevel = useSelector((state) => state.game.changingLevel);
-  const mainVolume = useSelector((state) => state.game.mainVolume);
-  const effectVolume = useSelector((state) => state.game.effectVolume);
+  const mainVolume = useSelector((state) => state.sound.mainVolume);
+  const effectVolume = useSelector((state) => state.sound.effectVolume);
   const dispatch = useDispatch();
   const [mVolume, setMVolume] = useState(mainVolume * 100);
   const [eVolume, setEVolume] = useState(effectVolume * 100);
@@ -46,25 +46,31 @@ export default function PauseMenu({
     wordWrapWidth: 350,
   });
 
-  function updateMainVolume(volume) {
-    bgm.forEach((track) => {
-      sound.find(track).volume = volume;
+  function updateMVolume(volume) {
+    bgm.forEach((trackName) => {
+      if (sound.exists(trackName, false)) {
+        sound.find(trackName).volume = volume;
+      }
     });
-    seaBgm.forEach((track) => {
-      sound.find(track).volume = volume;
+    seaBgm.forEach((trackName) => {
+      if (sound.exists(trackName, false)) {
+        sound.find(trackName).volume = volume;
+      }
     });
-    dispatch(updateSettings({ mainVolume: volume }));
+    dispatch(updateMainVolume(volume));
   }
 
   function updateSoundEffectVolume(volume) {
-    sfx.forEach((track) => {
-      sound.find(track).volume = volume;
+    sfx.forEach((trackName) => {
+      if (sound.exists(trackName, false)) {
+        sound.find(trackName).volume = volume;
+      }
     });
-    dispatch(updateSettings({ effectVolume: volume }));
+    dispatch(updateEffectVolume(volume));
   }
 
   useEffect(() => {
-    updateMainVolume(mVolume / 100);
+    updateMVolume(mVolume / 100);
   }, [mVolume]);
 
   useEffect(() => {

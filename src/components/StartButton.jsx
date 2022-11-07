@@ -8,6 +8,7 @@ import { startGame, reset, setGameSpeed } from '../slices/gameSlice';
 import { addObstacle, addDualObstacle, removeAllObstacles } from '../slices/obstacleSlice';
 import { move as moveBird, resetBird } from '../slices/birdSlice';
 import { reset as resetBonus } from '../slices/bonusSlice';
+import { loop, play, stopAll } from '../slices/soundSlice';
 import { bgm } from '../constants';
 import { randomFromList } from '../utils/randomUtils';
 
@@ -21,8 +22,8 @@ function Start({
   const initialBottomObstacleHeight = height;
   const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
   const obstacleSpacing = 0.25 * width > obstacleMinSpacing ? 0.25 * width : obstacleMinSpacing;
-  const mainVolume = useSelector((state) => state.game.mainVolume);
-  const effectVolume = useSelector((state) => state.game.effectVolume);
+  const mainVolume = useSelector((state) => state.sound.mainVolume);
+  const effectVolume = useSelector((state) => state.sound.effectVolume);
 
   return (
     <Sprite
@@ -33,11 +34,11 @@ function Start({
       interactive
       pointerdown={() => {
         sound.context.playEmptySound();
-        sound.stopAll();
-        sound.play('start', { volume: effectVolume });
+        dispatch(stopAll());
+        dispatch(play({ name: 'start', volume: effectVolume }));
         const music = randomFromList(bgm);
         console.log(`Playing ${music}`);
-        sound.play(music, { loop: true, volume: mainVolume });
+        dispatch(loop({ name: music, volume: mainVolume }));
         if (!gameHasStarted) {
           dispatch(reset());
           dispatch(resetBird());
