@@ -1,9 +1,8 @@
 {
   "files": {
     "main.css": "/daveo-devfest22-fb/static/css/main.31d6cfe0.css",
-    "main.js": "/daveo-devfest22-fb/static/js/main.a9cb790f.js",
+    "main.js": "/daveo-devfest22-fb/static/js/main.b27fc05c.js",
     "static/js/407.47f63a6f.chunk.js": "/daveo-devfest22-fb/static/js/407.47f63a6f.chunk.js",
-    "static/media/loader.png": "/daveo-devfest22-fb/static/media/loader.b08c8c459bbacd1798b5.png",
     "static/media/elephant2.png": "/daveo-devfest22-fb/static/media/elephant2.da95566230dbe87338f3.png",
     "static/media/seaBackground.png": "/daveo-devfest22-fb/static/media/seaBackground.10210d5cc2d459f0ae7b.png",
     "static/media/octopus.png": "/daveo-devfest22-fb/static/media/octopus.0e17af8b807ef0b61f24.png",
@@ -12,16 +11,17 @@
     "static/media/nautilus_game_over.png": "/daveo-devfest22-fb/static/media/nautilus_game_over.d88280083473a600f00a.png",
     "static/media/balloon_game_over.png": "/daveo-devfest22-fb/static/media/balloon_game_over.4081cb98c8a2acd76a63.png",
     "static/media/zeppelin.png": "/daveo-devfest22-fb/static/media/zeppelin.ec6dbf49e139fb672469.png",
+    "static/media/loader.png": "/daveo-devfest22-fb/static/media/loader.cbcbb660d020be8cdae4.png",
     "static/media/mountain.png": "/daveo-devfest22-fb/static/media/mountain.6d1bab8124044df8c4d3.png",
     "static/media/nautilus.png": "/daveo-devfest22-fb/static/media/nautilus.2d9dc784b8121108a476.png",
     "static/media/veryLongObstacle.png": "/daveo-devfest22-fb/static/media/veryLongObstacle.3f4f0f58b75c5a4d2040.png",
     "static/media/clouds.png": "/daveo-devfest22-fb/static/media/clouds.5380850d60182f3b6107.png",
     "index.html": "/daveo-devfest22-fb/index.html",
-    "main.a9cb790f.js.map": "/daveo-devfest22-fb/static/js/main.a9cb790f.js.map",
+    "main.b27fc05c.js.map": "/daveo-devfest22-fb/static/js/main.b27fc05c.js.map",
     "407.47f63a6f.chunk.js.map": "/daveo-devfest22-fb/static/js/407.47f63a6f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.31d6cfe0.css",
-    "static/js/main.a9cb790f.js"
+    "static/js/main.b27fc05c.js"
   ]
 }
