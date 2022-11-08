@@ -13,7 +13,7 @@ import { bgm } from '../constants';
 import { randomFromList } from '../utils/randomUtils';
 
 function Start({
-  x, y, scale, width, height,
+  x, y, scale, width, height, isMobile,
 }) {
   const dispatch = useDispatch();
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
@@ -21,9 +21,14 @@ function Start({
   const initialTopObstacleHeight = 0;
   const initialBottomObstacleHeight = height;
   const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
-  const obstacleSpacing = 0.25 * width > obstacleMinSpacing ? 0.25 * width : obstacleMinSpacing;
+  let obstacleSpacing = 0.25 * width > obstacleMinSpacing ? 0.25 * width : obstacleMinSpacing;
+
+  if (isMobile) {
+    obstacleSpacing *= 2 / 3;
+  }
   const mainVolume = useSelector((state) => state.sound.mainVolume);
   const effectVolume = useSelector((state) => state.sound.effectVolume);
+  const initGameSpeed = useSelector((state) => state.game.initGameSpeed);
 
   return (
     <Sprite
@@ -44,7 +49,7 @@ function Start({
           dispatch(resetBird());
           dispatch(resetBonus());
           dispatch(removeAllObstacles());
-          dispatch(setGameSpeed(8));
+          dispatch(setGameSpeed(initGameSpeed));
           dispatch(addDualObstacle({
             isTop: true,
             x: width,
@@ -84,6 +89,7 @@ Start.propTypes = {
   scale: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool.isRequired,
 };
 
 export default Start;

@@ -44,6 +44,7 @@ const initialState = {
   sound: true,
   gameOver: false,
   showHelp: false,
+  initGameSpeed: 8,
 };
 
 export const gameSlice = createSlice({

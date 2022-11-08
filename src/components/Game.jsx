@@ -106,7 +106,7 @@ function ObstacleContainer({ width, height, isMobile }) {
   );
 }
 
-function BonusContainer() {
+function BonusContainer({ isMobile }) {
   const bonus = useSelector((state) => state.bonus.currentBonus);
   return (
     <Container>
@@ -121,6 +121,7 @@ function BonusContainer() {
         goingUp={bonus.goingUp}
         minY={bonus.minY}
         maxY={bonus.maxY}
+        isMobile={isMobile}
       />
       )}
     </Container>
@@ -130,7 +131,7 @@ const spaceKey = keyboard(' ');
 const enterKey = keyboard('Enter');
 const dKey = keyboard('d');
 
-function BackgroundContainer({ width, height }) {
+function BackgroundContainer({ width, height, isMobile }) {
   const dispatch = useDispatch();
   const gameHasStarted = useSelector((state) => state.game.hasStarted);
   const birdJumpVelocity = useSelector((state) => state.game.birdJumpVelocity);
@@ -141,6 +142,7 @@ function BackgroundContainer({ width, height }) {
   const changeLevelEnabled = useSelector((state) => state.game.changeLevelEnabled);
   const mainVolume = useSelector((state) => state.sound.mainVolume);
   const effectVolume = useSelector((state) => state.sound.effectVolume);
+  const initGameSpeed = useSelector((state) => state.game.initGameSpeed);
 
   const [noise, setNoise] = React.useState(0);
   const [updatedLevel, setUpdatedLevel] = React.useState(false);
@@ -157,7 +159,13 @@ function BackgroundContainer({ width, height }) {
 
   const playing = !paused && gameHasStarted;
 
-  const obstacleMaxSpacing = useSelector((state) => state.game.obstacleMaxSpacing);
+  const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
+  let obstacleSpacing = 0.25 * width > obstacleMinSpacing ? 0.25 * width : obstacleMinSpacing;
+
+  if (isMobile) {
+    obstacleSpacing *= 2 / 3;
+  }
+
   const gap = useSelector((state) => state.game.obstacleGap);
   const initialTopObstacleHeight = 0;
   const initialBottomObstacleHeight = height;
@@ -187,7 +195,7 @@ function BackgroundContainer({ width, height }) {
       dispatch(resetBird());
       dispatch(resetBonus());
       dispatch(removeAllObstacles());
-      dispatch(setGameSpeed(8));
+      dispatch(setGameSpeed(initGameSpeed));
       dispatch(addDualObstacle({
         isTop: true,
         x: width,
@@ -196,19 +204,19 @@ function BackgroundContainer({ width, height }) {
       }));
       dispatch(addDualObstacle({
         isTop: true,
-        x: width + obstacleMaxSpacing,
+        x: width + obstacleSpacing,
         height: (height - gap) / 2,
         gap,
       }));
       dispatch(addObstacle({
         isTop: false,
-        x: width + 2 * obstacleMaxSpacing,
+        x: width + 2 * obstacleSpacing,
         y: initialBottomObstacleHeight,
         height: 0.4 * height,
       }));
       dispatch(addObstacle({
         isTop: true,
-        x: width + 3 * obstacleMaxSpacing,
+        x: width + 3 * obstacleSpacing,
         y: initialTopObstacleHeight,
         height: 0.4 * height,
       }));
@@ -366,6 +374,7 @@ function StartButtonContainer({ width, height, isMobile }) {
         scale={0.4}
         width={width}
         height={height}
+        isMobile={isMobile}
       />
       )}
       {!isLoaded && (
@@ -436,7 +445,7 @@ function Game() {
         options={{ backgroundColor: 0x1099bb }}
       >
         <GamepadsProvider>
-          <BackgroundContainer width={width} height={height} />
+          <BackgroundContainer width={width} height={height} isMobile={isMobile} />
           <AirWorld
             width={width}
             height={height}
@@ -489,6 +498,11 @@ CollectedBonusesContainer.propTypes = {
 BackgroundContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+BackgroundContainer.defaultProps = {
+  isMobile: false,
 };
 
 ObstacleContainer.propTypes = {
@@ -508,5 +522,13 @@ ButtonContainer.propTypes = {
 };
 
 ButtonContainer.defaultProps = {
+  isMobile: false,
+};
+
+BonusContainer.propTypes = {
+  isMobile: PropTypes.bool,
+};
+
+BonusContainer.defaultProps = {
   isMobile: false,
 };

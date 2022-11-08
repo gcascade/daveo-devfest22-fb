@@ -233,6 +233,7 @@ function Obstacle({
   const birdIsInvincible = useSelector((state) => state.bird.invincible);
   const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
   const effectVolume = useSelector((state) => state.sound.effectVolume);
+  const speed = isMobile ? gameSpeed / 2 : gameSpeed;
 
   useTick((delta) => {
     if (!paused && gameHasStarted) {
@@ -261,7 +262,7 @@ function Obstacle({
             dispatch(play({ name: 'game_over', volume: effectVolume }));
           }
         } else if ((isDual && isTop) || !isDual) {
-          dispatch(moveObstacle({ id, x: -obstacleSpeed * gameSpeed * delta }));
+          dispatch(moveObstacle({ id, x: -obstacleSpeed * speed * delta }));
 
           if (hasPassedBird(x, birdX, obstacleWidth, birdWidth) && !scored) {
             dispatch(incrementScore());
@@ -294,9 +295,12 @@ function Obstacle({
         const lastObstacle = obstacles[obstacles.length - 1];
 
         // adjust the variation between obstacles caused by the useTick's delta
-        const expectDistanceBetweenObstacles = gameWidth / 4 > obstacleMinSpacing
+        let expectedDistanceBetweenObstacles = gameWidth / 4 > obstacleMinSpacing
           ? gameWidth / 4 : obstacleMinSpacing;
-        const adjustments = gameWidth - lastObstacle.x - expectDistanceBetweenObstacles;
+        if (isMobile) {
+          expectedDistanceBetweenObstacles *= 2 / 3;
+        }
+        const adjustments = gameWidth - lastObstacle.x - expectedDistanceBetweenObstacles;
         const newObstacleX = gameWidth - adjustments;
 
         let newHeight = 0;

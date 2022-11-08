@@ -31,7 +31,7 @@ function checkCollision(x, y, radius, birdX, birdY, isSeaWorld) {
 }
 
 function Bonus({
-  x, y, type, scale, active, goingUp, minY, maxY,
+  x, y, type, scale, active, goingUp, minY, maxY, isMobile,
 }) {
   const dispatch = useDispatch();
   const birdX = useSelector((state) => state.bird.x);
@@ -42,6 +42,8 @@ function Bonus({
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const pointsPerCoin = useSelector((state) => state.game.pointsPerCoin);
   const effectVolume = useSelector((state) => state.sound.effectVolume);
+
+  const speed = isMobile ? gameSpeed / 2 : gameSpeed;
 
   let image;
 
@@ -62,7 +64,7 @@ function Bonus({
 
     const yMovement = goingUp ? -delta : delta;
 
-    dispatch(moveBonus({ x: -gameSpeed * delta, y: yMovement }));
+    dispatch(moveBonus({ x: -speed * delta, y: yMovement }));
 
     if (y + yMovement < minY || y + yMovement > maxY) {
       dispatch(updateBonus({ goingUp: !goingUp }));
@@ -105,6 +107,11 @@ Bonus.propTypes = {
   goingUp: PropTypes.bool.isRequired,
   minY: PropTypes.number.isRequired,
   maxY: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
+};
+
+Bonus.defaultProps = {
+  isMobile: false,
 };
 
 export default Bonus;
