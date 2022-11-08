@@ -376,20 +376,21 @@ function StartButtonContainer({ width, height, isMobile }) {
 }
 
 function ButtonContainer({ width, height, isMobile }) {
+  const pauseButtonX = 0.05 * width > 50 ? width - 0.05 * width : width - 50;
   const spacing = isMobile ? 60 : 75;
   const isLoaded = useSelector((state) => state.sound.isLoaded);
   return (
     <Container>
       {isLoaded && (
       <PauseButton
-        x={0.95 * width}
+        x={pauseButtonX}
         y={0.05 * height}
         scale={0.5}
       />
       )}
       {isLoaded && (
       <HelpButton
-        x={0.95 * width - spacing}
+        x={pauseButtonX - spacing}
         y={0.05 * height}
         scale={0.5}
       />
