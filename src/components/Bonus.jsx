@@ -41,7 +41,7 @@ function Bonus({
   const paused = useSelector((state) => state.game.paused);
   const gameSpeed = useSelector((state) => state.game.gameSpeed);
   const pointsPerCoin = useSelector((state) => state.game.pointsPerCoin);
-  const effectVolume = useSelector((state) => state.sound.effectVolume);
+  const effectVolume = useSelector((state) => state.sound.mainVolume);
 
   const speed = isMobile ? gameSpeed / 2 : gameSpeed;
 

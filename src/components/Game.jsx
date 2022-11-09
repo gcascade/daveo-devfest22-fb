@@ -141,7 +141,7 @@ function BackgroundContainer({ width, height, isMobile }) {
   const changingLevel = useSelector((state) => state.game.changingLevel);
   const changeLevelEnabled = useSelector((state) => state.game.changeLevelEnabled);
   const mainVolume = useSelector((state) => state.sound.mainVolume);
-  const effectVolume = useSelector((state) => state.sound.effectVolume);
+  const effectVolume = mainVolume;
   const initGameSpeed = useSelector((state) => state.game.initGameSpeed);
 
   const [noise, setNoise] = React.useState(0);

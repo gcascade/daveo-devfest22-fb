@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import { sound } from '@pixi/sound';
 import plusImage from '../images/plus.png';
 import minusImage from '../images/minus.png';
-import { updateMainVolume, updateEffectVolume } from '../slices/soundSlice';
-import { bgm, seaBgm, sfx } from '../constants';
+import { updateMainVolume } from '../slices/soundSlice';
+import { bgm, seaBgm } from '../constants';
 
 export default function PauseMenu({
   gameWidth, gameHeight, isMobile,
@@ -17,10 +17,8 @@ export default function PauseMenu({
   const paused = useSelector((state) => state.game.paused);
   const changingLevel = useSelector((state) => state.game.changingLevel);
   const mainVolume = useSelector((state) => state.sound.mainVolume);
-  const effectVolume = useSelector((state) => state.sound.effectVolume);
   const dispatch = useDispatch();
   const [mVolume, setMVolume] = useState(mainVolume * 100);
-  const [eVolume, setEVolume] = useState(effectVolume * 100);
 
   const titleStyle = new PIXI.TextStyle({
     align: 'center',
@@ -60,22 +58,9 @@ export default function PauseMenu({
     dispatch(updateMainVolume(volume));
   }
 
-  function updateSoundEffectVolume(volume) {
-    sfx.forEach((trackName) => {
-      if (sound.exists(trackName, false)) {
-        sound.find(trackName).volume = volume;
-      }
-    });
-    dispatch(updateEffectVolume(volume));
-  }
-
   useEffect(() => {
     updateMVolume(mVolume / 100);
   }, [mVolume]);
-
-  useEffect(() => {
-    updateSoundEffectVolume(eVolume / 100);
-  }, [eVolume]);
 
   const rectWidth = isMobile ? 300 : 0.4 * gameWidth;
   const rectHeight = isMobile ? 275 : 0.4 * gameHeight;
@@ -118,20 +103,6 @@ export default function PauseMenu({
     },
   };
 
-  const soundEffectsText = {
-    x: 0.5 * gameWidth,
-    y: isMobile ? 0.5 * gameHeight + 75 : 0.6 * gameHeight,
-    width: isMobile ? 125 : 0.2 * gameWidth,
-    minusButton: {
-      x: isMobile ? gameWidth / 2 - 100 : 0.35 * gameWidth,
-      y: isMobile ? 0.5 * gameHeight + 75 : 0.6 * gameHeight,
-    },
-    plusButton: {
-      x: isMobile ? gameWidth / 2 + 100 : 0.65 * gameWidth,
-      y: isMobile ? 0.5 * gameHeight + 75 : 0.6 * gameHeight,
-    },
-  };
-
   return (
     <Container>
       <Graphics draw={draw} visible={paused && !changingLevel} />
@@ -152,15 +123,6 @@ export default function PauseMenu({
         anchor={0.5}
         style={textStyle}
         width={mainVolumeText.width}
-      />
-      <Text
-        x={soundEffectsText.x}
-        y={soundEffectsText.y}
-        text={`Sound Effects Volume: ${eVolume}%`}
-        visible={paused && !changingLevel}
-        anchor={0.5}
-        style={textStyle}
-        width={soundEffectsText.width}
       />
       <Sprite
         image={minusImage}
@@ -184,34 +146,6 @@ export default function PauseMenu({
         pointerdown={() => {
           if (mVolume < 100) {
             setMVolume(mVolume + 10);
-          }
-        }}
-        visible={paused && !changingLevel}
-        scale={{ x: 0.5, y: 0.5 }}
-        anchor={0.5}
-      />
-      <Sprite
-        image={minusImage}
-        x={soundEffectsText.minusButton.x}
-        y={soundEffectsText.minusButton.y}
-        interactive
-        pointerdown={() => {
-          if (eVolume > 0) {
-            setEVolume(eVolume - 10);
-          }
-        }}
-        visible={paused && !changingLevel}
-        scale={{ x: 0.5, y: 0.5 }}
-        anchor={0.5}
-      />
-      <Sprite
-        image={plusImage}
-        x={soundEffectsText.plusButton.x}
-        y={soundEffectsText.plusButton.y}
-        interactive
-        pointerdown={() => {
-          if (eVolume < 100) {
-            setEVolume(eVolume + 10);
           }
         }}
         visible={paused && !changingLevel}

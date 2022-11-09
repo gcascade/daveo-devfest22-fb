@@ -232,7 +232,7 @@ function Obstacle({
   const lives = useSelector((state) => state.game.lives);
   const birdIsInvincible = useSelector((state) => state.bird.invincible);
   const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
-  const effectVolume = useSelector((state) => state.sound.effectVolume);
+  const effectVolume = useSelector((state) => state.sound.mainVolume);
   const speed = isMobile ? gameSpeed / 2 : gameSpeed;
 
   useTick((delta) => {

@@ -27,7 +27,7 @@ function Start({
     obstacleSpacing *= 2 / 3;
   }
   const mainVolume = useSelector((state) => state.sound.mainVolume);
-  const effectVolume = useSelector((state) => state.sound.effectVolume);
+  const effectVolume = mainVolume;
   const initGameSpeed = useSelector((state) => state.game.initGameSpeed);
 
   return (

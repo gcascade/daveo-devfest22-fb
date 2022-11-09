@@ -32,7 +32,7 @@ export default function Bird({ gameHeight, isMobile }) {
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
   const playHitAnimation = useSelector((state) => state.bird.invincible);
   const gameOver = useSelector((state) => state.game.gameOver);
-  const effectVolume = useSelector((state) => state.sound.effectVolume);
+  const effectVolume = useSelector((state) => state.sound.mainVolume);
 
   let image;
 
