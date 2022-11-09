@@ -224,7 +224,7 @@ function Obstacle({
   const maxGameSpeed = useSelector((state) => state.game.maxGameSpeed);
   const paused = useSelector((state) => state.game.paused);
   const speedIncrease = useSelector((state) => state.game.speedIncrease);
-  const minHeight = useSelector((state) => state.game.obstacleMinHeight);
+  let minHeight = useSelector((state) => state.game.obstacleMinHeight);
   const isSeaWorld = useSelector((state) => state.game.isSeaWorld);
   const obstacles = useSelector((state) => state.obstacle.obstacles);
   const obstacleGap = useSelector((state) => state.game.obstacleGap);
@@ -234,6 +234,10 @@ function Obstacle({
   const obstacleMinSpacing = useSelector((state) => state.game.obstacleMinSpacing);
   const effectVolume = useSelector((state) => state.sound.mainVolume);
   const speed = isMobile ? gameSpeed / 2 : gameSpeed;
+
+  if (isMobile) {
+    minHeight = 0.25 * gameHeight;
+  }
 
   useTick((delta) => {
     if (!paused && gameHasStarted) {
@@ -336,7 +340,10 @@ function Obstacle({
             // console.log("I might be mean, so I'll try to be nice");
             newHeight = randomNumberBetween(startingHeight, gameHeight / 2);
           }
-          newHeight = randomNumberBetween(startingHeight, 0.7 * gameHeight);
+          newHeight = randomNumberBetween(
+            startingHeight,
+            isMobile ? 0.6 * gameHeight : 0.7 * gameHeight,
+          );
         }
 
         // last adjustments
