@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/daveo-devfest22-fb/static/css/main.31d6cfe0.css",
-    "main.js": "/daveo-devfest22-fb/static/js/main.2c7bc2d2.js",
+    "main.js": "/daveo-devfest22-fb/static/js/main.1d104923.js",
     "static/js/407.47f63a6f.chunk.js": "/daveo-devfest22-fb/static/js/407.47f63a6f.chunk.js",
     "static/media/elephant2.png": "/daveo-devfest22-fb/static/media/elephant2.da95566230dbe87338f3.png",
     "static/media/seaBackground.png": "/daveo-devfest22-fb/static/media/seaBackground.10210d5cc2d459f0ae7b.png",
@@ -17,11 +17,11 @@
     "static/media/veryLongObstacle.png": "/daveo-devfest22-fb/static/media/veryLongObstacle.3f4f0f58b75c5a4d2040.png",
     "static/media/clouds.png": "/daveo-devfest22-fb/static/media/clouds.5380850d60182f3b6107.png",
     "index.html": "/daveo-devfest22-fb/index.html",
-    "main.2c7bc2d2.js.map": "/daveo-devfest22-fb/static/js/main.2c7bc2d2.js.map",
+    "main.1d104923.js.map": "/daveo-devfest22-fb/static/js/main.1d104923.js.map",
     "407.47f63a6f.chunk.js.map": "/daveo-devfest22-fb/static/js/407.47f63a6f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.31d6cfe0.css",
-    "static/js/main.2c7bc2d2.js"
+    "static/js/main.1d104923.js"
   ]
 }
