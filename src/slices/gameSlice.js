@@ -90,15 +90,28 @@ export const gameSlice = createSlice({
         scores.push(state.totalScore);
         localStorage.setItem('scores', JSON.stringify(scores));
 
+        try {
+          if (typeof window.parent.saveScore === 'function') {
+            console.log('saving score');
+            window.parent.saveScore(encrypt(state.totalScore.toString()));
+          }
+        } catch (e) {
+          console.log(e);
+        }
+
         // save file to server
         if (REACT_APP_SCORE_PATH && REACT_APP_SCORE_PATH !== '') {
-          fetch(REACT_APP_SCORE_PATH, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ score: encrypt(state.totalScore.toString()) }),
-          });
+          try {
+            fetch(REACT_APP_SCORE_PATH, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ score: encrypt(state.totalScore.toString()) }),
+            });
+          } catch (e) {
+            console.log(e);
+          }
         }
       }
     },
