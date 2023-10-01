@@ -1,3 +1,9 @@
+# Try me
+
+![https://gcascade.github.io/daveo-devfest22-fb](/qr.png)
+
+or [click here](https://gcascade.github.io/daveo-devfest22-fb)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
